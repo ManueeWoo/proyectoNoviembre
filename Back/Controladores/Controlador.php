@@ -14,6 +14,10 @@ class Controlador{
     public function sacarQuienes(){
         echo $this->twig->render("contenidos/quienessomos.html.twig");
     }
+
+    public function sacarLogin(){
+        echo $this->twig->render("contenidos/login.html.twig");
+    }
     public function pintarId(int $id){
         echo $id;
     }
