@@ -13,38 +13,39 @@ function crearVelo(){
 
 function crearModal(titulo, contenido){
     let div = document.createElement("div");
-    div.velo=crearVelo();
-    div.style.backgroundColor="#FFF";
-    div.style.position="fixed";
-    div.style.top="25%";
-    div.style.left="25%";
-    div.style.width="50%";
+    div.velo = crearVelo();
+    div.style.backgroundColor = "#FFF";
+    div.style.position = "fixed";
+    div.style.top = "25%";
+    div.style.left = "25%";
+    div.style.width = "50%";
     div.style.height="50%";
-    div.style.zIndex=1000;
+    div.style.boxSizing = "border-box";
+    div.style.padding = "10px";
+    div.style.zIndex = 1000;
+    div.style.overflow = "auto";
     document.body.appendChild(div);
-    let divTitulo=document.createElement("div");
-    divTitulo.style.position="relative";
-    let divTextotitulo=document.createElement("div");
-    divTextotitulo.innerHTML=titulo;
-    let divCerrar=document.createElement("div");
-    divCerrar.innerHTML="X"
-    divTextotitulo.style.position="absolute"
-    divTextotitulo.style.left="10px"
-    divTextotitulo.style.width="80%"
-    divCerrar.onclick=function(){
+
+    let divTitulo = document.createElement("div");
+    divTitulo.style.display = "flex";
+    divTitulo.style.justifyContent = "space-between";
+    //divTitulo.style.marginBottom = "10px";
+
+    let divTextotitulo = document.createElement("div");
+    divTextotitulo.innerHTML = titulo;
+
+    let divCerrar = document.createElement("div");
+    divCerrar.innerHTML = "X";
+    divCerrar.onclick = function(){
         div.velo.remove();
         div.remove();
-    }
-    divCerrar.style.position="absolute"
-    divCerrar.style.right="10px"
+    };
 
     divTitulo.appendChild(divTextotitulo);
     divTitulo.appendChild(divCerrar);
-    let divContenido=document.createElement("div");
-    divContenido.style.overflow="scroll";
-    divContenido.style.position="absolute";
-    divContenido.style.top="40px";
-    for(let i = 0; i<contenido.length;i++){
+
+    let divContenido = document.createElement("div");
+    for (let i = 0; i < contenido.length; i++){
         divContenido.appendChild(contenido[i]);
     }
 
