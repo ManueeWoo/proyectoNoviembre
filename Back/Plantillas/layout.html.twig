@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto</title>
+    {% block estilo %}
+        <link rel="stylesheet" href="/assets/css/layout.css">
+    {% endblock %}
+    {%block js%}{% endblock %}
+</head>
+<body>
+    {% block header %}
+        {% if usuario == 'admin' %}
+            {% include 'header/headerAdmin.html.twig' %}
+        {% elseif usuario == 'usuario' %}
+            {% include 'header/header.html.twig' %}
+        {% else %}
+            {% include 'header/headerInvitado.html.twig' %}
+        {% endif %}
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    {% block footer %}
+        {% include 'footer/footer.html.twig' %}
+    {% endblock %}
+</body>
+</html>

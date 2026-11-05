@@ -1,0 +1,12 @@
+{
+    "name": "manuel/proyectonoviembre",
+    "type": "project",
+    "require": {
+        "twig/twig": "^3.30"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": ""
+        }
+    }
+}
