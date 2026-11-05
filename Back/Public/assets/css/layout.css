@@ -1,17 +1,60 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 70px;
+  padding: 0 30px;
+  background-color: #1f2937;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.truequeOtrato {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  height: 45px;
+  width: auto;
+}
+
+.truequeOtrato h2 {
+  margin: 0;
+  font-size: 22px;
+  color: #ffffff;
+}
+
 .navbar {
-    list-style: none;
-    margin: 0;
-    padding: 10px 20px;
-    display: flex;
-    gap: 20px;
-    border-bottom: 1px solid #ddd;
-    background-color: rgb(97, 151, 201);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.itemnav {
-    color: #000000;
+.itemnav a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #e5e7eb;
+  font-weight: 600;
+  border-radius: 6px;
 }
 
-.itemnav:hover {
-    color: #0044ff;
+.itemnav a:hover {
+  background-color: #3b82f6;
+  color: #ffffff;
 }
