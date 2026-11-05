@@ -14,7 +14,7 @@ private PDO $pdo;
     public function insertarUser(Solicitud $s):bool{
         $sentencia = "INSERT INTO solicitud (id_usuario, id_oferta, estado, fecha, tiempoFinalizado, puntos, motivo, id_val) VALUES (:id_usuario, :id_oferta, :estado, :fecha, :tiempoFinalizado, :puntos, :motivo, :id_val)";
         $pStatment = $this->pdo->prepare($sentencia);
-        $esCorrecto = $pStatment->execute([":id_usuario"=>$s->getUsuario()->getId(), "id_oferta"=>$s->getOferta(), ":estado"=>$s->getEstado(), ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()]); 
+        $esCorrecto = $pStatment->execute([":id_usuario"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta(), ":estado"=>$s->getEstado(), ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()]); 
         if($esCorrecto){
             $s->setId($this->pdo->lastInsertId());
         }
@@ -22,7 +22,7 @@ private PDO $pdo;
     }
 
     public function actualizarUser(Solicitud $s, int $id):bool{
-        $sentencia = "UPDATE solicitud SET id_usuario= :id_usuario, id_oferta = :id_oferta, estado = :estado, fecha = :fecha, tiempoFinalizado = :tiempoFinalizado, puntos = :puntos, motivo = :motivo, id_val = :id_val WHERE id= :id";
+        $sentencia = "UPDATE solicitud SET id_usuario= :id_usuario, :id_oferta = :id_oferta, estado = :estado, fecha = :fecha, tiempoFinalizado = :tiempoFinalizado, puntos = :puntos, motivo = :motivo, id_val = :id_val WHERE id= :id";
         $pStatment = $this->pdo->prepare($sentencia);
         return $pStatment->execute([":id_usuario"=>$s->getUsuario()->getId(), "id_oferta"=>$s->getOferta(), ":estado"=>$s->getEstado(), ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion(), ":id"=>$id]);
     }
