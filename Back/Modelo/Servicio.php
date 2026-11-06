@@ -7,7 +7,7 @@ class Servicio
         private Categoria $cat,
         private string $titulo,
         private string $decripcion,
-        private ?int $id
+        private ?int $id = null
     ) {
     }
     public function getId(): ?int

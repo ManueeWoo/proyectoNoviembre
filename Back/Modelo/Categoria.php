@@ -5,7 +5,7 @@ class Categoria
     public function __construct(
         private string $titulo,
         private string $descripcion,
-        private ?int $id
+        private ?int $id = null
     ) {
     }
     public function getId(): ?int

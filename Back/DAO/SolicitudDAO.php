@@ -2,6 +2,7 @@
 namespace App\DAO;
 use App\DAO\ConexionDB;
 use App\Modelo\Solicitud;
+use App\Modelo\EstadoOferta;
 use PDO;
 class SolicitudDAO{
 private PDO $pdo;
@@ -11,29 +12,29 @@ private PDO $pdo;
     }
 
     //CRUD
-    public function insertarUser(Solicitud $s):bool{
-        $sentencia = "INSERT INTO solicitud (id_usuario, id_oferta, estado, fecha, tiempoFinalizado, puntos, motivo, id_val) VALUES (:id_usuario, :id_oferta, :estado, :fecha, :tiempoFinalizado, :puntos, :motivo, :id_val)";
+    public function insertarSolicitud(Solicitud $s):bool{
+        $sentencia = "INSERT INTO solicitud (id_user, id_oferta, estado, fecha, tiempoFinalizado, puntos, motivo, id_val) VALUES (:id_user, :id_oferta, :estado, :fecha, :tiempoFinalizado, :puntos, :motivo, :id_val)";
         $pStatment = $this->pdo->prepare($sentencia);
-        $esCorrecto = $pStatment->execute([":id_usuario"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta(), ":estado"=>$s->getEstado(), ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()]); 
+        $esCorrecto = $pStatment->execute([":id_user"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta()->getId(), ":estado"=>$s->getEstado()->value,":fecha"=>$s->getFecha(),":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()->getId()]); 
         if($esCorrecto){
             $s->setId($this->pdo->lastInsertId());
         }
         return $esCorrecto;
     }
 
-    public function actualizarUser(Solicitud $s, int $id):bool{
-        $sentencia = "UPDATE solicitud SET id_usuario= :id_usuario, :id_oferta = :id_oferta, estado = :estado, fecha = :fecha, tiempoFinalizado = :tiempoFinalizado, puntos = :puntos, motivo = :motivo, id_val = :id_val WHERE id= :id";
+    public function actualizarSolicitud(Solicitud $s, int $id):bool{
+        $sentencia = "UPDATE solicitud SET id_user= :id_user, id_oferta = :id_oferta, estado = :estado, fecha = :fecha, tiempoFinalizado = :tiempoFinalizado, puntos = :puntos, motivo = :motivo, id_val = :id_val WHERE id= :id";
         $pStatment = $this->pdo->prepare($sentencia);
-        return $pStatment->execute([":id_usuario"=>$s->getUsuario()->getId(), "id_oferta"=>$s->getOferta(), ":estado"=>$s->getEstado(), ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion(), ":id"=>$id]);
+        return $pStatment->execute([":id_user"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta()->getId(), ":estado"=>$s->getEstado()->value, ":fecha"=>$s->getFecha(), ":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()->getId(), ":id"=>$id]);
     }
 
-    public function eliminarUser(Solicitud $s):bool{
+    public function eliminarSolicitud(Solicitud $s):bool{
         $sentencia = "DELETE FROM solicitud WHERE id= :id";
         $pStatment = $this->pdo->prepare($sentencia);
         return $pStatment->execute([":id"=>$s->getId()]); 
     }
 
-    public function eliminarUserId(int $id):bool{
+    public function eliminarSolicitudId(int $id):bool{
         $sentencia = "DELETE FROM solicitud WHERE id= :id";
         $pStatment = $this->pdo->prepare($sentencia);
         return $pStatment->execute([":id"=>$id]); 
@@ -66,6 +67,12 @@ private PDO $pdo;
     }
 
     public function filaToSolicitud(array $datos): Solicitud{
-        return new Solicitud($datos['id_user'], $datos['id_oferta'], $datos['estado'], $datos['fecha'], $datos['tiempoFinalizado'], $datos['puntos'], $datos['motivo'], $datos['id_val'], $datos['id']);
-    }
+    $userDAO = new UsuarioDAO();
+    $ofertaDAO = new OfertaDAO();
+    $valoracionDAO = new ValoracionDAO();
+    $usuario = $userDAO->findById($datos['id_user']);
+    $oferta = $ofertaDAO->findById($datos['id_oferta']);
+    $valoracion = $valoracionDAO->findById($datos['id_val']) ;
+    return new Solicitud($usuario, $oferta, $datos['fecha'], $datos['tiempoFinalizado'], $datos['puntos'], $datos['motivo'], $valoracion,EstadoOferta::from($datos['estado']), $datos['id']);
+}
 }

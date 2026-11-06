@@ -13,7 +13,7 @@ class Oferta
         private string $descripcion,
         private string $tiempoEstimado,
         private bool $activo,
-        private ?int $id
+        private ?int $id = null
     ) {
     }
     public function getId(): ?int

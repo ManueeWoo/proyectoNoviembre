@@ -10,13 +10,13 @@ class Solicitud
     public function __construct(
         private Usuario $usuario,
         private Oferta $oferta,
-        private EstadoOferta $estado = EstadoOferta::Solicitado,
         private string $fecha,
         private int $tiempoFinalizado,
         private int $puntos,
         private string $motivo,
         private Valoracion $valoracion,
-        private ?int $id
+        private EstadoOferta $estado = EstadoOferta::Solicitado,
+        private ?int $id =null
     ) {
     }
     public function getId(): ?int

@@ -6,7 +6,7 @@ class Valoracion
     public function __construct(
         private int $puntuacion,
         private string $descripcion,
-        private ?int $id
+        private ?int $id = null
     ) {
     }
     public function getId(): ?int

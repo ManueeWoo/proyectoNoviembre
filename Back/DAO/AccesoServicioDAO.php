@@ -18,7 +18,7 @@ class AccesoServicioDAO{
         return $pStatment->execute([
             ":id_user" => $a->getUsuario()->getId(),
             ":id_servicio" => $a->getServicio()->getId(),
-            ":estado" => $a->getEstado()
+            ":estado" => $a->getEstado()->value
         ]);
     }
 
@@ -26,7 +26,7 @@ class AccesoServicioDAO{
         $sentencia = "UPDATE accesoServicio SET estado = :estado WHERE id_user = :id_user AND id_servicio = :id_servicio";
         $pStatment = $this->pdo->prepare($sentencia);
         return $pStatment->execute([
-            ":estado" => $a->getEstado(),
+            ":estado" => $a->getEstado()->value,
             ":id_user" => $a->getUsuario()->getId(),
             ":id_servicio" => $a->getServicio()->getId()
         ]);

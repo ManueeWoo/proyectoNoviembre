@@ -17,6 +17,3 @@ $router->get("/quienessomos",Controlador::class."@sacarQuienes");
 $router->get("/login",Controlador::class."@sacarLogin");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
-
-
-
