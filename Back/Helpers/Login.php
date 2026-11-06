@@ -24,7 +24,7 @@ class Login{
     public static function validarUsuario(Usuario $usuario):array{
         $errores = [];
         $repo = new UsuarioDAO();
-         $encontrado = $repo->findByNombreContra($usuario);
+         $encontrado = $repo->findByEmailContra($usuario);
         if(empty($encontrado)){
             $errores["nombreContra"] = "error los campos no coinciden con el user"; 
         }

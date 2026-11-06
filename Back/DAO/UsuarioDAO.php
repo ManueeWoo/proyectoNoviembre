@@ -67,6 +67,17 @@ private PDO $pdo;
         return $user;
     }
 
+     public function findByEmailContra(Usuario $usuario): ?Usuario{
+        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, id FROM usuario WHERE email=:email ");
+        $resultado->execute([":email"=>$usuario->getEmail()]);
+        $valoresUser = $resultado->fetch(PDO::FETCH_ASSOC);
+        $user = null;
+        if($valoresUser !== false && password_verify($usuario->getContra(), $valoresUser["contrasenia"])){
+            $user =$this->filaToUser($valoresUser);
+        }
+        return $user;
+    }
+
     public function filaToUser(array $datos): Usuario{
         return new Usuario($datos['nombre'], $datos['ap1'], $datos['ap2'], $datos['alta'], $datos['saldo'], $datos['tel'], $datos['rol'], $datos['email'], $datos['contrasenia'], $datos['id']); //asocio la fila al array de Prod
     }
