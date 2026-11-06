@@ -12,6 +12,7 @@ class Oferta
         private int $puntos,
         private string $descripcion,
         private string $tiempoEstimado,
+        private bool $activo,
         private ?int $id
     ) {
     }
@@ -73,5 +74,15 @@ class Oferta
     public function setTiempoEstimado(string $tiempoEstimado): void
     {
         $this->tiempoEstimado = $tiempoEstimado;
+    }
+
+    public function getActivo(): bool
+    {
+        return $this->activo;
+    }
+
+    public function setActivo(bool $activo): void
+    {
+        $this->activo = $activo;
     }
 }
