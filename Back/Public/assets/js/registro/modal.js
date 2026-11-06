@@ -1,56 +1,54 @@
-function crearVelo(){
-    let div = document.createElement("div");
-    div.style.backgroundColor="rgba(150,150,150,0.3)";
-    div.style.position="fixed";
-    div.style.top="0px";
-    div.style.left="0px";
-    div.style.width="100%";
-    div.style.height="100%";
-    div.style.zIndex=999;
-    document.body.appendChild(div);
-    return div;
+function Modal(titulo){
+    this.velo=document.createElement("div");
+    this.modal=document.createElement("div");
+    this.titulo=document.createElement("div");
+    this.tituloTexto=document.createElement("div");
+    this.cerrar=document.createElement("div");
+    this.contenido=document.createElement("div");
+    this.codigo=document.createElement("script");;
+
+    document.body.appendChild(this.velo);    
+    this.velo.id="velo";
+    document.body.appendChild(this.modal);
+    this.modal.id="modal";
+    this.tituloTexto.innerHTML=titulo;
+    this.cerrar.innerHTML="X";
+    this.titulo.appendChild(this.tituloTexto);
+    this.titulo.appendChild(this.cerrar);
+    this.modal.appendChild(this.titulo);
+    this.modal.appendChild(this.contenido);
 }
 
-function crearModal(titulo, contenido){
-    let div = document.createElement("div");
-    div.velo = crearVelo();
-    div.style.backgroundColor = "#FFF";
-    div.style.position = "fixed";
-    div.style.top = "25%";
-    div.style.left = "25%";
-    div.style.width = "50%";
-    div.style.height="50%";
-    div.style.boxSizing = "border-box";
-    div.style.padding = "10px";
-    div.style.zIndex = 1000;
-    div.style.overflow = "auto";
-    document.body.appendChild(div);
+Modal.prototype.cerrarModal=function(){
+    this.velo.remove();
+    this.modal.remove();
+}
 
-    let divTitulo = document.createElement("div");
-    divTitulo.style.display = "flex";
-    divTitulo.style.justifyContent = "space-between";
-    //divTitulo.style.marginBottom = "10px";
-
-    let divTextotitulo = document.createElement("div");
-    divTextotitulo.innerHTML = titulo;
-
-    let divCerrar = document.createElement("div");
-    divCerrar.innerHTML = "X";
-    divCerrar.onclick = function(){
-        div.velo.remove();
-        div.remove();
-    };
-
-    divTitulo.appendChild(divTextotitulo);
-    divTitulo.appendChild(divCerrar);
-
-    let divContenido = document.createElement("div");
-    for (let i = 0; i < contenido.length; i++){
-        divContenido.appendChild(contenido[i]);
+Modal.prototype.cargarHtml=async function(urlPlantilla){
+     let peticionPlantilla = await fetch(urlPlantilla);
+    if(peticionPlantilla.ok){
+        let textoHtml = await peticionPlantilla.text();
+        this.contenido.innerHTML = textoHtml; 
+    } else {
+        throw "Error en el servidor al cargar la plantilla";
     }
-
-    div.appendChild(divTitulo);
-    div.appendChild(divContenido);
-
-    return div;
 }
+
+
+
+Modal.prototype.cargarURLJS=async function(urlJs){
+    let peticionJs = await fetch(urlJs);
+    if(peticionJs.ok){
+        let contenido = await peticionJs.text();
+        this.codigo.innerHTML=contenido;
+    }else{
+        throw "Error en el servidor";
+    }
+}
+
+
+Modal.prototype.cargarLogica=function(){};
+
+//tengo la logica del btn de la plantilla de manolo , salta el velo modal etc, tambien tng q llamar al servidor y que me de los servicios, categorias,etc
+//cuando lo tnego todo validado mando el json con los campos a servidor si todo ok quito el velo y modal
+//cndo inyecto los servicios en el form los tengo en options value="idDelservicio" que es lo que se manda
