@@ -29,4 +29,8 @@ class Sesion{
         self::abrirSesion();
         unset($_SESSION[$clave]);
     }
+
+    public static function dameLaSesion($clave){
+        return $_SESSION[$clave];
+    }
 }

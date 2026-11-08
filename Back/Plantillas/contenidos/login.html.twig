@@ -9,6 +9,13 @@
 <link rel="stylesheet" href="/assets/css/modal.css">
 {% endblock %}
 {% block content %}
+{% if errores is not empty %}
+    <ul>
+        {% for error in errores %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 <div class="login">
   <form class="loginForm" action="" method="post">
     <h2>Iniciar Sesión</h2>

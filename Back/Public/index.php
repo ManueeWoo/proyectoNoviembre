@@ -7,9 +7,19 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use App\Controladores\Controlador;
 use App\Controladores\ControladorLogin;
+use  App\Helpers\Login;
+use  App\Helpers\Sesion;
 
 $loader = new FilesystemLoader(__DIR__ . '/../Plantillas');
 $twig = new Environment($loader);
+$usuarioRol = "invitado";
+if (Login::estaLogeado()) {
+    $u= Sesion::dameLaSesion("user");
+    $usuarioRol = $u->getRol();
+}
+$twig->addGlobal('usuario', $usuarioRol);
+
+
 $router= new Router($twig);
 $router->get("/inicio/{id}",Controlador::class."@pintarId"); //tengo que poner asi la clase porque si no conoce a ningun Controladores hay que ponerla con el nombre entero
 $router->get("/",Controlador::class."@sacarLayout");
