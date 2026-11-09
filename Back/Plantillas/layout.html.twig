@@ -11,9 +11,9 @@
 </head>
 <body>
     {% block header %}
-        {% if usuario == 'admin' %}
+        {% if rol == 'admin' %}
             {% include 'header/headerAdmin.html.twig' %}
-        {% elseif usuario == 'usuario' %}
+        {% elseif rol == 'usuario' %}
             {% include 'header/header.html.twig' %}
         {% else %}
             {% include 'header/headerInvitado.html.twig' %}

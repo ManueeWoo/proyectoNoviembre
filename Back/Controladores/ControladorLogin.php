@@ -1,6 +1,7 @@
 <?php
 namespace App\Controladores;
 
+use App\Helpers\Sesion;
 use Twig\Environment;
 use App\Modelo\Usuario;
 use App\Helpers\Login;
@@ -32,5 +33,10 @@ class ControladorLogin{
             header("Location: /");
             exit;
         }
+    }
+
+    public function verPerfil(){
+        $usuario = Sesion::dameLaSesion("user");
+        echo $this->twig->render("contenidos/verPerfil.html.twig", ["usuario" => $usuario]);
     }
 }

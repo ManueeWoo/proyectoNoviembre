@@ -31,6 +31,7 @@ class Sesion{
     }
 
     public static function dameLaSesion($clave){
+        self::abrirSesion();
         return $_SESSION[$clave];
     }
 }

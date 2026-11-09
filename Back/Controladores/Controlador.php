@@ -21,4 +21,5 @@ class Controlador{
     public function pintarId(int $id){
         echo $id;
     }
+
 }
