@@ -1,3 +1,6 @@
+{% block js %} 
+<script src="/assets/js/despegable/despegable.js" defer></script>
+{% endblock %}
 <header class="cabecera">
     <div class="truequeOtrato">
         <img src="/upload/logo.png" alt="Logo Trueque o Trato" class="logo">
@@ -9,7 +12,12 @@
             <li class="itemnav"><a href="/quienessomos">¿Quienes somos?</a></li>
             <li class="itemnav"><a href="/servicios">Servicios</a></li>
             <li class="itemnav"><a href="/ofertas">Ofertas</a></li>
-            <li class="itemnav"><a href="/perfil">Perfil</a></li>
+            <li class="itemnav despegable-padre"><a class="pulsar">Perfil</a>
+                <ul class="despegable-hijo">
+                    <li><a>Ver perfil</a></li>
+                    <li><a href="/cerrarsesion">Cerrar Sesion</a></li>    
+                </ul>
+            </li>
         </ul>
     </nav>
 </header>

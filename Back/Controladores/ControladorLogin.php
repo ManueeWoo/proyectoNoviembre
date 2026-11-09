@@ -25,5 +25,12 @@ class ControladorLogin{
         }   
     }
     echo $this->twig->render('contenidos/login.html.twig', ['errores' => $errores]); 
-}
+    }
+
+    public function cerrarSesion(){
+        if(Login::deslogear()){
+            header("Location: /");
+            exit;
+        }
+    }
 }

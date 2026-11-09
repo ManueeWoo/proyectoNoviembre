@@ -58,3 +58,36 @@ body {
   background-color: #3b82f6;
   color: #ffffff;
 }
+
+.itemnav.despegable-padre .despegable-hijo {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #1f2937;
+  min-width: 150px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-radius: 4px;
+  z-index: 100;
+}
+
+.itemnav.despegable-padre.abierto .despegable-hijo {
+  display: block;
+}
+
+.itemnav.despegable-padre .despegable-hijo li {
+  list-style: none;
+  padding: 10px 15px;
+  color: #fff;
+  font-family: sans-serif;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.despegable-hijo li:hover{
+  background-color: #3b82f6;
+}
+

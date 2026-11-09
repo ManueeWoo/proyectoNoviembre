@@ -13,11 +13,11 @@ class Sesion{
         }
     }
 
-    public static function cerrarSesion(){
+    public static function cerrarSesion(): bool{
         self::abrirSesion();
         $_SESSION = array();
         setcookie(session_name(), '' , time() -4000);
-        session_destroy();
+        return session_destroy();
     }
 
     public static function aniadirASesion($clave, $valor){

@@ -26,6 +26,7 @@ $router->get("/",Controlador::class."@sacarLayout");
 $router->get("/quienessomos",Controlador::class."@sacarQuienes");
 $router->get("/login",ControladorLogin::class."@sacarLogin");
 $router->post("/login", ControladorLogin::class."@sacarLogin");
+$router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

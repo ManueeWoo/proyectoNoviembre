@@ -35,8 +35,8 @@ class Login{
         return Sesion::existeSesion('user');
     }
 
-    public static function deslogear(Usuario $usuario){
-        Sesion::cerrarSesion();
+    public static function deslogear():bool{
+       return Sesion::cerrarSesion();
     }
 
 /*
