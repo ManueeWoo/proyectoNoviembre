@@ -1,10 +1,31 @@
 {% extends 'layout.html.twig' %}
+{% block estilo %}
+{{parent()}}
+<link rel="stylesheet" href="/assets/css/perfil.css">
+{% endblock %}
 {% block content %}
-    <ul>
-        <li>{{usuario.id}}</li>
-        <li>{{usuario.nombre}}</li>
-        <li>{{usuario.alta}}</li>
-        <li>{{usuario.telefono}}</li>
-        <li>{{usuario.email}}</li>
-    </ul>
+<div class="perfil">
+
+  <div class="perfilFoto">
+    {% if usuario.foto %}
+      <img src="/upload/{{ usuario.foto }}" alt="Foto de perfil">
+    {% else %}
+      <img src="/upload/logo.png" alt="Sin foto">
+    {% endif %}
+
+    <form action="" method="POST" enctype="multipart/form-data">
+      <input type="file" name="foto" accept="image/*">
+      <button type="submit">Subir</button>
+    </form>
+  </div>
+
+  <ul class="perfilDatos">
+    <li><span>ID</span> {{ usuario.id }}</li>
+    <li><span>Nombre</span> {{ usuario.nombre }}</li>
+    <li><span>Alta</span> {{ usuario.alta }}</li>
+    <li><span>Teléfono</span> {{ usuario.telefono }}</li>
+    <li><span>Email</span> {{ usuario.email }}</li>
+  </ul>
+
+</div>
 {% endblock %}

@@ -28,6 +28,7 @@ $router->get("/login",ControladorLogin::class."@sacarLogin");
 $router->post("/login", ControladorLogin::class."@sacarLogin");
 $router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");
 $router->get("/verperfil",ControladorLogin::class."@verPerfil");
+$router->post("/verperfil", ControladorLogin::class."@guardarFoto");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

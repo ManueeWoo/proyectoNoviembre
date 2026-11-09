@@ -13,9 +13,9 @@ private PDO $pdo;
     //CRUD
     public function insertarUser(Usuario $u):bool{
         $contraHash = password_hash($u->getContra(), PASSWORD_DEFAULT);
-        $sentencia = "INSERT INTO usuario (nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia) VALUES (:nombre, :ap1, :ap2, :alta, :saldo, :tel, :rol, :email, :contrasenia)";
+        $sentencia = "INSERT INTO usuario (nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, foto) VALUES (:nombre, :ap1, :ap2, :alta, :saldo, :tel, :rol, :email, :contrasenia, :foto)";
         $pStatment = $this->pdo->prepare($sentencia);
-        $esCorrecto = $pStatment->execute([":nombre"=>$u->getNombre(), ":ap1"=>$u->getAp1(), ":ap2"=>$u->getAp2(), ":alta"=>$u->getAlta(), ":saldo"=>$u->getSaldo(), ":tel"=>$u->getTelefono(), ":rol"=>$u->getRol(), ":email"=>$u->getEmail(), ":contrasenia"=>$contraHash]); 
+        $esCorrecto = $pStatment->execute([":nombre"=>$u->getNombre(), ":ap1"=>$u->getAp1(), ":ap2"=>$u->getAp2(), ":alta"=>$u->getAlta(), ":saldo"=>$u->getSaldo(), ":tel"=>$u->getTelefono(), ":rol"=>$u->getRol(), ":email"=>$u->getEmail(), ":contrasenia"=>$contraHash, ":foto"=>$u->getFoto()]); 
         if($esCorrecto){
             $u->setId($this->pdo->lastInsertId());
         }
@@ -23,10 +23,9 @@ private PDO $pdo;
     }
 
     public function actualizarUser(Usuario $u, int $id):bool{
-        $contraHash = password_hash($u->getContra(), PASSWORD_DEFAULT);
-        $sentencia = "UPDATE usuario SET nombre= :nombre, ap1 = :ap1, ap2 = :ap2, alta = :alta, saldo = :saldo, tel = :tel, rol = :rol, email = :email, contrasenia = :contrasenia WHERE id= :id";
+        $sentencia = "UPDATE usuario SET nombre= :nombre, ap1 = :ap1, ap2 = :ap2, alta = :alta, saldo = :saldo, tel = :tel, rol = :rol, email = :email, foto = :foto WHERE id= :id";
         $pStatment = $this->pdo->prepare($sentencia);
-        return $pStatment->execute([":nombre"=>$u->getNombre(), ":ap1"=>$u->getAp1(), ":ap2"=>$u->getAp2(), ":alta"=>$u->getAlta(), ":saldo"=>$u->getSaldo(), ":tel"=>$u->getTelefono(), ":rol"=>$u->getRol(), ":email"=>$u->getEmail(),":contrasenia"=>$contraHash, ":id"=>$id]);
+        return $pStatment->execute([":nombre"=>$u->getNombre(), ":ap1"=>$u->getAp1(), ":ap2"=>$u->getAp2(), ":alta"=>$u->getAlta(), ":saldo"=>$u->getSaldo(), ":tel"=>$u->getTelefono(), ":rol"=>$u->getRol(), ":email"=>$u->getEmail(), ":foto"=>$u->getFoto(), ":id"=>$id]);
     }
 
     public function eliminarUser(Usuario $u):bool{
@@ -41,10 +40,17 @@ private PDO $pdo;
         return $pStatment->execute([":id"=>$id]); 
     }
 
+    public function actualizarFoto(int $id, ?string $foto): bool{
+        $sentencia = "UPDATE usuario SET foto = :foto WHERE id = :id";
+        $pStatment = $this->pdo->prepare($sentencia);
+        return $pStatment->execute([":foto" => $foto, ":id" => $id]);
+    }
+
+
     //QUERY
 
      public function findAll(): array{
-        $resultado= $this->pdo->query("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, id FROM usuario");
+        $resultado= $this->pdo->query("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia,foto, id FROM usuario");
         $usuarios = [];
         foreach($resultado->fetchAll() as $fila){
             $usuario = $this->filaToUser($fila); 
@@ -54,7 +60,7 @@ private PDO $pdo;
     }
 
     public function findById(int $id): ?Usuario{
-        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, id FROM usuario WHERE id=:id");
+        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia,foto,  id FROM usuario WHERE id=:id");
         $valoresUser = null;
         $resultado->execute([":id"=>$id]);
         $valoresUser = $resultado->fetch(PDO::FETCH_ASSOC);
@@ -68,7 +74,7 @@ private PDO $pdo;
     }
 
      public function findByEmailContra(Usuario $usuario): ?Usuario{
-        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, id FROM usuario WHERE email=:email ");
+        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia,foto,  id FROM usuario WHERE email=:email ");
         $resultado->execute([":email"=>$usuario->getEmail()]);
         $valoresUser = $resultado->fetch(PDO::FETCH_ASSOC);
         $user = null;
@@ -79,6 +85,6 @@ private PDO $pdo;
     }
 
     public function filaToUser(array $datos): Usuario{
-        return new Usuario($datos['nombre'], $datos['ap1'], $datos['ap2'], $datos['alta'], $datos['saldo'], $datos['tel'], $datos['rol'], $datos['email'], $datos['contrasenia'], $datos['id']); //asocio la fila al array de Prod
+        return new Usuario($datos['nombre'], $datos['ap1'], $datos['ap2'], $datos['alta'],  $datos['tel'],$datos['saldo'], $datos['rol'], $datos['email'], $datos['contrasenia'],$datos['foto'], $datos['id']); //asocio la fila al array de Prod
     }
 }

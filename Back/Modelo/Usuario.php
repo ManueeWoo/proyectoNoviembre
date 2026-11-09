@@ -14,6 +14,7 @@ class Usuario
         private string $rol,
         private string $email,
         private string $contrasenia,
+        private ?string $foto = null,
         private ?int $id = null
     ) {
     }
@@ -116,6 +117,16 @@ class Usuario
     public function getContra(): string
     {
         return $this->contrasenia;
+    }
+
+     public function setFoto(string $foto): void
+    {
+        $this->foto = $foto;
+    }
+
+    public function getFoto(): ?string
+    {
+        return $this->foto;
     }
 
     public function __tostring()

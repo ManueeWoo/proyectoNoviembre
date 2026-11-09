@@ -1,0 +1,71 @@
+.perfil {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-family: sans-serif;
+  text-align: center;
+}
+
+/* Foto */
+.perfilFoto img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;      
+  border-radius: 50%;     
+  border: 3px solid #1e293b;
+  margin-bottom: 15px;
+}
+
+/* Formulario de subida */
+.perfilFoto form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.perfilFoto input[type="file"] {
+  font-size: 13px;
+  max-width: 100%;
+}
+
+.perfilFoto button {
+  padding: 8px 20px;
+  background: #1e293b;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.perfilFoto button:hover {
+  background: #334155;
+}
+
+.perfilDatos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.perfilDatos li {
+  padding: 10px 5px;
+  border-bottom: 1px solid #e5e7eb;
+  color: #333333;
+}
+
+.perfilDatos li:last-child {
+  border-bottom: none;
+}
+
+.perfilDatos span {
+  display: inline-block;
+  width: 90px;
+  font-weight: bold;
+  color: #1e293b;
+}
