@@ -3,7 +3,6 @@ namespace App\Controladores;
 
 use Twig\Environment;
 use App\Modelo\Usuario;
-use App\DAO\UsuarioDAO;
 use App\Helpers\Login;
 class ControladorLogin{
     private Environment $twig;
