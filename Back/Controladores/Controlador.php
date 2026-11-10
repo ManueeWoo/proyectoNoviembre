@@ -18,6 +18,11 @@ class Controlador{
     public function sacarLogin(){
         echo $this->twig->render("contenidos/login.html.twig");
     }
+
+    public function sacarInicio(){
+        echo $this->twig->render("contenidos/inicio.html.twig");
+    }
+
     public function pintarId(int $id){
         echo $id;
     }

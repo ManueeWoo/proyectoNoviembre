@@ -22,7 +22,7 @@ $twig->addGlobal('rol', $usuarioRol);
 
 $router= new Router($twig);
 $router->get("/inicio/{id}",Controlador::class."@pintarId"); //tengo que poner asi la clase porque si no conoce a ningun Controladores hay que ponerla con el nombre entero
-$router->get("/",Controlador::class."@sacarLayout");
+$router->get("/",Controlador::class."@sacarInicio");
 $router->get("/quienessomos",Controlador::class."@sacarQuienes");
 $router->get("/login",ControladorLogin::class."@sacarLogin");
 $router->post("/login", ControladorLogin::class."@sacarLogin");
