@@ -41,33 +41,34 @@ class ControladorLogin{
         echo $this->twig->render("contenidos/verPerfil.html.twig", ["usuario" => $usuario]);
     }
 
-    public function guardarFoto(){
+    public function guardarFoto():array{
         $u = Sesion::dameLaSesion("user");
-
+        $errores=[];
 
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
 
             $formatos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-
-            // Comprobar el tipo REAL del archivo no solo el nombre
             $tipo = mime_content_type($_FILES['foto']['tmp_name']);
             if (!isset($formatos[$tipo])) {
                 $errores["formato"] = "Formato no permitido";
             }
-
-            //nombre pa guardarlo en upload y en la bd
             $nombreFoto = 'usuario_' . $u->getId() . '.' . $formatos[$tipo];
             $destino = __DIR__ . '/../Public/upload/' . $nombreFoto;
-
             //muevo la foto a la carpeta de upload
             if (move_uploaded_file($_FILES['foto']['tmp_name'], $destino)) {
                 $repo = new UsuarioDAO();
                 $u->setFoto($nombreFoto);  
-            } 
+                
+            } else{
+                $errores["cargarCarpeta"] = "Fallo en la subida";
+            }
         }
         if($repo->actualizarFoto($u->getId(), $nombreFoto)){
             header("Location: /verperfil");
             exit;
+        }else{
+            $errores["cargarBD"] = "Fallo en la subida";
         }
+        return $errores;
     }
 }
