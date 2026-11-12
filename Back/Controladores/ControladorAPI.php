@@ -7,10 +7,12 @@ class ControladorAPI{
 
     }
 
-    public function darCategorias(){
+    public function darCategorias() {
         $repo = new CategoriaDAO();
         $categorias = $repo->findAll();
-        $json = json_encode($categorias);
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($categorias);
     }
 
 

@@ -1,6 +1,7 @@
 <?php
 namespace App\Modelo;
-class Categoria
+use JsonSerializable;
+class Categoria implements JsonSerializable
 {
     public function __construct(
         private string $titulo,
@@ -36,5 +37,13 @@ class Categoria
     public function setDescripcion(string $descripcion): void
     {
         $this->descripcion = $descripcion;
+    }
+
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'nombre' => $this->titulo,
+            'descripcion' => $this->descripcion,
+        ];
     }
 }
