@@ -31,6 +31,7 @@ $router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");
 $router->get("/verperfil",ControladorLogin::class."@verPerfil");
 $router->post("/verperfil", ControladorLogin::class."@guardarFoto");
 $router->get("/api/categorias", ControladorAPI::class."@darCategorias");
+$router->get("/api/servicios/{id}",ControladorAPI::class."@darServicios");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

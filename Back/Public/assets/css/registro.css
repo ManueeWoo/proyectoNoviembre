@@ -1,0 +1,106 @@
+.registroForm {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.registroForm *,
+.registroForm *::before,
+.registroForm *::after {
+  box-sizing: border-box;
+}
+
+.registroForm h2 {
+  margin-bottom: 15px;
+  text-align: center;
+  color: #1f2937;
+  font-size: 1.5rem;
+}
+
+.registroForm .grupo {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.registroForm .grupo label {
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: #4b5563;
+}
+
+.registroForm .grupo input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+}
+
+.registroForm .grupo input:focus,
+.registroForm select:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Tabla de categorías / servicios */
+.registroForm .tablaServicios {
+  width: 100%;
+  margin-bottom: 15px;
+  border-collapse: separate;
+  border-spacing: 8px 0;
+  table-layout: fixed;
+}
+
+.registroForm .tablaServicios th {
+  margin-bottom: 5px;
+  padding-bottom: 5px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #4b5563;
+  text-align: left;
+}
+
+.registroForm .tablaServicios td {
+  vertical-align: top;
+}
+
+.registroForm select {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  outline: none;
+  background-color: #ffffff;
+  color: #1f2937;
+}
+
+.registroForm select option {
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.registroForm select option:checked {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* Botón */
+.registroForm .btnSubmit {
+  width: 100%;
+  padding: 10px;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.registroForm .btnSubmit:hover {
+  background-color: #2563eb;
+}

@@ -51,13 +51,11 @@ class ServicioDAO{
         return $servicios;
     }
 
-    public function findByIdCat(): array{
-        $resultado = $this->pdo->query("SELECT id_cat, titulo, descripcion, id FROM servicios WHERE id=:id_cat");
+    public function findByIdCat(int $id): array{
+        $resultado = $this->pdo->prepare("SELECT id_cat, titulo, descripcion, id FROM servicios WHERE id_cat=:id_cat");
+        $resultado->execute([":id_cat"=>$id]);
         $servicios = [];
-        foreach($resultado->fetchAll(PDO::FETCH_ASSOC) as $fila){
-            $servicio = $this->filaToServicio($fila);
-            array_push($servicios, $servicio);
-        }
+        $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
         return $servicios;
     }
 

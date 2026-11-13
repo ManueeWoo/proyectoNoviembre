@@ -1,36 +1,51 @@
-<div class="login">
-  <form class="RegistroForm">
-    
+<form name="RegistrarUsuario" class="registroForm">
+    <h2>Crear cuenta</h2>
+
     <div class="grupo">
-        <label for="nombre">Nombre:</label>
+        <label>Nombre</label>
         <input type="text" name="nombre" required>
     </div>
-
     <div class="grupo">
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" name="password" placeholder="••••••••" required>
+        <label>Primer apellido</label>
+        <input type="text" name="ape1" required>
+    </div>
+    <div class="grupo">
+        <label>Segundo apellido</label>
+        <input type="text" name="ape2">
+    </div>
+    <div class="grupo">
+        <label>Teléfono</label>
+        <input type="tel" name="telefono" required>
+    </div>
+    <div class="grupo">
+        <label>Email</label>
+        <input type="email" name="email" required>
+    </div>
+    <div class="grupo">
+        <label>Contraseña</label>
+        <input type="password" name="passwd1" required>
+    </div>
+    <div class="grupo">
+        <label>Repetir contraseña</label>
+        <input type="password" name="passwd2" required>
     </div>
 
-    <div class="grupo">
-        <label for="apellido1">Primer Apellido:</label>
-        <input type="text" name="apellido1" required>
-    </div>
+    <table class="tablaServicios">
+        <thead>
+            <tr>
+                <th>Categorías</th>
+                <th>Servicios</th>
+                <th>Seleccionados</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><select name="categoria" size="10"></select></td>
+                <td><select name="servicios" size="10" multiple></select></td>
+                <td><select name="serviciosSelec" size="10"></select></td>
+            </tr>
+        </tbody>
+    </table>
 
-    <div class="grupo">
-        <label for="apellido2">Segundo Apellido:</label>
-        <input type="text" name="apellido2" required>
-    </div>
-
-    <div class="grupo">
-        <label for="tel">Telefono:</label>
-        <input type="tel" name="tel" required>
-    </div>
-
-    <div class="grupo">
-        <label for="email">Email:</label>
-        <input type="email" name="email" placeholder="ejemplo@gmail.com" required>
-    </div>
-
-    <button type="submit" class="btnSubmit">Registrar</button>
-  </form>
-</div>
+    <input type="submit" name="guardar" value="Crear" class="btnSubmit">
+</form>

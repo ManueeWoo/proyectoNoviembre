@@ -13,6 +13,10 @@ function Modal(titulo){
     this.modal.id="modal";
     this.tituloTexto.innerHTML=titulo;
     this.cerrar.innerHTML="X";
+    let modal=this;
+    this.cerrar.onclick=function(){
+        modal.cerrarModal();
+    }
     this.titulo.appendChild(this.tituloTexto);
     this.titulo.appendChild(this.cerrar);
     this.modal.appendChild(this.titulo);
@@ -34,21 +38,15 @@ Modal.prototype.cargarHtml=async function(urlPlantilla){
     }
 }
 
-
-
-Modal.prototype.cargarURLJS=async function(urlJs){
+Modal.prototype.cargarURLJS = async function(urlJs){
     let peticionJs = await fetch(urlJs);
     if(peticionJs.ok){
-        let contenido = await peticionJs.text();
-        this.codigo.innerHTML=contenido;
+        this.codigo.innerHTML = await peticionJs.text();
+        document.body.appendChild(this.codigo);   
     }else{
         throw "Error en el servidor";
     }
-}
+};
 
 
 Modal.prototype.cargarLogica=function(){};
-
-//tengo la logica del btn de la plantilla de manolo , salta el velo modal etc, tambien tng q llamar al servidor y que me de los servicios, categorias,etc
-//cuando lo tnego todo validado mando el json con los campos a servidor si todo ok quito el velo y modal
-//cndo inyecto los servicios en el form los tengo en options value="idDelservicio" que es lo que se manda
