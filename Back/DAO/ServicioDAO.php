@@ -72,7 +72,8 @@ class ServicioDAO{
         return $servicio;
     }
 
-    public function filaToServicio(array $datos): Servicio{
-        return new Servicio($datos['id_cat'], $datos['titulo'], $datos['descripcion'], $datos['id']);
-    }
+   private function filaToServicio(array $fila): Servicio {
+         $categoria = (new CategoriaDAO())->findById($fila['id_cat']); 
+    return new Servicio($categoria, $fila['titulo'], $fila['descripcion'], $fila['id']);
+}
 }

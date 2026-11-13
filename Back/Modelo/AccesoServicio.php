@@ -8,7 +8,7 @@ class AccesoServicio
     public function __construct(
         private Usuario $usuario,
         private Servicio $servicio,
-        private EstadoAcceso $estado = EstadoAcceso::Pendiente
+        private ?EstadoAcceso $estado = EstadoAcceso::Pendiente
     ) {
     }
     public function getUsuario(): Usuario

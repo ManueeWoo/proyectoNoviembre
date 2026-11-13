@@ -5,8 +5,10 @@ form["guardar"].onclick = function (event) {
     registrarUsuario().then(respuesta => {
         if (respuesta.ok) {
             document.body.modal.cerrarModal();
-        } else {
-            alert(JSON.stringify(respuesta.errores));
+        } else{
+            for (let campo in respuesta.errores) {
+                    console.log(campo + ": " + respuesta.errores[campo]);
+                }
         }
     });
 };
@@ -26,12 +28,13 @@ async function registrarUsuario() {
         passwd2: form["passwd2"].value,
         servicios: servicios
     };
-    let peticion = await fetch("/api/usuarios", {
+    let peticion = await fetch("/api/registrar", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos)
     });
-    return await peticion.json();
+    let texto = await peticion.text();
+    return texto ? JSON.parse(texto) : null;
 }
 
 async function traerCategorias() {

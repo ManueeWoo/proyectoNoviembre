@@ -39,11 +39,5 @@ class Categoria
         $this->descripcion = $descripcion;
     }
 
-    public function jsonSerialize(): array {
-        return [
-            'id' => $this->id,
-            'nombre' => $this->titulo,
-            'descripcion' => $this->descripcion,
-        ];
-    }
+    
 }

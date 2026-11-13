@@ -30,8 +30,8 @@ class Sesion{
         unset($_SESSION[$clave]);
     }
 
-    public static function dameLaSesion($clave){
+    public static function dameLaSesion($clave) {
         self::abrirSesion();
-        return $_SESSION[$clave];
-    }
+    return $_SESSION[$clave] ?? null;
+}
 }

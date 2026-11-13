@@ -11,7 +11,7 @@ private PDO $pdo;
     }
 
     //CRUD
-    public function insertarUser(Usuario $u):bool{
+    public function insertarUser(Usuario $u):Usuario{
         $contraHash = password_hash($u->getContra(), PASSWORD_DEFAULT);
         $sentencia = "INSERT INTO usuario (nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia, foto) VALUES (:nombre, :ap1, :ap2, :alta, :saldo, :tel, :rol, :email, :contrasenia, :foto)";
         $pStatment = $this->pdo->prepare($sentencia);
@@ -19,7 +19,7 @@ private PDO $pdo;
         if($esCorrecto){
             $u->setId($this->pdo->lastInsertId());
         }
-        return $esCorrecto;
+        return $u;
     }
 
     public function actualizarUser(Usuario $u, int $id):bool{
@@ -79,6 +79,17 @@ private PDO $pdo;
         $valoresUser = $resultado->fetch(PDO::FETCH_ASSOC);
         $user = null;
         if($valoresUser !== false && password_verify($usuario->getContra(), $valoresUser["contrasenia"])){
+            $user =$this->filaToUser($valoresUser);
+        }
+        return $user;
+    }
+
+    public function findByEmail(string $email): ?Usuario{
+        $resultado= $this->pdo->prepare("SELECT nombre, ap1, ap2, alta, saldo, tel, rol, email, contrasenia,foto,  id FROM usuario WHERE email=:email ");
+        $resultado->execute([":email"=>$email]);
+        $valoresUser = $resultado->fetch(PDO::FETCH_ASSOC);
+        $user = null;
+        if($valoresUser !== false){
             $user =$this->filaToUser($valoresUser);
         }
         return $user;
