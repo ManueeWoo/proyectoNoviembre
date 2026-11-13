@@ -3,22 +3,22 @@
 {{parent()}}
 <link rel="stylesheet" href="/assets/css/perfil.css">
 {% endblock %}
+{%block js%}
+<script src="/assets/js/previewFotos/preview.js" defer></script>
+{% endblock %}
 {% block content %}
 <div class="perfil">
 
   <div class="perfilFoto">
-    {% if usuario.foto %}
-      <img src="/upload/{{ usuario.foto }}" alt="Foto de perfil">
-    {% else %}
-      <img src="/upload/logo.png" alt="Sin foto">
-    {% endif %}
+    <img id="preview"
+         src="/upload/{{ usuario.foto ? usuario.foto : 'logo.png' }}"
+         alt="Foto de perfil">
 
     <form action="" method="POST" enctype="multipart/form-data">
-      <input type="file" name="foto" accept="image/*">
+      <input type="file" name="foto" id="foto" accept="image/*">
       <button type="submit">Subir</button>
     </form>
   </div>
-
   <ul class="perfilDatos">
     <li><span>ID</span> {{ usuario.id }}</li>
     <li><span>Nombre</span> {{ usuario.nombre }}</li>
