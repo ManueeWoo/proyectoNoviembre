@@ -47,7 +47,6 @@
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
 }
 
-/* Tabla de categorías / servicios */
 .registroForm .tablaServicios {
   width: 100%;
   margin-bottom: 15px;
@@ -89,7 +88,6 @@
   color: #ffffff;
 }
 
-/* Botón */
 .registroForm .btnSubmit {
   width: 100%;
   padding: 10px;
@@ -103,4 +101,17 @@
 
 .registroForm .btnSubmit:hover {
   background-color: #2563eb;
+}
+
+.errores {
+    background: #fdecea;
+    border: 1px solid #f5c2c0;
+    color: #b42318;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+.errores ul {
+    margin: 0;
+    padding-left: 18px;
 }

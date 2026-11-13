@@ -1,16 +1,33 @@
-console.log("form:", document.forms["RegistrarUsuario"]);
+let divErrores = document.getElementById("errores");
+function mostrarErrores(errores) {
+    divErrores.innerHTML = "";
+    let ul = document.createElement("ul");
+    for (let campo in errores) {
+        let li = document.createElement("li");
+        li.textContent = errores[campo];   
+        ul.appendChild(li);
+    }
+    divErrores.appendChild(ul);
+    divErrores.hidden = false;
+}
+
+function ocultarErrores() {
+    divErrores.innerHTML = "";
+    divErrores.hidden = true;
+}
 let form = document.forms["RegistrarUsuario"];
 form["guardar"].onclick = function (event) {
     event.preventDefault();
-    registrarUsuario().then(respuesta => {
-        if (respuesta.ok) {
-            document.body.modal.cerrarModal();
-        } else{
-            for (let campo in respuesta.errores) {
-                    console.log(campo + ": " + respuesta.errores[campo]);
-                }
-        }
-    });
+    ocultarErrores();
+    registrarUsuario()
+        .then(respuesta => {
+            if (respuesta && respuesta.ok) {
+                document.body.modal.cerrarModal();
+            } else if (respuesta) {
+                mostrarErrores(respuesta.errores);
+            }
+        })
+        .catch(err => mostrarErrores({ general: "No se pudo completar el registro. Inténtalo de nuevo." }));
 };
 
 async function registrarUsuario() {
