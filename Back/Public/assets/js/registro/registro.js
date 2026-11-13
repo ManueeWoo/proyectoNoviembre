@@ -18,6 +18,7 @@ function ocultarErrores() {
 let form = document.forms["RegistrarUsuario"];
 form["guardar"].onclick = function (event) {
     event.preventDefault();
+    if (!form.reportValidity()) return; 
     ocultarErrores();
     registrarUsuario()
         .then(respuesta => {
