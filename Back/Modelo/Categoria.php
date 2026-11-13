@@ -1,7 +1,7 @@
 <?php
 namespace App\Modelo;
 use JsonSerializable;
-class Categoria implements JsonSerializable
+class Categoria  
 {
     public function __construct(
         private string $titulo,

@@ -52,9 +52,7 @@ class CategoriaDAO{
     public function findAll(): array{
         $resultado = $this->pdo->query("SELECT titulo, descripcion, id FROM categoria");
         $categorias = [];
-        foreach($resultado->fetchAll() as $fila){
-            $categorias[] = $this->filaToCategoria($fila);
-        }
+        $categorias=$resultado->fetchAll(PDO::FETCH_ASSOC);
         return $categorias;
     }
 
