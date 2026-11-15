@@ -3,7 +3,6 @@ namespace App\Modelo;
 use App\Modelo\Oferta;
 use App\Modelo\EstadoOferta;
 use App\Modelo\Valoracion;
-use DateTime;
 
 class Solicitud
 {

@@ -8,6 +8,9 @@ use App\Helpers\Respondedor;
 use App\Helpers\Sesion;
 use App\Modelo\AccesoServicio;
 use App\Modelo\Usuario;
+use App\Services\ConfigMail;
+use App\Services\MailService;
+use App\Services\PdfService;
 use DateTime;
 class ControladorAPI{
 
@@ -121,8 +124,12 @@ class ControladorAPI{
         }
         if (!empty($errores)) {
             $statusCode = 400; 
+        }else{
+            $pdfService = new PdfService();
+            $configMail = new ConfigMail();
+            $mailService = new MailService($pdfService,$configMail->getConfig());
+            $mailService->sendPendingRegistrationEmail($usuario);
         }
         Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
     }
-
 }
