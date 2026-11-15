@@ -12,7 +12,7 @@ use App\Services\ConfigMail;
 use App\Services\MailService;
 use App\Services\PdfService;
 use DateTime;
-class ControladorAPI{
+class ControladorAPIUsuario{
 
     public function __construct(){
 

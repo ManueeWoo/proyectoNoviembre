@@ -2,7 +2,7 @@
 
 require_once "../vendor/autoload.php";
 
-use App\Controladores\ControladorAPI;
+use App\Controladores\ControladorAPIUsuario;
 use App\Router\Router;
 use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
@@ -29,9 +29,9 @@ $router->post("/login", ControladorLogin::class."@sacarLogin");
 $router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");
 $router->get("/verperfil",ControladorLogin::class."@verPerfil");
 $router->post("/verperfil", ControladorLogin::class."@guardarFoto");
-$router->get("/api/categorias", ControladorAPI::class."@darCategorias");
-$router->get("/api/servicios/{id}",ControladorAPI::class."@darServicios");
-$router->post("/api/registrar",ControladorAPI::class."@registrar");
+$router->get("/api/categorias", ControladorAPIUsuario::class."@darCategorias");
+$router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios");
+$router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 
