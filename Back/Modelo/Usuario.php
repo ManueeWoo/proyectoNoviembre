@@ -14,6 +14,7 @@ class Usuario
         private string $rol,
         private string $email,
         private string $contrasenia,
+        private ?string $pdf = null,
         private ?string $foto = null,
         private ?int $id = null
     ) {
@@ -127,6 +128,16 @@ class Usuario
     public function getFoto(): ?string
     {
         return $this->foto;
+    }
+
+    public function setPdf(string $pdf): void
+    {
+        $this->pdf = $pdf;
+    }
+
+    public function getPdf(): ?string
+    {
+        return $this->pdf;
     }
 
     public function __tostring()

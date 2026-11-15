@@ -30,6 +30,10 @@
         <label>Repetir contraseña</label>
         <input type="password" name="passwd2" required>
     </div>
+    <div class="grupo">
+         <input type="file" name="pdf" accept="application/pdf">
+    </div>
+   
 
     <table class="tablaServicios">
         <thead>

@@ -30,28 +30,31 @@ form["guardar"].onclick = function (event) {
         })
         .catch(err => mostrarErrores({ general: "No se pudo completar el registro. Inténtalo de nuevo." }));
 };
-
+//probar
 async function registrarUsuario() {
-    let servicios = [];
-        for (let i = 0; i < form["serviciosSelec"].options.length; i++) {
-            servicios.push(form["serviciosSelec"].options[i].value);
-        }
-    let datos = {
-        nombre: form["nombre"].value,
-        ape1: form["ape1"].value,
-        ape2: form["ape2"].value,
-        email: form["email"].value,
-        telefono: form["telefono"].value,
-        passwd1: form["passwd1"].value,
-        passwd2: form["passwd2"].value,
-        servicios: servicios
-    };
-    let peticion = await fetch("/api/registrar", {
+    const datos = new FormData();
+    datos.append("nombre", form["nombre"].value);
+    datos.append("ape1", form["ape1"].value);
+    datos.append("ape2", form["ape2"].value);
+    datos.append("email", form["email"].value);
+    datos.append("telefono", form["telefono"].value);
+    datos.append("passwd1", form["passwd1"].value);
+    datos.append("passwd2", form["passwd2"].value);
+
+    for (let i = 0; i < form["serviciosSelec"].options.length; i++) {
+        datos.append("servicios[]", form["serviciosSelec"].options[i].value);
+    }
+
+    const archivo = form["pdf"].files[0];
+    if (archivo) {
+        datos.append("pdf", archivo);
+    }
+
+    const peticion = await fetch("/api/registrar", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(datos)
+        body: datos    
     });
-    let texto = await peticion.text();
+    const texto = await peticion.text();
     return texto ? JSON.parse(texto) : null;
 }
 

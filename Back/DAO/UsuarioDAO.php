@@ -46,6 +46,12 @@ private PDO $pdo;
         return $pStatment->execute([":foto" => $foto, ":id" => $id]);
     }
 
+    public function actualizarPdf(int $id, ?string $pdf): bool{
+        $sentencia = "UPDATE usuario SET pdf = :pdf WHERE id = :id";
+        $pStatment = $this->pdo->prepare($sentencia);
+        return $pStatment->execute([":pdf" => $pdf, ":id" => $id]);
+    }
+
 
     //QUERY
 

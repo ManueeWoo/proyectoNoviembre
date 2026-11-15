@@ -32,21 +32,21 @@ class ControladorAPI{
     }
 
     public function registrar(){
-          $statusCode = 200;
-        $datos = json_decode(file_get_contents("php://input"), true);
+        $statusCode = 200;
         $errores = [];
         $usuario = Sesion::dameLaSesion("user");
 
         if ($usuario !== null) {
             $errores['existe'] = 'Ya estas registrado';
         } else {
-            $nombre   = trim($datos['nombre'] ?? '');
-            $ape1     = trim($datos['ape1'] ?? '');
-            $ape2     = trim($datos['ape2'] ?? '');
-            $email    = trim($datos['email'] ?? '');
-            $telefono = trim($datos['telefono'] ?? '');
-            $passwd1  = trim($datos['passwd1'] ?? '');
-            $passwd2  = trim($datos['passwd2'] ?? '');
+            $nombre   = trim($_POST['nombre'] ?? '');
+            $ape1     = trim($_POST['ape1'] ?? '');
+            $ape2     = trim($_POST['ape2'] ?? '');
+            $email    = trim($_POST['email'] ?? '');
+            $telefono = trim($_POST['telefono'] ?? '');
+            $passwd1  = trim($_POST['passwd1'] ?? '');
+            $passwd2  = trim($_POST['passwd2'] ?? '');
+            $servicios = $_POST['servicios'] ?? [];
 
             if ($nombre === '') {
                 $errores['nombre'] = 'El nombre es obligatorio.';
@@ -72,6 +72,17 @@ class ControladorAPI{
                 }
             }
 
+            $pdfSubido = isset($_FILES['pdf']) && $_FILES['pdf']['error'] !== UPLOAD_ERR_NO_FILE;
+                if ($pdfSubido) {
+                    if ($_FILES['pdf']['error'] !== UPLOAD_ERR_OK) {
+                        $errores['pdf'] = 'Error al subir el PDF.';
+                    } elseif (mime_content_type($_FILES['pdf']['tmp_name']) !== 'application/pdf') {
+                        $errores['pdf'] = 'El archivo debe ser un PDF.';
+                    } elseif ($_FILES['pdf']['size'] > 2 * 1024 * 1024) {
+                        $errores['pdf'] = 'El PDF no puede superar 2 MB.';
+                    }
+                }
+
             if (empty($errores)) {
                 $usuario = new Usuario(
                     $nombre,
@@ -89,12 +100,21 @@ class ControladorAPI{
                 if ($usuario == null) {
                     $errores['general'] = 'No se pudo crear el usuario.';
                 }else {
-                    foreach ($datos['servicios'] ?? [] as $idServicio) {
+                    foreach ($servicios as $idServicio) {
                         $s = (new ServicioDAO())->findById((int)$idServicio);
                         if ($s !== null) {
                             (new AccesoServicioDAO())->insertarAcceso(new AccesoServicio($usuario, $s));
                         }
                     }
+                    if ($pdfSubido) {
+                    $nombrePdf = 'pdf_' . $usuario->getId() . '.pdf';
+                    $destino = __DIR__ . '/../Public/upload/pdf/' . $nombrePdf;
+                    if (move_uploaded_file($_FILES['pdf']['tmp_name'], $destino)) {
+                        (new UsuarioDAO())->actualizarPdf($usuario->getId(), $nombrePdf);
+                    } else {
+                        $errores['pdf'] = 'No se pudo guardar el PDF.';
+                    }
+                }
                 }
                 
             }
