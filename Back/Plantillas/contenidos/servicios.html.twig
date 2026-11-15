@@ -1,0 +1,32 @@
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/servicios.css">
+{% endblock %}
+
+{% block content %}
+<section class="servicios">
+  {% if servicios is empty %}
+    <p class="servicios__vacio">Todavía no hay servicios publicados.</p>
+  {% else %}
+    <div class="servicios__grid">
+      {% for servicio in servicios %}
+        <a class="tarjeta" href="/servicio/{{ servicio.id }}">
+          <div class="tarjeta__img">
+            <span class="tarjeta__cat">{{ servicio.categoria.titulo }}</span>
+          </div>
+          <div class="tarjeta__cuerpo">
+            <h2 class="tarjeta__titulo">{{ servicio.titulo }}</h2>
+            <p class="tarjeta__desc">{{ servicio.descripcion }}</p>
+            <div class="tarjeta__pie">
+              <span>{{ servicio.numOfertas|default(0) }} ofertas</span>
+              <span class="tarjeta__ver">Ver ofertas</span>
+            </div>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

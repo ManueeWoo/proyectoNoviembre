@@ -1,0 +1,57 @@
+
+.servicios__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  padding: 20px;
+  max-width: 1200px;
+}
+
+.tarjeta {
+  display: block;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+}
+
+.tarjeta:hover {
+  border-color: #999;
+}
+
+.tarjeta__img {
+  height: 120px;
+  background: #eee;
+}
+
+.tarjeta__cat {
+  display: inline-block;
+  margin: 8px;
+  padding: 2px 8px;
+  background: #dde8ff;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.tarjeta__cuerpo {
+  padding: 10px;
+}
+
+.tarjeta__titulo {
+  margin: 0 0 6px;
+  font-size: 16px;
+}
+
+.tarjeta__desc {
+  margin: 0 0 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.tarjeta__pie {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #555;
+}
