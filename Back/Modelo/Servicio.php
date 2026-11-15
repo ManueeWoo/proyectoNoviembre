@@ -6,7 +6,7 @@ class Servicio
     public function __construct(
         private Categoria $cat,
         private string $titulo,
-        private string $decripcion,
+        private string $descripcion,
         private ?int $id = null
     ) {
     }
@@ -40,13 +40,13 @@ class Servicio
         $this->titulo = $titulo;
     }
 
-    public function getDecripcion(): string
+    public function getDescripcion(): string
     {
-        return $this->decripcion;
+        return $this->descripcion;
     }
 
-    public function setDecripcion(string $decripcion): void
+    public function setDescripcion(string $decripcion): void
     {
-        $this->decripcion = $decripcion;
+        $this->descripcion = $decripcion;
     }
 }

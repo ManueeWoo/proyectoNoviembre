@@ -14,7 +14,7 @@ class ServicioDAO{
     public function insertarServicio(Servicio $s):bool{
         $sentencia = "INSERT INTO servicios (id_cat, titulo, descripcion) VALUES (:id_cat, :titulo, :descripcion)";
         $pStatment = $this->pdo->prepare($sentencia);
-        $esCorrecto = $pStatment->execute([":id_cat"=>$s->getCat()->getId(), ":titulo"=>$s->getTitulo(), ":descripcion"=>$s->getDecripcion()]);
+        $esCorrecto = $pStatment->execute([":id_cat"=>$s->getCat()->getId(), ":titulo"=>$s->getTitulo(), ":descripcion"=>$s->getDescripcion()]);
         if($esCorrecto){
             $s->setId($this->pdo->lastInsertId());
         }
@@ -24,7 +24,7 @@ class ServicioDAO{
     public function actualizarServicio(Servicio $s, int $id):bool{
         $sentencia = "UPDATE servicios SET id_cat = :id_cat, titulo = :titulo, descripcion = :descripcion WHERE id = :id";
         $pStatment = $this->pdo->prepare($sentencia);
-        return $pStatment->execute([":id_cat"=>$s->getCat()->getId(), ":titulo"=>$s->getTitulo(), ":descripcion"=>$s->getDecripcion(), ":id"=>$id]);
+        return $pStatment->execute([":id_cat"=>$s->getCat()->getId(), ":titulo"=>$s->getTitulo(), ":descripcion"=>$s->getDescripcion(), ":id"=>$id]);
     }
 
     public function eliminarServicio(Servicio $s):bool{
