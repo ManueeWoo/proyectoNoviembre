@@ -2,7 +2,6 @@
 namespace App\Modelo;
 use App\Modelo\Servicio;
 use App\Modelo\Usuario;
-use DateTime;
 
 class Oferta
 {

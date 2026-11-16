@@ -102,6 +102,19 @@ private PDO $pdo;
     }
 
     public function filaToUser(array $datos): Usuario{
-        return new Usuario($datos['nombre'], $datos['ap1'], $datos['ap2'], $datos['alta'],  $datos['tel'],$datos['saldo'], $datos['rol'], $datos['email'], $datos['contrasenia'],$datos['foto'], $datos['id']); //asocio la fila al array de Prod
+        return new Usuario(
+            nombre: $datos['nombre'],
+            ap1: $datos['ap1'],
+            ap2: $datos['ap2'],
+            alta: $datos['alta'],
+            telefono: $datos['tel'],
+            saldo: $datos['saldo'],
+            rol: $datos['rol'],
+            email: $datos['email'],
+            contrasenia: $datos['contrasenia'],
+            pdf: $datos['pdf'] ?? null,
+            foto: $datos['foto'] ?? null,
+            id: (int)$datos['id']
+        );
     }
 }

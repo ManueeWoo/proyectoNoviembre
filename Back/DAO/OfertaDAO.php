@@ -76,7 +76,26 @@ class OfertaDAO{
         return $this->filaToOferta($valores);
     }
 
+    public function findByCountServicio(int $id): int{
+        $resultado = $this->pdo->prepare("SELECT count(*) from oferta where id_servicio = :id");
+        $resultado->execute([":id" => $id]);
+        return $resultado->fetchColumn();
+    }
+
+
+    public function findByIdServicio(int $id): array{
+        $resultado = $this->pdo->prepare("SELECT id_servicio, id_user, puntos, descripcion, tiempo_estimado, activo, id FROM oferta WHERE id_servicio = :id");
+        $ofertas = [];
+        $resultado->execute([":id"=>$id]);
+        foreach($resultado->fetchAll() as $fila){
+            $ofertas[] = $this->filaToOferta($fila);
+        }
+        return $ofertas;
+    }
+
     public function filaToOferta(array $datos): Oferta{
-        return new Oferta($datos['id_servicio'], $datos['id_user'], $datos['puntos'], $datos['descripcion'], $datos['tiempo_estimado'], $datos['activo'], $datos['id']);
+        $servicio = ((new ServicioDAO())->findById($datos['id_servicio']));
+        $user = ((new UsuarioDAO())->findById($datos['id_user']));
+        return new Oferta($servicio, $user, $datos['puntos'], $datos['descripcion'], $datos['tiempo_estimado'], $datos['activo'], $datos['id']);
     }
 }

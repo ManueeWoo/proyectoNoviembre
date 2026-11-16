@@ -9,6 +9,7 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use App\Controladores\Controlador;
 use App\Controladores\ControladorLogin;
+use App\Controladores\ControladorOfertas;
 use  App\Helpers\Login;
 use  App\Helpers\Sesion;
 
@@ -34,6 +35,7 @@ $router->get("/api/categorias", ControladorAPIUsuario::class."@darCategorias");
 $router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios");
 $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->get("/servicios",ControladorServicios::class."@sacarServicios");
+$router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

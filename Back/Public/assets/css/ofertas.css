@@ -1,0 +1,92 @@
+.ofertas {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.ofertas__volver {
+  font-size: 14px;
+  color: #555;
+  text-decoration: none;
+}
+
+.ofertas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.oferta {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.oferta--inactiva {
+  opacity: 0.6;
+}
+
+.oferta__usuario {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.oferta__avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #dde8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.oferta__estado {
+  margin-left: auto;
+  font-size: 12px;
+  background: #eee;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.oferta__desc {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.oferta__datos {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+.oferta__etiqueta {
+  display: block;
+  font-size: 12px;
+  color: #777;
+}
+
+.oferta__valor {
+  font-weight: bold;
+}
+
+.oferta__boton {
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.oferta__boton:hover {
+  border-color: #999;
+}

@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/ofertas.css">
+{% endblock %}
+
+{% block content %}
+<section class="ofertas">
+  <a class="ofertas__volver" href="/servicios">← Volver a servicios</a>
+  <h1 class="ofertas__titulo">{{ servicio.titulo }}</h1>
+  <p class="ofertas__total">{{ ofertas|length }} ofertas</p>
+
+  {% if ofertas is empty %}
+    <p class="ofertas__vacio">Aún nadie ofrece este servicio.</p>
+  {% else %}
+    <div class="ofertas__grid">
+      {% for oferta in ofertas %}
+        <article class="oferta {{ oferta.activo ? '' : 'oferta--inactiva' }}">
+
+          <div class="oferta__usuario">
+             <img class="oferta__avatar"
+       src="/upload/{{ oferta.usuario.foto ? oferta.usuario.foto : 'logo.png' }}"
+       alt="Foto de {{ oferta.usuario.nombre }}">
+            <span class="oferta__nombre">{{ oferta.usuario.nombre }}</span>
+            {% if not oferta.activo %}
+              <span class="oferta__estado">No disponible</span>
+            {% endif %}
+          </div>
+
+          <p class="oferta__desc">{{ oferta.descripcion }}</p>
+
+          <div class="oferta__datos">
+            <div>
+              <span class="oferta__etiqueta">Puntos</span>
+              <span class="oferta__valor">{{ oferta.puntos }}</span>
+            </div>
+            <div>
+              <span class="oferta__etiqueta">Tiempo estimado</span>
+              <span class="oferta__valor">{{ oferta.tiempoEstimado }}</span>
+            </div>
+          </div>
+
+          <a class="oferta__boton" href="/oferta/{{ oferta.id }}">Ver oferta</a>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

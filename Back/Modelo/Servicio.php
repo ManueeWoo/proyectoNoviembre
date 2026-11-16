@@ -7,7 +7,8 @@ class Servicio
         private Categoria $cat,
         private string $titulo,
         private string $descripcion,
-        private ?int $id = null
+        private ?int $id = null,
+        private ?int $ofertas = null
     ) {
     }
     public function getId(): ?int
@@ -48,5 +49,15 @@ class Servicio
     public function setDescripcion(string $decripcion): void
     {
         $this->descripcion = $decripcion;
+    }
+
+     public function getOfertas(): ?int
+    {
+        return $this->ofertas;
+    }
+
+    public function setOfertas(int $ofertas): void
+    {
+        $this->ofertas = $ofertas;
     }
 }
