@@ -1,86 +1,73 @@
 <?php
 namespace App\Controladores;
-use App\DAO\AccesoServicioDAO;
+
+use App\DAO\CandidatosDAO;
 use App\DAO\CategoriaDAO;
 use App\DAO\ServicioDAO;
 use App\DAO\UsuarioDAO;
 use App\Helpers\Respondedor;
 use App\Helpers\Sesion;
-use App\Modelo\AccesoServicio;
 use App\Modelo\Usuario;
 use App\Services\ConfigMail;
 use App\Services\MailService;
 use App\Services\PdfService;
-use PDO;
-use App\DAO\ConexionDB;
-
 use DateTime;
-class ControladorAPIUsuario{
-    private PDO $pdo;
-    public function __construct(){
-    $this->pdo = ConexionDB::getConnection();
-    }
+
+class ControladorAPIUsuario {
 
     public function darCategorias() {
-        $repo = new CategoriaDAO();
-        $categorias = $repo->findAll();
-
+        $categorias = (new CategoriaDAO())->findAll();
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($categorias);
     }
 
     public function darServicios(int $id) {
-        $repo = new ServicioDAO();
-        $servicios = $repo->findByIdCat($id);
-
+        $servicios = (new ServicioDAO())->findByIdCat($id);
         header('Content-Type: application/json; charset=utf-8');
         echo json_encode($servicios);
     }
 
-    public function registrar(){
-        try {
-            $this->pdo->beginTransaction();
-             $statusCode = 200;
+    public function registrar() {
+        $statusCode = 200;
         $errores = [];
-        $usuario = Sesion::dameLaSesion("user");
+        $candidato = null;
 
-        if ($usuario !== null) {
-            $errores['existe'] = 'Ya estas registrado';
-        } else {
-            $nombre   = trim($_POST['nombre'] ?? '');
-            $ape1     = trim($_POST['ape1'] ?? '');
-            $ape2     = trim($_POST['ape2'] ?? '');
-            $email    = trim($_POST['email'] ?? '');
-            $telefono = trim($_POST['telefono'] ?? '');
-            $passwd1  = trim($_POST['passwd1'] ?? '');
-            $passwd2  = trim($_POST['passwd2'] ?? '');
-            $servicios = $_POST['servicios'] ?? [];
+        try {
+            if (Sesion::dameLaSesion("user") !== null) {
+                $errores['existe'] = 'Ya estas registrado';
+            } else {
+                $nombre    = trim($_POST['nombre'] ?? '');
+                $ape1      = trim($_POST['ape1'] ?? '');
+                $ape2      = trim($_POST['ape2'] ?? '');
+                $email     = trim($_POST['email'] ?? '');
+                $telefono  = trim($_POST['telefono'] ?? '');
+                $passwd1   = trim($_POST['passwd1'] ?? '');
+                $passwd2   = trim($_POST['passwd2'] ?? '');
+                $servicios = (array)($_POST['servicios'] ?? []);
 
-            if ($nombre === '') {
-                $errores['nombre'] = 'El nombre es obligatorio.';
-            }
-            if ($ape1 === '') {
-                $errores['ape1'] = 'El primer apellido es obligatorio.';
-            }
-            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errores['email'] = 'El email no es válido.';
-            }
-            if (!preg_match('/^[0-9+ ]{9,15}$/', $telefono)) {
-                $errores['telefono'] = 'El teléfono no es válido.';
-            }
-
-            if (($passwd1 !== $passwd2) || ($passwd1 === '')) {
-                $errores['passwd1'] = 'Las contraseñas no coinciden o están vacías';
-            }
-
-
-            if (empty($errores)) {
-                if (((new UsuarioDAO())->findByEmail($email)) !== null) {
-                    $errores['email'] = 'Ya existe un usuario con ese email.';
+                if ($nombre === '') {
+                    $errores['nombre'] = 'El nombre es obligatorio.';
                 }
-            }
+                if ($ape1 === '') {
+                    $errores['ape1'] = 'El primer apellido es obligatorio.';
+                }
+                if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    $errores['email'] = 'El email no es válido.';
+                }
+                if (!preg_match('/^[0-9+ ]{9,15}$/', $telefono)) {
+                    $errores['telefono'] = 'El teléfono no es válido.';
+                }
+                if ($passwd1 !== $passwd2 || $passwd1 === '') {
+                    $errores['passwd1'] = 'Las contraseñas no coinciden o están vacías';
+                }
+                if (empty($errores)) {
+                    if ((new UsuarioDAO())->findByEmail($email) !== null
+                        || (new CandidatosDAO())->findByEmail($email) !== null) {
+                        $errores['email'] = 'Ya existe un registro con ese email.';
+                    }
+                }
 
-            $pdfSubido = isset($_FILES['pdf']) && $_FILES['pdf']['error'] !== UPLOAD_ERR_NO_FILE;
+                $pdfSubido = isset($_FILES['pdf']) && $_FILES['pdf']['error'] !== UPLOAD_ERR_NO_FILE;
                 if ($pdfSubido) {
                     if ($_FILES['pdf']['error'] !== UPLOAD_ERR_OK) {
                         $errores['pdf'] = 'Error al subir el PDF.';
@@ -91,57 +78,48 @@ class ControladorAPIUsuario{
                     }
                 }
 
-            if (empty($errores)) {
-                $usuario = new Usuario(
-                    $nombre,
-                    $ape1,
-                    $ape2,
-                    (new DateTime())->format('Y-m-d'),
-                    $telefono,
-                    150,
-                    "usuario",
-                    $email,
-                    $passwd1,         
-                );
-
-                $usuario = ((new UsuarioDAO())->insertarUser($usuario));
-                if ($usuario == null) {
-                    $errores['general'] = 'No se pudo crear el usuario.';
-                }else {
+                if (empty($errores)) {
+                    $idsServicios = [];
                     foreach ($servicios as $idServicio) {
-                        $s = (new ServicioDAO())->findById((int)$idServicio);
-                        if ($s !== null) {
-                            (new AccesoServicioDAO())->insertarAcceso(new AccesoServicio($usuario, $s));
+                        $idS = (int)$idServicio;
+                        if ((new ServicioDAO())->findById($idS) !== null) {
+                            $idsServicios[$idS] = $idS;
                         }
                     }
-                    if ($pdfSubido) {
-                    $nombrePdf = 'pdf_' . $usuario->getId() . '.pdf';
-                    $destino = __DIR__ . '/../Public/upload/pdf/' . $nombrePdf;
-                    if (move_uploaded_file($_FILES['pdf']['tmp_name'], $destino)) {
-                        (new UsuarioDAO())->actualizarPdf($usuario->getId(), $nombrePdf);
-                    } else {
-                        $errores['pdf'] = 'No se pudo guardar el PDF.';
+
+                    $candidato = new Usuario(
+                        $nombre, $ape1, $ape2,
+                        (new DateTime())->format('Y-m-d'),
+                        $telefono, 150, "usuario", $email,
+                        $passwd1,
+                        $pdfSubido
+                    );
+
+                    $dao = new CandidatosDAO();
+                    $idCandidato = $dao->registrar($candidato, array_values($idsServicios));
+
+                    if ($idCandidato === false) {
+                        $errores['general'] = 'No se pudo completar el registro.';
+                    } elseif ($pdfSubido) {
+                        $carpeta = __DIR__ . '/../Public/upload/pdf/';
+                        if (!move_uploaded_file($_FILES['pdf']['tmp_name'], $carpeta . $pdfSubido)) {
+                            $dao->eliminarUserId($idCandidato); 
+                            $errores['pdf'] = 'No se pudo guardar el PDF.';
+                        }
                     }
                 }
-                }
-                
             }
-        }
-        if (!empty($errores)) {
-            $statusCode = 400; 
-        }else{
-            $pdfService = new PdfService();
-            $configMail = new ConfigMail();
-            $mailService = new MailService($pdfService,$configMail->getConfig());
-            $mailService->sendPendingRegistrationEmail($usuario);
-        }
-        $this->pdo->commit();
+            if (empty($errores) && $candidato !== null) {
+                    $mailService = new MailService(new PdfService(), (new ConfigMail())->getConfig());
+                    $mailService->sendPendingRegistrationEmail($candidato);
+            }
         } catch (\Throwable $e) {
-            if($this->pdo->inTransaction()){
-                $this->pdo->rollBack();
-            }
-        }finally{
-            Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
+            $errores['general'] = 'No se pudo completar el registro. Inténtalo de nuevo.';
         }
+
+        if (!empty($errores)) {
+            $statusCode = 400;
+        }
+        Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
     }
 }

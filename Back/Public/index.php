@@ -10,6 +10,7 @@ use Twig\Environment;
 use App\Controladores\Controlador;
 use App\Controladores\ControladorLogin;
 use App\Controladores\ControladorOfertas;
+use App\Controladores\ControladorAdmin;
 use  App\Helpers\Login;
 use  App\Helpers\Sesion;
 
@@ -37,6 +38,8 @@ $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->get("/servicios",ControladorServicios::class."@sacarServicios");
 $router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio");
 $router->get("/oferta/{id}",ControladorOfertas::class."@verOferta");
+$router->get("/adminUsers",ControladorAdmin::class."@sacarPanelUsers");
+$router->post("/adminUsers/borrar/{id}",ControladorAdmin::class."@borrarUsuario");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

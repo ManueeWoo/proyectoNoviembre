@@ -1,0 +1,167 @@
+.admin {
+  --borde: #e5e7eb;
+  --texto: #111827;
+  --suave: #6b7280;
+  --oscuro: #1f2937;
+  --acento: #d6004c;
+  --ok: #15803d;
+  --ok-bg: #dcfce7;
+  --peligro: #b42318;
+  --peligro-bg: #fee4e2;
+
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 56px;
+  color: var(--texto);
+}
+
+.admin__titulo {
+  margin: 0 0 24px;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* Aviso de acción realizada */
+.admin__aviso {
+  margin: 0 0 20px;
+  padding: 12px 16px;
+  background: var(--ok-bg);
+  border-left: 4px solid var(--ok);
+  border-radius: 8px;
+  color: var(--ok);
+  font-size: 14px;
+}
+
+/* Tarjetas */
+.admin__bloque {
+  margin-bottom: 28px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.admin__bloque h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  font-size: 18px;
+}
+
+.admin__contador {
+  padding: 2px 10px;
+  background: var(--oscuro);
+  color: #fff;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.admin__vacio {
+  margin: 0;
+  padding: 20px 0;
+  color: var(--suave);
+  font-size: 14px;
+  text-align: center;
+}
+
+.admin__tabla-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+}
+
+.admin__tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin__tabla th {
+  padding: 12px 14px;
+  background: #f9fafb;
+  border-bottom: 1px solid var(--borde);
+  color: var(--suave);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.admin__tabla td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f0f1f4;
+  vertical-align: middle;
+}
+
+.admin__tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.admin__tabla tbody tr:hover {
+  background: #fafbff;
+}
+
+.admin__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.admin__acciones form {
+  margin: 0;
+}
+
+.btn {
+  display: inline-block;
+  padding: 7px 14px;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  color: var(--texto);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #f3f4f6;
+  border-color: #cfd3da;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.btn--ok {
+  background: var(--ok-bg);
+  border-color: #bbf0cc;
+  color: var(--ok);
+}
+
+.btn--ok:hover {
+  background: #c5f2d4;
+  border-color: #9fe5b6;
+}
+
+.btn--peligro {
+  background: var(--peligro-bg);
+  border-color: #fbc9c5;
+  color: var(--peligro);
+}
+
+.btn--peligro:hover {
+  background: #fcd2cf;
+  border-color: #f7aea8;
+}
