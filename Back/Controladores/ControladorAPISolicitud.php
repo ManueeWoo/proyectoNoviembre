@@ -1,16 +1,21 @@
 <?php
 namespace App\Controladores;
-
-use App\DAO\UsuarioDAO;
-use App\Helpers\Sesion;
-use Twig\Environment;
-use App\Modelo\Usuario;
-use App\Helpers\Login;
-class ControladorLogin{
-    private Environment $twig;
-    public function __construct(Environment $twig){
-        $this->twig= $twig;
+use PDO;
+USE App\DAO\ConexionDB;
+class ControladorAPISolicitud{
+    private PDO $pdo;
+    public function __construct(){
+        $this->pdo = ConexionDB::getConnection();
     }
 
+    public function hacerSolicitud(){
+        try {
+            $this->pdo->beginTransaction();
+        } catch (\Throwable $e) {
+            if($this->pdo->inTransaction()){
+                $this->pdo->rollBack();
+            }
+        }
+    }
  
 }

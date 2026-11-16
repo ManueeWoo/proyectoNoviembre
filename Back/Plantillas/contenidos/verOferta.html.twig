@@ -1,8 +1,12 @@
 {% extends 'layout.html.twig' %}
-
+{%block js%}
+<script src="/assets/js/solicitud/LogicaSolicitud.js" defer></script>
+<script src="/assets/js/registro/modal.js" defer></script>
+{% endblock %}
 {% block estilo %}
   {{ parent() }}
   <link rel="stylesheet" href="/assets/css/verOferta.css">
+  <link rel="stylesheet" href="/assets/css/modal.css">
 {% endblock %}
 
 {% block content %}
@@ -50,7 +54,7 @@
           </div>
         </div>
 
-        <a class="boton boton--principal" href="/mensaje/{{ oferta.usuario.id }}">Solicitar</a>
+        <a id="solicitar" class="boton boton--principal" href="">Solicitar</a>
         <a class="boton" href="/ofertas/usuario/{{ oferta.usuario.id }}">Ver sus ofertas</a>
       </div>
     </aside>
