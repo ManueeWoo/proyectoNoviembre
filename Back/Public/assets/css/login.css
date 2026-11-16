@@ -54,3 +54,16 @@
   border-radius: 6px;
   font-weight: 600;
 }
+
+.errores {
+    background: #fdecea;
+    border: 1px solid #f5c2c0;
+    color: #b42318;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+}
+.errores ul {
+    margin: 0;
+    padding-left: 18px;
+}

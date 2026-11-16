@@ -11,11 +11,13 @@
 {% endblock %}
 {% block content %}
 {% if errores is not empty %}
+<div class="errores">
     <ul>
         {% for error in errores %}
             <li>{{ error }}</li>
         {% endfor %}
     </ul>
+</div>
 {% endif %}
 <div class="login">
   <form class="loginForm" action="" method="post">
