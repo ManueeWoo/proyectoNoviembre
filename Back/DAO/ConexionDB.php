@@ -18,7 +18,8 @@ class ConexionDB{
         $this->db=getenv('DB_NAME');
         try {
             $dsn = "mysql:host=$this->host;dbname=$this->db;charset=utf8mb4"; 
-            $this->pdo= new PDO($dsn, $this->user, $this->pass);
+            $this->pdo= new PDO($dsn, $this->user, $this->pass,[ PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+]);
         } catch (PDOException $e) {
             throw new RuntimeException("Error de conexion: " . $e->getMessage());
         }

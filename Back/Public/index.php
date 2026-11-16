@@ -36,6 +36,7 @@ $router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios")
 $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->get("/servicios",ControladorServicios::class."@sacarServicios");
 $router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio");
+$router->get("/oferta/{id}",ControladorOfertas::class."@verOferta");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

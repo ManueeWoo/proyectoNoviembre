@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/verOferta.css">
+{% endblock %}
+
+{% block content %}
+<section class="detalle">
+
+  <nav class="detalle__migas">
+    <a href="/">Inicio</a> ›
+    <a href="/servicios">Servicios</a> ›
+    <a href="/servicio/{{ oferta.servicio.id }}">{{ oferta.servicio.titulo }}</a>
+  </nav>
+
+  <div class="detalle__cols">
+
+    <article class="detalle__principal">
+      <h1 class="detalle__titulo">Ofrezco {{ oferta.servicio.titulo }}</h1>
+
+      <p class="detalle__estado {{ oferta.activo ? 'detalle__estado--ok' : 'detalle__estado--no' }}">
+        {{ oferta.activo ? 'Disponible' : 'No disponible' }}
+      </p>
+
+      <div class="detalle__datos">
+        <div>
+          <span>Puntos</span>
+          <strong>{{ oferta.puntos }}</strong>
+        </div>
+        <div>
+          <span>Tiempo estimado</span>
+          <strong>{{ oferta.tiempoEstimado }} min</strong>
+        </div>
+      </div>
+
+      <h2 class="detalle__subtitulo">Descripción</h2>
+      <p class="detalle__desc">{{ oferta.descripcion }}</p>
+    </article>
+
+    <aside class="detalle__lateral">
+      <div class="usuario">
+        <div class="usuario__cabecera">
+          <img class="usuario__foto"
+               src="/upload/{{ oferta.usuario.foto ? oferta.usuario.foto : 'logo.png' }}"
+               alt="Foto de {{ oferta.usuario.nombre }}">
+          <div>
+            <p class="usuario__nombre">{{ oferta.usuario.nombre }}</p>
+            <p class="usuario__alta">Miembro desde {{ oferta.usuario.alta|date('m/Y') }}</p>
+          </div>
+        </div>
+
+        <a class="boton boton--principal" href="/mensaje/{{ oferta.usuario.id }}">Solicitar</a>
+        <a class="boton" href="/ofertas/usuario/{{ oferta.usuario.id }}">Ver sus ofertas</a>
+      </div>
+    </aside>
+
+  </div>
+</section>
+{% endblock %}

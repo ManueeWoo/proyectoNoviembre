@@ -14,4 +14,9 @@ class ControladorOfertas{
         $ofertas = ((new OfertaDAO())->findByIdServicio($servicio->getId()));
         echo $this->twig->render("contenidos/oferta.html.twig", ["servicio"=>$servicio, "ofertas" => $ofertas]);
     }
+
+    public function verOferta(int $id){
+        $oferta = ((new OfertaDAO())->findById($id));
+         echo $this->twig->render("contenidos/verOferta.html.twig", ["oferta" => $oferta]);
+    }
 }

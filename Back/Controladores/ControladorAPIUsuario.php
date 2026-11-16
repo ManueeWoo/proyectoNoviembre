@@ -11,11 +11,14 @@ use App\Modelo\Usuario;
 use App\Services\ConfigMail;
 use App\Services\MailService;
 use App\Services\PdfService;
+use PDO;
+use App\DAO\ConexionDB;
+
 use DateTime;
 class ControladorAPIUsuario{
-
+    private PDO $pdo;
     public function __construct(){
-
+    $this->pdo = ConexionDB::getConnection();
     }
 
     public function darCategorias() {
@@ -35,7 +38,9 @@ class ControladorAPIUsuario{
     }
 
     public function registrar(){
-        $statusCode = 200;
+        try {
+            $this->pdo->beginTransaction();
+             $statusCode = 200;
         $errores = [];
         $usuario = Sesion::dameLaSesion("user");
 
@@ -130,6 +135,13 @@ class ControladorAPIUsuario{
             $mailService = new MailService($pdfService,$configMail->getConfig());
             $mailService->sendPendingRegistrationEmail($usuario);
         }
-        Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
+        $this->pdo->commit();
+        } catch (\Throwable $e) {
+            if($this->pdo->inTransaction()){
+                $this->pdo->rollBack();
+            }
+        }finally{
+            Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
+        }
     }
 }

@@ -11,7 +11,7 @@ class MailService
     public function __construct(
         private PdfService $pdfService,
         private array $smtpConfig,
-        private string $baseUrl = 'https://truequeapp.com' //preguntar que pongo yo 
+        private string $baseUrl = 'https://localhost:80'  
     ) {}
 
     private function renderTemplate(string $templatePath, array $data): string
