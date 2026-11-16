@@ -25,4 +25,24 @@ class ControladorAdmin{
             header("Location: /adminUsers");
         }
     }
+
+    public function aceptarUser(int $id){
+        $user = Sesion::dameLaSesion("user");
+        if($user->getRol()!=="admin"){
+            header("Location: /login");
+        }else{
+            ((new CandidatosDAO())->aprobar($id));
+            header("Location: /adminUsers");
+        }
+    }
+
+    public function rechazarUser(int $id){
+        $user = Sesion::dameLaSesion("user");
+        if($user->getRol()!=="admin"){
+            header("Location: /login");
+        }else{
+            ((new CandidatosDAO())->eliminarUserId($id));
+            header("Location: /adminUsers");
+        }
+    }
 }

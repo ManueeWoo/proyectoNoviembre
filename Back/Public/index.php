@@ -40,6 +40,7 @@ $router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio
 $router->get("/oferta/{id}",ControladorOfertas::class."@verOferta");
 $router->get("/adminUsers",ControladorAdmin::class."@sacarPanelUsers");
 $router->post("/adminUsers/borrar/{id}",ControladorAdmin::class."@borrarUsuario");
+$router->post("/adminUsers/aceptarPendiente/{id}",ControladorAdmin::class."@aceptarUser");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 
