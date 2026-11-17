@@ -1,5 +1,6 @@
 <?php
 namespace App\Helpers;
+use App\DAO\CandidatosDAO;
 use App\Helpers\Sesion;
 use App\Modelo\Usuario;
 use App\DAO\UsuarioDAO;
@@ -21,13 +22,20 @@ class Login{
         return $existe;
     }
 //comprobar luego para el login
-    public static function validarUsuario(Usuario $intento): array{
+    public static function validarUsuario(Usuario $intento): array {
     $errores = [];
-    $repo = new UsuarioDAO();
-    $encontrado = $repo->findByEmailContra($intento);
-    if($encontrado === null){
-        $errores["nombreContra"] = "error los campos no coinciden con el user";
+    $encontrado = (new UsuarioDAO())->findByEmailContra($intento);
+
+    if ($encontrado === null) {
+        $candidato = (new CandidatosDAO())->findByEmail($intento->getEmail());
+
+        if ($candidato !== null && password_verify($intento->getContra(), $candidato->getContra())) {
+            $errores["pendiente"] = "Tu cuenta está pendiente de que el administrador la acepte.";
+        } else {
+            $errores["nombreContra"] = "Los campos no coinciden con ningún usuario.";
+        }
     }
+
     return ["errores" => $errores, "usuario" => $encontrado];
 }
 

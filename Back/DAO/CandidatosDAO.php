@@ -72,7 +72,7 @@ class CandidatosDAO {
             $idsServicios = $res->fetchAll(PDO::FETCH_COLUMN);
 
             $res = $this->pdo->prepare(
-                "INSERT INTO accesoServicio (usuario_id, servicio_id) VALUES (:u, :s)"
+                "INSERT INTO accesoServicio (id_user, id_servicio) VALUES (:u, :s)"
             );
             foreach ($idsServicios as $idServicio) {
                 $res->execute([":u" => $idUsuario, ":s" => (int)$idServicio]);
@@ -90,6 +90,7 @@ class CandidatosDAO {
             if ($this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
+              error_log("CandidatosDAO::aprobar: " . $e->getMessage());
         }
         return $aprobado;
     }

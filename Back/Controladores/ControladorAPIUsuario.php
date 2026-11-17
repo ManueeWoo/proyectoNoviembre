@@ -86,13 +86,14 @@ class ControladorAPIUsuario {
                             $idsServicios[$idS] = $idS;
                         }
                     }
+                    $nombrePdf = "pdf_". $email . ".pdf";
 
                     $candidato = new Usuario(
                         $nombre, $ape1, $ape2,
                         (new DateTime())->format('Y-m-d'),
                         $telefono, 150, "usuario", $email,
                         $passwd1,
-                        $pdfSubido
+                        $nombrePdf
                     );
 
                     $dao = new CandidatosDAO();
@@ -102,7 +103,7 @@ class ControladorAPIUsuario {
                         $errores['general'] = 'No se pudo completar el registro.';
                     } elseif ($pdfSubido) {
                         $carpeta = __DIR__ . '/../Public/upload/pdf/';
-                        if (!move_uploaded_file($_FILES['pdf']['tmp_name'], $carpeta . $pdfSubido)) {
+                        if (!move_uploaded_file($_FILES['pdf']['tmp_name'], $carpeta . $nombrePdf)) {
                             $dao->eliminarUserId($idCandidato); 
                             $errores['pdf'] = 'No se pudo guardar el PDF.';
                         }

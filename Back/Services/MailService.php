@@ -112,4 +112,32 @@ class MailService
             return false;
         }
     }
+
+     public function sendRegistrationRechazedEmail(Usuario $user): bool
+    {
+        try {
+            $body = $this->renderTemplate(__DIR__ . '/../Plantillas/emails/aceptacionRechazada.php', [
+                'user'      => $user,
+                'actionUrl' => $this->baseUrl . '/login'
+            ]);
+
+            $mail = $this->createMailer();
+            $mail->addAddress($user->getEmail(), $user->getNombre());
+            $mail->Subject = '¡Tu cuenta en Trueque O Trato ha sido rechazada!';
+
+            // Adjuntar imagen local embebida inline
+            $mail->addEmbeddedImage(
+                __DIR__ . '/../Public/upload/logo.png',
+                'badge_cid',
+                'verified-badge.png'
+            );
+
+            $mail->Body = $body;
+
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar email de confirmación de registro: " . $e->getMessage());
+            return false;
+        }
+    }
 }
