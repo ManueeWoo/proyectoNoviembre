@@ -87,7 +87,7 @@
                 <td>{{ p.alta|date('d/m/Y') }}</td>
                 <td>
                   {% if p.pdf %}
-                    <a href="/admin/usuarios/{{ p.id }}/pdf" target="_blank" rel="noopener">Ver PDF</a>
+                    <a href="/public/upload/pdf/{{ p.pdf }}" target="_blank" rel="noopener">Ver PDF</a>
                   {% else %}
                     <span class="admin__vacio">Sin PDF</span>
                   {% endif %}

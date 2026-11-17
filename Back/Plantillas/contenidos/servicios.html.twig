@@ -5,28 +5,55 @@
   <link rel="stylesheet" href="/assets/css/servicios.css">
 {% endblock %}
 
+{% block js %}
+  <script src="/assets/js/filtroCategorias/filtro.js" defer></script>
+{% endblock %}
+
 {% block content %}
 <section class="servicios">
-  {% if servicios is empty %}
-    <p class="servicios__vacio">Todavía no hay servicios publicados.</p>
-  {% else %}
-    <div class="servicios__grid">
-      {% for servicio in servicios %}
-        <a class="tarjeta" href="/servicio/{{ servicio.id }}">
-          <div class="tarjeta__img">
-            <span class="tarjeta__cat">{{ servicio.cat.titulo }}</span>
-          </div>
-          <div class="tarjeta__cuerpo">
-            <h2 class="tarjeta__titulo">{{ servicio.titulo }}</h2>
-            <p class="tarjeta__desc">{{ servicio.descripcion }}</p>
-            <div class="tarjeta__pie">
-              <span>{{ servicio.ofertas}} ofertas</span>
-              <span class="tarjeta__ver">Ver ofertas</span>
-            </div>
-          </div>
-        </a>
-      {% endfor %}
+  <div class="servicios__layout">
+
+    <div class="servicios__lista">
+      <p class="servicios__total"><span id="total">{{ servicios|length }}</span> servicios</p>
+
+      {% if servicios is empty %}
+        <p class="servicios__vacio">Todavía no hay servicios publicados.</p>
+      {% else %}
+        <div class="servicios__grid" id="grid">
+          {% for servicio in servicios %}
+            <a class="tarjeta" href="/servicio/{{ servicio.id }}"
+               data-categoria="{{ servicio.cat.id }}">
+              <div class="tarjeta__img">
+                <span class="tarjeta__cat">{{ servicio.cat.titulo }}</span>
+              </div>
+              <div class="tarjeta__cuerpo">
+                <h2 class="tarjeta__titulo">{{ servicio.titulo }}</h2>
+                <p class="tarjeta__desc">{{ servicio.descripcion }}</p>
+                <div class="tarjeta__pie">
+                  <span>{{ servicio.ofertas }} ofertas</span>
+                  <span class="tarjeta__ver">Ver ofertas</span>
+                </div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
+        <p class="servicios__vacio" id="sinResultados" hidden>
+          No hay servicios en las categorías seleccionadas.
+        </p>
+      {% endif %}
     </div>
-  {% endif %}
+
+    <aside class="filtros">
+      <h2 class="filtros__titulo">Categorías</h2>
+      {% for categoria in categorias %}
+        <label class="filtros__opcion">
+          <input type="checkbox" class="filtro-cat" value="{{ categoria.id }}">
+          {{ categoria.titulo }}
+        </label>
+      {% endfor %}
+      <button type="button" class="filtros__limpiar" id="limpiar">Limpiar filtros</button>
+    </aside>
+
+  </div>
 </section>
 {% endblock %}
