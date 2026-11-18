@@ -5,6 +5,7 @@ use App\DAO\CandidatosDAO;
 use App\DAO\CategoriaDAO;
 use App\DAO\ServicioDAO;
 use App\DAO\UsuarioDAO;
+use App\DAO\OfertaDAO;
 use App\Helpers\Respondedor;
 use App\Helpers\Sesion;
 use App\Modelo\Usuario;
@@ -27,11 +28,29 @@ class ControladorAPIUsuario {
         echo json_encode($servicios);
     }
 
-    public function darAllServicios() {
-        $servicios = (new ServicioDAO())->findAll();
-        header('Content-Type: application/json; charset=utf-8');
-        echo json_encode($servicios);
+    public function darTodosServicios() {
+    $servicios = (new ServicioDAO())->findAll();
+    $ofertaDAO = new OfertaDAO();
+    $datos = [];
+
+    foreach ($servicios as $servicio) {
+        $categoria = $servicio->getCat();
+
+        $datos[] = [
+            'id'          => $servicio->getId(),
+            'titulo'      => $servicio->getTitulo(),
+            'descripcion' => $servicio->getDescripcion(),
+            'categoria'   => [
+                'id'     => $categoria->getId(),
+                'titulo' => $categoria->getTitulo(),
+            ],
+            'numOfertas'  => $ofertaDAO->findByCountServicio($servicio->getId()),
+        ];
     }
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo json_encode($datos);
+}
 
     public function registrar() {
         $statusCode = 200;
