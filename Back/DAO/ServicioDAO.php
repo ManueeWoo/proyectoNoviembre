@@ -44,7 +44,10 @@ class ServicioDAO{
     public function findAll(): array{
         $resultado = $this->pdo->query("SELECT id_cat, titulo, descripcion, id FROM servicios");
         $servicios = [];
-        $servicios = $resultado->fetchAll(PDO::FETCH_ASSOC);
+        foreach($resultado->fetchAll(PDO::FETCH_ASSOC) as $fila){
+            $servicio = $this->filaToServicio($fila);
+            array_push($servicios, $servicio);
+        }
         
         return $servicios;
     }

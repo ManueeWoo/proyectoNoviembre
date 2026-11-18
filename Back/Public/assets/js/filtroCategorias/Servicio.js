@@ -11,7 +11,7 @@ let tarjetas = [];
 async function traer(url) {
     let respuesta = await fetch(url);
     if (!respuesta.ok) {
-        throw new error("Error " + respuesta.status + " en " + url);
+        throw new Error("Error " + respuesta.status + " en " + url);
     }
     return await respuesta.json();
 }
@@ -39,7 +39,7 @@ function pintarCategorias(categorias) {
         label.appendChild(input);
         let span = document.createElement("span");
         span.innerHTML = categorias[i].titulo;
-        label.appendChild(texto);
+        label.appendChild(span);
         listaCategorias.appendChild(label);
         checks.push(input);
     }
