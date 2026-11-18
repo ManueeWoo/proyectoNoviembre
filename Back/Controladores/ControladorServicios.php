@@ -11,15 +11,6 @@ class ControladorServicios{
         $this->twig= $twig;
     }
     public function sacarServicios() {
-    $servicios  = (new ServicioDAO())->findAll();
-    $categorias = (new CategoriaDAO())->findAll();
-
-    foreach ($servicios as $servicio) {
-        $servicio->setOfertas((new OfertaDAO())->findByCountServicio($servicio->getId()));
-    }
-    echo $this->twig->render("contenidos/servicios.html.twig", [
-        "servicios"  => $servicios,
-        "categorias" => $categorias,
-    ]);
+    echo $this->twig->render("contenidos/servicios.html.twig");
 }
 }

@@ -14,7 +14,8 @@ window.addEventListener("load", function () {
         let visibles = 0;
         for (let i = 0; i < tarjetas.length; i++) {
             const tarjeta = tarjetas[i];
-            const categoria = tarjeta.dataset.categoria;
+            const categoria = tarjeta.dataset.categoria; //a la hora de pasar informacion esta al ser un id no hay problema que se vea en el html, pero objetos gordos no
+            //ya que se verian en html
 
             if (marcadas.length === 0 || marcadas.includes(categoria)) {
                 tarjeta.classList.remove('oculto');

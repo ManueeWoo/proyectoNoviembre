@@ -36,6 +36,7 @@ $router->get("/api/categorias", ControladorAPIUsuario::class."@darCategorias");
 $router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios");
 $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->get("/servicios",ControladorServicios::class."@sacarServicios");
+$router->get("/api/servicios",ControladorAPIUsuario::class."@darAllServicios");
 $router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio");
 $router->get("/oferta/{id}",ControladorOfertas::class."@verOferta");
 $router->get("/adminUsers",ControladorAdmin::class."@sacarPanelUsers");

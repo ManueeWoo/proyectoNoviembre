@@ -27,6 +27,12 @@ class ControladorAPIUsuario {
         echo json_encode($servicios);
     }
 
+    public function darAllServicios() {
+        $servicios = (new ServicioDAO())->findAll();
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode($servicios);
+    }
+
     public function registrar() {
         $statusCode = 200;
         $errores = [];

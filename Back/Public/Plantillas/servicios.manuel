@@ -1,0 +1,18 @@
+<div class="servicios__layout">
+
+    <aside class="filtros">
+        <h2 class="filtros__titulo">Categorías</h2>
+        <div id="listaCategorias"></div>
+        <button type="button" class="filtros__limpiar" id="limpiar">Limpiar filtros</button>
+    </aside>
+
+    <div class="servicios__lista">
+        <p class="servicios__total"><span id="total">0</span> servicios</p>
+        <p class="servicios__vacio" id="estado">Cargando servicios...</p>
+        <div class="servicios__grid" id="grid"></div>
+        <p class="servicios__vacio oculto" id="sinResultados">
+            No hay servicios en las categorías seleccionadas.
+        </p>
+    </div>
+
+</div>
