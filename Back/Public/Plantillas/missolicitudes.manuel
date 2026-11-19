@@ -1,0 +1,26 @@
+<link rel="stylesheet" href="/assets/css/solicitudes.css">
+
+<section class="sol">
+    <h1 class="sol__titulo">Mis solicitudes</h1>
+    <p class="sol__sub">Gestiona las solicitudes que has recibido y las que has enviado.</p>
+
+    <div class="sol__rol">
+        <button type="button" class="sol__op activo" data-rol="recibidas">Recibidas</button>
+        <button type="button" class="sol__op" data-rol="enviadas">Enviadas</button>
+    </div>
+
+    <div class="sol__tabs">
+        <button type="button" class="sol__tab activo" data-grupo="pendientes">
+            Pendientes <span class="sol__n">0</span>
+        </button>
+        <button type="button" class="sol__tab" data-grupo="curso">
+            En curso <span class="sol__n">0</span>
+        </button>
+        <button type="button" class="sol__tab" data-grupo="cerradas">
+            Finalizadas <span class="sol__n">0</span>
+        </button>
+    </div>
+
+    <p class="sol__aviso" id="aviso">Cargando solicitudes...</p>
+    <div class="sol__lista" id="lista"></div>
+</section>

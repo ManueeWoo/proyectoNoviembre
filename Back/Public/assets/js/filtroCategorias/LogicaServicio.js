@@ -5,8 +5,6 @@ window.addEventListener("load", function () {
 
     a.addEventListener("click", async function(e) {
 
-        console.log("CLICK DETECTADO");
-
         e.preventDefault();
 
         try {

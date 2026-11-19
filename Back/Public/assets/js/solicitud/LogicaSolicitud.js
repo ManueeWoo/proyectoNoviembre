@@ -15,8 +15,7 @@ window.addEventListener("load", function () {
             });
 
             if (respuesta.status === 401) {
-                window.location.href = "/login";   // no hay sesión: al login
-                return;                             // y no sigue ejecutando
+                //preguntar como redirigir                            
             }
 
             const json = await respuesta.json();

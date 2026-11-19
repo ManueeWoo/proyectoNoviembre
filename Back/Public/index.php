@@ -46,6 +46,8 @@ $router->post("/adminUsers/borrar/{id}",ControladorAdmin::class."@borrarUsuario"
 $router->post("/adminUsers/aceptarPendiente/{id}",ControladorAdmin::class."@aceptarUser");
 $router->post("/adminUsers/rechazarPendiente/{id}",ControladorAdmin::class."@rechazarUser");
 $router->get("/misofertas",ControladorOfertas::class."@misOfertas");
+$router->get("/api/misSolicitudes", ControladorAPISolicitud::class."@misSolicitudes");
+$router->post("/api/solicitud/estado", ControladorAPISolicitud::class."@cambiarEstadoSolicitud");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

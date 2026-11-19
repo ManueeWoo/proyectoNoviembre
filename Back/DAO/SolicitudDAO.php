@@ -74,6 +74,52 @@ private PDO $pdo;
         return (int)$stmt->fetchColumn() > 0;
     }
 
+    public function findSolicitudUser(int $idUser, bool $recibidas): array {
+        //esto para distinguir si quiero las que yo solicito o las que me solicitan a mi
+        $unirPersona = $recibidas ? "u.id = s.id_user" : "u.id = o.id_user";
+        $filtro      = $recibidas ? "o.id_user = :yo"  : "s.id_user = :yo";
+
+        $stmt = $this->pdo->prepare(
+            "SELECT s.id, s.estado, s.fecha, s.puntos,
+                    o.id AS oferta_id, o.descripcion,
+                    sv.titulo AS servicio,
+                    u.id AS persona_id, u.nombre AS persona_nombre, u.foto AS persona_foto
+            FROM solicitud s
+            JOIN oferta o    ON o.id  = s.id_oferta
+            JOIN servicio sv ON sv.id = o.id_servicio
+            JOIN usuario u   ON $unirPersona
+            WHERE $filtro
+            ORDER BY s.fecha DESC, s.id DESC"
+        );
+        $stmt->execute([":yo" => $idUser]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function findSolicitudUserYProfesional(int $id): ?array {
+        $stmt = $this->pdo->prepare(
+            "SELECT s.id, s.estado, s.id_user, o.id_user AS id_dueno
+            FROM solicitud s
+            JOIN oferta o ON o.id = s.id_oferta
+            WHERE s.id = :id"
+        );
+        $stmt->execute([":id" => $id]);
+        $fila = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $resultado = null;
+        if ($fila !== false) {
+            $resultado = $fila;
+        }
+        return $resultado;
+    }
+
+    public function cambiarEstado(int $id, string $nuevo): bool {
+        $stmt = $this->pdo->prepare(
+            "UPDATE solicitud SET estado = :nuevo WHERE id = :id"
+        );
+        $stmt->execute([":nuevo" => $nuevo, ":id" => $id]);
+        return $stmt->rowCount() === 1;
+    }
+
     public function filaToSolicitud(array $datos): Solicitud{
     $userDAO = new UsuarioDAO();
     $ofertaDAO = new OfertaDAO();
