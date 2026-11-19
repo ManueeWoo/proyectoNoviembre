@@ -1,0 +1,109 @@
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/misOfertas.css">
+{% endblock %}
+
+{% block content %}
+<section class="mis">
+  <div class="mis__cabecera">
+    <h1>Mis ofertas <span class="mis__contador">{{ ofertas|length }}</span></h1>
+  </div>
+
+  {% if mensaje %}
+    <p class="mis__aviso">{{ mensaje }}</p>
+  {% endif %}
+
+  {# Se abre solo si hubo errores al guardar #}
+  <details class="nueva" {{ errores ? 'open' : '' }}>
+    <summary class="nueva__boton">+ Nueva oferta</summary>
+
+    <form class="nueva__form" action="/misOfertas/crear" method="POST">
+
+      {% if errores %}
+        <ul class="mis__errores">
+          {% for error in errores %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <div class="campo campo--ancho">
+        <label for="servicio">Servicio</label>
+        <select id="servicio" name="servicio" required>
+          <option value="">Elige un servicio</option>
+          {% for s in servicios %}
+            <option value="{{ s.id }}" {{ valores.servicio|default('') == s.id ? 'selected' : '' }}>
+              {{ s.titulo }} ({{ s.cat.titulo }})
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="puntos">Puntos</label>
+        <input type="number" id="puntos" name="puntos" min="1" required
+               value="{{ valores.puntos|default('') }}">
+      </div>
+
+      <div class="campo">
+        <label for="tiempo">Tiempo estimado (min)</label>
+        <input type="number" id="tiempo" name="tiempo" min="1" required
+               value="{{ valores.tiempo|default('') }}">
+      </div>
+
+      <div class="campo campo--ancho">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" name="descripcion" required>{{ valores.descripcion|default('') }}</textarea>
+      </div>
+
+      <label class="campo campo--ancho campo--check">
+        <input type="checkbox" name="activo" value="1" checked> Publicar ahora (activa)
+      </label>
+
+      <button type="submit" class="btn btn--principal">Guardar oferta</button>
+    </form>
+  </details>
+
+  {% if ofertas is empty %}
+    <p class="mis__vacio">Todavía no tienes ofertas. Pulsa "Nueva oferta" para crear la primera.</p>
+  {% else %}
+    <div class="mis__grid">
+      {% for o in ofertas %}
+        <article class="oferta {{ o.activo ? '' : 'oferta--inactiva' }}">
+
+          <div class="oferta__cab">
+            <div>
+              <h2 class="oferta__titulo">{{ o.servicio.titulo }}</h2>
+              <span class="oferta__cat">{{ o.servicio.cat.titulo }}</span>
+            </div>
+            <span class="oferta__estado {{ o.activo ? 'oferta__estado--ok' : '' }}">
+              {{ o.activo ? 'Activa' : 'Pausada' }}
+            </span>
+          </div>
+
+          <p class="oferta__desc">{{ o.descripcion }}</p>
+
+          <div class="oferta__datos">
+            <div><span>Puntos</span><strong>{{ o.puntos }}</strong></div>
+            <div><span>Tiempo</span><strong>{{ o.tiempoEstimado }} min</strong></div>
+          </div>
+
+          <div class="oferta__acciones">
+            <a class="btn" href="/misOfertas/editar/{{ o.id }}">Editar</a>
+
+            <form action="/misOfertas/estado/{{ o.id }}" method="POST">
+              <button type="submit" class="btn">{{ o.activo ? 'Pausar' : 'Activar' }}</button>
+            </form>
+
+            <form action="/misOfertas/borrar/{{ o.id }}" method="POST">
+              <button type="submit" class="btn btn--peligro">Borrar</button>
+            </form>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

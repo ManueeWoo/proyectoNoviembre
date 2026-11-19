@@ -1,4 +1,90 @@
-{% extends "layout.html.twig" %}
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/inicio.css">
+{% endblock %}
+
 {% block content %}
-<h2>Inicio de Trueque o Trato</h2>
+<div class="inicio">
+
+  {# ===== Portada ===== #}
+  <section class="hero">
+    <div class="contenedor">
+      <p class="hero__etiqueta">Comunidad de intercambio de servicios</p>
+      <h1 class="hero__titulo">
+        Intercambia lo que sabes hacer,<br>
+        <span>sin dinero de por medio</span>
+      </h1>
+      <p class="hero__texto">
+        Ofrece tus habilidades, gana puntos y úsalos para pedir el servicio
+        que necesitas a otras personas de la comunidad.
+      </p>
+      <div class="hero__botones">
+        <a class="boton boton--principal" href="/servicios">Explorar servicios</a>
+        <a class="boton" href="#como-funciona">Cómo funciona</a>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Cómo funciona ===== #}
+  <section class="seccion" id="como-funciona">
+    <div class="contenedor">
+      <h2 class="seccion__titulo">Cómo funciona</h2>
+      <p class="seccion__sub">Tres pasos y ya estás dentro.</p>
+
+      <div class="pasos">
+        <article class="paso">
+          <span class="paso__num">1</span>
+          <h3>Crea tu cuenta</h3>
+          <p>Revisamos cada registro antes de activarlo y te avisamos por correo. Al unirte recibes 150 puntos.</p>
+        </article>
+        <article class="paso">
+          <span class="paso__num">2</span>
+          <h3>Publica tus ofertas</h3>
+          <p>Elige un servicio, indica cuántos puntos pides y cuánto tiempo te llevará.</p>
+        </article>
+        <article class="paso">
+          <span class="paso__num">3</span>
+          <h3>Solicita y paga con puntos</h3>
+          <p>Busca lo que necesitas, solicítalo y paga con los puntos que has ganado.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Ventajas ===== #}
+  <section class="seccion seccion--suave">
+    <div class="contenedor">
+      <h2 class="seccion__titulo">Por qué Trueque o Trato</h2>
+
+      <div class="ventajas">
+        <article class="ventaja">
+          <h3>Sin dinero</h3>
+          <p>Todo se paga con puntos. Lo que sabes hacer vale tanto como lo que necesitas.</p>
+        </article>
+        <article class="ventaja">
+          <h3>Comunidad revisada</h3>
+          <p>Cada cuenta pasa por una aprobación, así sabes con quién intercambias.</p>
+        </article>
+        <article class="ventaja">
+          <h3>Para todos los oficios</h3>
+          <p>Informática, hogar, clases, transporte, jardinería y mucho más.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  {# ===== Llamada final ===== #}
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="cta">
+        <h2>¿Listo para empezar?</h2>
+        <p>Mira lo que ofrece la comunidad y crea tu cuenta desde el menú.</p>
+        <a class="boton boton--claro" href="/servicios">Ver servicios</a>
+      </div>
+    </div>
+  </section>
+
+</div>
 {% endblock %}

@@ -93,6 +93,16 @@ class OfertaDAO{
         return $ofertas;
     }
 
+    public function findByIdUsuario(int $id): array{
+        $resultado = $this->pdo->prepare("SELECT id_servicio, id_user, puntos, descripcion, tiempo_estimado, activo, id FROM oferta WHERE id_user = :id");
+        $ofertas = [];
+        $resultado->execute([":id"=>$id]);
+        foreach($resultado->fetchAll() as $fila){
+            $ofertas[] = $this->filaToOferta($fila);
+        }
+        return $ofertas;
+    }
+
     public function filaToOferta(array $datos): Oferta{
         $servicio = ((new ServicioDAO())->findById($datos['id_servicio']));
         $user = ((new UsuarioDAO())->findById($datos['id_user']));

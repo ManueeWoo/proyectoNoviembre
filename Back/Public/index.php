@@ -43,6 +43,7 @@ $router->get("/adminUsers",ControladorAdmin::class."@sacarPanelUsers");
 $router->post("/adminUsers/borrar/{id}",ControladorAdmin::class."@borrarUsuario");
 $router->post("/adminUsers/aceptarPendiente/{id}",ControladorAdmin::class."@aceptarUser");
 $router->post("/adminUsers/rechazarPendiente/{id}",ControladorAdmin::class."@rechazarUser");
+$router->get("/misofertas",ControladorOfertas::class."@misOfertas");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

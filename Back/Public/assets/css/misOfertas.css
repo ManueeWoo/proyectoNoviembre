@@ -1,0 +1,91 @@
+.mis {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.nueva { 
+    margin-bottom: 20px; 
+}
+.nueva__boton {
+     cursor: pointer; font-weight: bold; 
+    }
+
+.nueva__form {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.campo--ancho,
+.nueva__form .mis__errores,
+.nueva__form .btn { 
+    grid-column: 1 / -1; 
+}
+
+.campo input[type="number"],
+.campo select,
+.campo textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.mis__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.oferta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+}
+.oferta--inactiva { 
+    opacity: 0.6; 
+}
+
+.oferta__cab { 
+    display: flex; justify-content: space-between; gap: 8px; 
+}
+.oferta__datos { 
+    display: flex; gap: 20px; 
+}
+.oferta__datos span { 
+    display: block; font-size: 12px; color: #666; 
+}
+.oferta__acciones { 
+    display: flex; gap: 8px; flex-wrap: wrap; 
+}
+.oferta__acciones form { 
+    margin: 0; 
+}
+
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 13px;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mis__aviso { 
+    color: #15803d; 
+}
+.mis__errores { 
+    color: #b42318; 
+}
