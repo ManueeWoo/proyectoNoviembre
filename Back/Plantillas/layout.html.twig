@@ -7,7 +7,10 @@
     {% block estilo %}
         <link rel="stylesheet" href="/assets/css/layout.css">
     {% endblock %}
-    {%block js%}{% endblock %}
+    {%block js%}
+    <script src="/assets/js/despegable/despegable.js" defer></script>
+    <script src="/assets/js/filtroCategorias/LogicaServicio.js" defer></script>
+    {% endblock %}
 </head>
 <body>
     {% block header %}
@@ -19,8 +22,9 @@
             {% include 'header/headerInvitado.html.twig' %}
         {% endif %}
     {% endblock %}
-
+<main id="contenido">
     {% block content %}{% endblock %}
+</main>
 
     {% block footer %}
         {% include 'footer/footer.html.twig' %}

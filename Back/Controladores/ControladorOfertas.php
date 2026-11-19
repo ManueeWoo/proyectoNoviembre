@@ -27,4 +27,9 @@ class ControladorOfertas{
         $ofertas = ((new OfertaDAO())->findByIdUsuario($u->getId()));
         echo $this->twig->render("contenidos/misOfertas.html.twig", ["servicios"=>$servicios, "ofertas"=>$ofertas]);
     }
+
+    public function borrarOferta(int $id){
+        ((new OfertaDAO())->eliminarOfertaId($id));
+        header("Location: /misofertas");
+    }
 }

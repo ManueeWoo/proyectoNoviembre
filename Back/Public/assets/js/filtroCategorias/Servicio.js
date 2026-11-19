@@ -1,4 +1,5 @@
-const listaCategorias = document.getElementById("listaCategorias");
+function iniciar(){
+    const listaCategorias = document.getElementById("listaCategorias");
 const grid = document.getElementById("grid");
 const estado = document.getElementById("estado");
 const total = document.getElementById("total");
@@ -109,7 +110,7 @@ limpiar.addEventListener("click", function (e) {
     filtrar();
 });
 
-async function iniciar() {
+async function cargarServicios() {
     try {
         const categorias = await traer("/api/categorias");
         console.log("categorías:", categorias);
@@ -129,5 +130,8 @@ async function iniciar() {
         estado.innerHTML = "No se pudieron cargar los servicios. Inténtalo de nuevo.";
     }
 }
+cargarServicios();
+}
+
 
 iniciar();
