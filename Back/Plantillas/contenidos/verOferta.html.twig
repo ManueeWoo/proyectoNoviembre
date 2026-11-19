@@ -1,12 +1,13 @@
 {% extends 'layout.html.twig' %}
-{%block js%}
-<script src="/assets/js/solicitud/LogicaSolicitud.js" defer></script>
-<script src="/assets/js/registro/modal.js" defer></script>
-{% endblock %}
+
 {% block estilo %}
   {{ parent() }}
   <link rel="stylesheet" href="/assets/css/verOferta.css">
-  <link rel="stylesheet" href="/assets/css/modal.css">
+{% endblock %}
+
+{% block js %}
+{{parent()}}
+<script src="/assets/js/solicitud/LogicaSolicitud.js" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -53,8 +54,11 @@
             <p class="usuario__alta">Miembro desde {{ oferta.usuario.alta|date('m/Y') }}</p>
           </div>
         </div>
-
-        <a id="solicitar" class="boton boton--principal" href="">Solicitar</a>
+        <form action="/api/solicitud" method="post">
+          <button id="solicitar" class="boton boton--principal" type="button"
+          data-oferta="{{ oferta.id }}">Solicitar</button>
+        <p id="solicitudMsg"></p>
+        </form>
         <a class="boton" href="/ofertas/usuario/{{ oferta.usuario.id }}">Ver sus ofertas</a>
       </div>
     </aside>

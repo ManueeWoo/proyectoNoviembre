@@ -15,7 +15,7 @@ private PDO $pdo;
     public function insertarSolicitud(Solicitud $s):bool{
         $sentencia = "INSERT INTO solicitud (id_user, id_oferta, estado, fecha, tiempoFinalizado, puntos, motivo, id_val) VALUES (:id_user, :id_oferta, :estado, :fecha, :tiempoFinalizado, :puntos, :motivo, :id_val)";
         $pStatment = $this->pdo->prepare($sentencia);
-        $esCorrecto = $pStatment->execute([":id_user"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta()->getId(), ":estado"=>$s->getEstado()->value,":fecha"=>$s->getFecha(),":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()->getId()]); 
+        $esCorrecto = $pStatment->execute([":id_user"=>$s->getUsuario()->getId(), ":id_oferta"=>$s->getOferta()->getId(), ":estado"=>$s->getEstado()->value,":fecha"=>$s->getFecha(),":tiempoFinalizado"=>$s->getTiempoFinalizado(), ":puntos"=>$s->getPuntos(), ":motivo"=>$s->getMotivo(), ":id_val"=>$s->getValoracion()?->getId()]); 
         if($esCorrecto){
             $s->setId($this->pdo->lastInsertId());
         }
@@ -66,6 +66,14 @@ private PDO $pdo;
         return $user;
     }
 
+    public function existe(int $idUser, int $idOferta): bool {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM solicitud WHERE id_user = :u AND id_oferta = :o"
+        );
+        $stmt->execute([":u" => $idUser, ":o" => $idOferta]);
+        return (int)$stmt->fetchColumn() > 0;
+    }
+
     public function filaToSolicitud(array $datos): Solicitud{
     $userDAO = new UsuarioDAO();
     $ofertaDAO = new OfertaDAO();
@@ -73,6 +81,6 @@ private PDO $pdo;
     $usuario = $userDAO->findById($datos['id_user']);
     $oferta = $ofertaDAO->findById($datos['id_oferta']);
     $valoracion = $valoracionDAO->findById($datos['id_val']) ;
-    return new Solicitud($usuario, $oferta, $datos['fecha'], $datos['tiempoFinalizado'], $datos['puntos'], $datos['motivo'], $valoracion,EstadoOferta::from($datos['estado']), $datos['id']);
+    return new Solicitud($usuario, $oferta, $datos['fecha'], $datos['tiempoFinalizado'], $datos['puntos'], $datos['motivo'],EstadoOferta::from($datos['estado']),$valoracion, $datos['id']);
 }
 }

@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="/assets/css/servicios.css">
+
+<div class="servicios">
 <div class="servicios__layout">
 
     <aside class="filtros">
@@ -16,4 +17,5 @@
         </p>
     </div>
 
+</div>
 </div>

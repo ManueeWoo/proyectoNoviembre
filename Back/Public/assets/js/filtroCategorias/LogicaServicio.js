@@ -28,6 +28,12 @@ window.addEventListener("load", function () {
         }
 
         destino.innerHTML = await respuesta.text();
+        css = document.createElement("link");
+        css.id = "cssServicios";
+        css.rel = "stylesheet";
+        css.href = "/assets/css/servicios.css";
+
+        document.head.appendChild(css);
     }
 
     async function cargarJs(urlJs) {

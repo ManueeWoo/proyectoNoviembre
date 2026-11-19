@@ -10,11 +10,11 @@ class Solicitud
         private Usuario $usuario,
         private Oferta $oferta,
         private string $fecha,
-        private int $tiempoFinalizado,
         private int $puntos,
-        private string $motivo,
-        private Valoracion $valoracion,
+        private int $tiempoFinalizado = 0,
+        private string $motivo = "",
         private EstadoOferta $estado = EstadoOferta::Solicitado,
+        private ?Valoracion $valoracion =null,
         private ?int $id =null
     ) {
     }
@@ -98,7 +98,7 @@ class Solicitud
         $this->motivo = $motivo;
     }
 
-    public function getValoracion(): Valoracion
+    public function getValoracion(): ?Valoracion
     {
         return $this->valoracion;
     }

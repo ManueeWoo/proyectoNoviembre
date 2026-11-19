@@ -2,6 +2,7 @@
 
 require_once "../vendor/autoload.php";
 
+use App\Controladores\ControladorAPISolicitud;
 use App\Controladores\ControladorAPIUsuario;
 use App\Controladores\ControladorServicios;
 use App\Router\Router;
@@ -37,6 +38,7 @@ $router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios")
 $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");
 $router->get("/servicios",ControladorServicios::class."@sacarServicios");
 $router->get("/api/servicios",ControladorAPIUsuario::class."@darAllServicios");
+$router->post("/api/solicitud",ControladorAPISolicitud::class."@hacerSolicitud");
 $router->get("/servicio/{id}",ControladorOfertas::class."@sacarOfertasByServicio");
 $router->get("/oferta/{id}",ControladorOfertas::class."@verOferta");
 $router->get("/adminUsers",ControladorAdmin::class."@sacarPanelUsers");

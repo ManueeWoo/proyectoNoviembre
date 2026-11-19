@@ -1,14 +1,36 @@
-window.addEventListener("load", function(){
-    let btnSolicitar = document.getElementById("solicitar");
-    btnSolicitar.onclick=function(ev){
-        ev.preventDefault();
-        cargarModal("Solicitud Oferta", "Plantillas/solicitud.manuel", "assets/js/solicitud/solicitud.js");
-    }
+window.addEventListener("load", function () {
+    const boton = document.getElementById("solicitar");
+    const mensaje = document.getElementById("solicitudMsg");
 
-    async function cargarModal(titulo, urlPlantilla, urlJs){
-        document.body.modal = new Modal(titulo);
-        await document.body.modal.cargarHtml(urlPlantilla);
-        await document.body.modal.cargarURLJS(urlJs);
-        
-    }
-})
+    boton.addEventListener("click", async function () {
+        mensaje.textContent = "";
+
+        const datos = new FormData();
+        datos.append("id_oferta", boton.dataset.oferta);
+
+        try {
+            const respuesta = await fetch("/api/solicitud", {
+                method: "POST",
+                body: datos
+            });
+
+            if (respuesta.status === 401) {
+                window.location.href = "/login";   // no hay sesión: al login
+                return;                             // y no sigue ejecutando
+            }
+
+            const json = await respuesta.json();
+
+            if (json.ok) {
+                mensaje.textContent = "Solicitud enviada.";
+            } else {
+                for (let campo in json.errores) {
+                    mensaje.textContent += json.errores[campo] + " ";
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            mensaje.textContent = "No se pudo enviar la solicitud. Inténtalo de nuevo.";
+        }
+    });
+});

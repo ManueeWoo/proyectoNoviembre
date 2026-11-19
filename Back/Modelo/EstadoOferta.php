@@ -4,9 +4,9 @@ enum EstadoOferta: string
 {
     case Solicitado = 'solicitado';
     case Aceptado = 'aceptado';
-    case rechazado = 'rechazado';
+    case Rechazado = 'rechazado';
     case Completado = 'completado';
     case Cancelado = 'cancelado';
-    case Ejeccucion = 'ejeccucion';
+    case Ejeccucion = 'ejecucion';
 }
    
