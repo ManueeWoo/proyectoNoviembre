@@ -86,7 +86,7 @@ private PDO $pdo;
                     u.id AS persona_id, u.nombre AS persona_nombre, u.foto AS persona_foto
             FROM solicitud s
             JOIN oferta o    ON o.id  = s.id_oferta
-            JOIN servicio sv ON sv.id = o.id_servicio
+            JOIN servicios sv ON sv.id = o.id_servicio
             JOIN usuario u   ON $unirPersona
             WHERE $filtro
             ORDER BY s.fecha DESC, s.id DESC"

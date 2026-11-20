@@ -10,17 +10,33 @@
     </div>
 
     <div class="sol__tabs">
-        <button type="button" class="sol__tab activo" data-grupo="pendientes">
-            Pendientes <span class="sol__n">0</span>
-        </button>
-        <button type="button" class="sol__tab" data-grupo="curso">
-            En curso <span class="sol__n">0</span>
-        </button>
-        <button type="button" class="sol__tab" data-grupo="cerradas">
-            Finalizadas <span class="sol__n">0</span>
-        </button>
+        <button type="button" class="sol__tab activo" data-grupo="pendientes">Pendientes <span class="sol__n">0</span></button>
+        <button type="button" class="sol__tab" data-grupo="curso">En curso <span class="sol__n">0</span></button>
+        <button type="button" class="sol__tab" data-grupo="cerradas">Finalizadas <span class="sol__n">0</span></button>
     </div>
 
     <p class="sol__aviso" id="aviso">Cargando solicitudes...</p>
     <div class="sol__lista" id="lista"></div>
 </section>
+
+<div hidden>
+    <article class="sol__fila" id="molde">
+        <img class="sol__foto" alt="">
+        <div class="sol__info">
+            <h2 class="sol__nombre"></h2>
+            <p class="sol__texto sol__quien"></p>
+            <p class="sol__texto sol__desc"></p>
+            <span class="sol__etq"></span>
+        </div>
+        <div class="sol__puntos">
+            <strong class="sol__num"></strong>
+            <span>puntos</span>
+        </div>
+        <div class="sol__acciones">
+            <button type="button" class="sol__btn sol__btn--ok sol__ped-rec" data-accion="aceptar">Aceptar</button>
+            <button type="button" class="sol__btn sol__btn--no sol__ped-rec" data-accion="rechazar">Rechazar</button>
+            <button type="button" class="sol__btn sol__btn--no sol__ped-env" data-accion="cancelar">Cancelar</button>
+            <a class="sol__btn sol__otro sol__ver">Ver oferta</a>
+        </div>
+    </article>
+</div>

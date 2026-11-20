@@ -2,9 +2,6 @@ window.addEventListener("load", function () {
     const a = document.getElementById("menuSolicitudes");
     const contenedor = document.getElementById("contenido");
 
-    console.log(a);
-console.log(contenedor);
-
     a.addEventListener("click", async function(e) {
 
         e.preventDefault();
@@ -13,6 +10,7 @@ console.log(contenedor);
             await cargarHtml("/Plantillas/missolicitudes.manuel", contenedor);
 
             await cargarJs("/assets/js/solicitud/solicitudes.js");
+            iniciarSolicitudes();
 
         } catch (error) {
             console.error(error);
@@ -29,9 +27,9 @@ console.log(contenedor);
 
         destino.innerHTML = await respuesta.text();
         css = document.createElement("link");
-        css.id = "cssServicios";
+        css.id = "cssSolicitudes";
         css.rel = "stylesheet";
-        css.href = "/assets/css/servicios.css";
+        css.href = "/assets/css/solicitudes.css";
 
         document.head.appendChild(css);
     }

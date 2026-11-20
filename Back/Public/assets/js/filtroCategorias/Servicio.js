@@ -5,6 +5,7 @@ const estado = document.getElementById("estado");
 const total = document.getElementById("total");
 const sinResultados = document.getElementById("sinResultados");
 const limpiar = document.getElementById("limpiar");
+let spinner = document.getElementById("spinner");
 
 let checks = [];
 let tarjetas = [];
@@ -111,23 +112,25 @@ limpiar.addEventListener("click", function (e) {
 });
 
 async function cargarServicios() {
+    spinner.classList.remove("oculto");   
     try {
         const categorias = await traer("/api/categorias");
-        console.log("categorías:", categorias);
         const servicios = await traer("/api/servicios");
-        console.log("servicios:", servicios);
 
         pintarCategorias(categorias);
         pintarTarjetas(servicios);
 
         if (tarjetas.length === 0) {
             estado.textContent = "Todavía no hay servicios publicados.";
-        } else {
-            estado.classList.add("oculto");
+            estado.classList.remove("oculto");
         }
         filtrar();
     } catch (error) {
-        estado.innerHTML = "No se pudieron cargar los servicios. Inténtalo de nuevo.";
+        console.error(error);
+        estado.textContent = "No se pudieron cargar los servicios. Inténtalo de nuevo.";
+        estado.classList.remove("oculto");
+    } finally {
+        spinner.classList.add("oculto");  
     }
 }
 cargarServicios();

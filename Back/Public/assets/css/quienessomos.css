@@ -1,0 +1,83 @@
+.quienes {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  color: #1f2937;
+}
+
+/* Cabecera */
+.quienes__cabecera {
+  margin-bottom: 36px;
+  text-align: center;
+}
+.quienes__cabecera h1 {
+  margin: 0 0 8px;
+  font-size: 36px;
+}
+.quienes__cabecera p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 18px;
+}
+
+/* Texto */
+.quienes__texto {
+  margin-bottom: 36px;
+}
+.quienes__texto h2 {
+  margin: 0 0 12px;
+  font-size: 24px;
+}
+.quienes__texto p {
+  margin: 0 0 12px;
+  line-height: 1.7;
+}
+
+/* Valores */
+.quienes__valores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+.valor {
+  padding: 20px;
+  border: 1px solid #f0e2d9;
+  border-top: 4px solid #ff5100;
+  border-radius: 12px;
+}
+.valor h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+.valor p {
+  margin: 0;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Cierre */
+.quienes__cierre {
+  padding: 28px 20px;
+  background: #fff4ee;
+  border-radius: 12px;
+  text-align: center;
+}
+.quienes__cierre p {
+  margin: 0 0 14px;
+  font-size: 18px;
+}
+.quienes__boton {
+  display: inline-block;
+  padding: 10px 22px;
+  background: #ff5100;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+.quienes__boton:hover {
+  background: #d94400;
+}

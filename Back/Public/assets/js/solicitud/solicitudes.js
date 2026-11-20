@@ -1,200 +1,125 @@
 function iniciarSolicitudes() {
     const lista = document.getElementById("lista");
     const aviso = document.getElementById("aviso");
+    const molde = document.getElementById("molde");
     const botonesRol = document.querySelectorAll(".sol__op");
-    const botonesTab = document.querySelectorAll(".sol__tab");
+    const tabs = document.querySelectorAll(".sol__tab");
 
+    // Cada estado de la BD pertenece a una pestaña
     const GRUPOS = {
-        pendientes: ["solicitado"],
-        curso: ["aceptado", "ejecucion"],
-        cerradas: ["completado", "rechazado", "cancelado"]
+        solicitado: "pendientes",
+        aceptado: "curso", ejecucion: "curso",
+        completado: "cerradas", rechazado: "cerradas", cancelado: "cerradas"
     };
     const ETIQUETAS = {
-        solicitado: "Pendiente de respuesta",
-        aceptado: "Aceptada",
-        ejecucion: "En ejecución",
-        completado: "Completada",
-        rechazado: "Rechazada",
-        cancelado: "Cancelada"
+        solicitado: "Pendiente de respuesta", aceptado: "Aceptada", ejecucion: "En ejecución",
+        completado: "Completada", rechazado: "Rechazada", cancelado: "Cancelada"
     };
 
-    let datos = { recibidas: [], enviadas: [] };
     let rol = "recibidas";
     let grupo = "pendientes";
 
-
-    function crear(etiqueta, clase, texto) {
-        const el = document.createElement(etiqueta);
-        if (clase) {
-            el.className = clase;
-        }
-        if (texto !== undefined) {
-            el.textContent = texto;
-        }
-        return el;
-    }
-
-    function mostrarAviso(texto) {
+    function avisar(texto) {
         aviso.textContent = texto;
-        aviso.hidden = false;
+        aviso.classList.toggle("oculto", texto === "");
     }
 
-    function formatearFecha(fecha) {
-        const partes = fecha.split("-");
-        return partes[2] + "/" + partes[1] + "/" + partes[0];
-    }
-
-    function marcarActivo(botones, elegido) {
-        for (let i = 0; i < botones.length; i++) {
-            botones[i].classList.remove("activo");
-        }
-        elegido.classList.add("activo");
-    }
-
-    // Pide al servidor. Un 401 (sin sesión) lleva al login
     async function pedir(url, opciones) {
         const respuesta = await fetch(url, opciones);
         if (respuesta.status === 401) {
-            //preguntar como redirigir
-            throw new Error("Sin sesión");
+            location.href = "/login";
         }
-        const texto = await respuesta.text();
-        return JSON.parse(texto);
-        
+        return await respuesta.json();
     }
 
-    // ===== Pintar =====
+    // Copia el molde y le rellena los datos de una solicitud
+    function crearFila(s, rolFila) {
+        const fila = molde.cloneNode(true);
+        fila.removeAttribute("id");
+        fila.dataset.id = s.id;
+        fila.dataset.rol = rolFila;
+        fila.dataset.estado = s.estado;
+        fila.dataset.grupo = GRUPOS[s.estado];
 
-    function crearFila(s) {
-        const fila = crear("article", "sol__fila");
-
-        const foto = crear("img", "sol__foto");
-        foto.src = "/upload/" + (s.persona.foto ? s.persona.foto : "logo.png");
-        foto.alt = "Foto de " + s.persona.nombre;
-
-        const info = crear("div", "sol__info");
-        info.appendChild(crear("h2", "sol__nombre", s.oferta.titulo));
-        const quien = rol === "recibidas" ? "Solicitada por " : "Oferta de ";
-        info.appendChild(crear("p", "sol__texto", quien + s.persona.nombre + " · " + formatearFecha(s.fecha)));
-        info.appendChild(crear("p", "sol__texto sol__desc", s.oferta.descripcion));
-        info.appendChild(crear("span", "sol__etq sol__etq--" + s.estado, ETIQUETAS[s.estado]));
-
-        const puntos = crear("div", "sol__puntos");
-        puntos.appendChild(crear("strong", "", s.puntos));
-        puntos.appendChild(crear("span", "", "puntos"));
-
-        const acciones = crear("div", "sol__acciones");
-        if (s.estado === "solicitado" && rol === "recibidas") {
-            acciones.appendChild(crearBoton("Aceptar", "sol__btn sol__btn--ok", s.id, "aceptar"));
-            acciones.appendChild(crearBoton("Rechazar", "sol__btn sol__btn--no", s.id, "rechazar"));
-        } else if (s.estado === "solicitado") {
-            acciones.appendChild(crearBoton("Cancelar", "sol__btn sol__btn--no", s.id, "cancelar"));
-        } else {
-            const ver = crear("a", "sol__btn", "Ver oferta");
-            ver.href = "/oferta/" + s.oferta.id;
-            acciones.appendChild(ver);
-        }
-
-        fila.appendChild(foto);
-        fila.appendChild(info);
-        fila.appendChild(puntos);
-        fila.appendChild(acciones);
+        fila.querySelector(".sol__foto").src = "/upload/" + (s.persona.foto ? s.persona.foto : "logo.png");
+        fila.querySelector(".sol__nombre").textContent = s.oferta.titulo;
+        fila.querySelector(".sol__quien").textContent =
+            (rolFila === "recibidas" ? "Solicitada por " : "Oferta de ") + s.persona.nombre + " · " + s.fecha;
+        fila.querySelector(".sol__desc").textContent = s.oferta.descripcion;
+        fila.querySelector(".sol__num").textContent = s.puntos;
+        fila.querySelector(".sol__etq").textContent = ETIQUETAS[s.estado];
+        fila.querySelector(".sol__ver").href = "/oferta/" + s.oferta.id;
         return fila;
     }
 
-    function crearBoton(texto, clase, id, accion) {
-        const boton = crear("button", clase, texto);
-        boton.type = "button";
-        boton.addEventListener("click", function () {
-            cambiarEstado(id, accion, boton);
-        });
-        return boton;
+    // Muestra solo las filas del rol y la pestaña elegidos
+    function filtrar() {
+        for (const fila of lista.children) {
+            const coincide = fila.dataset.rol === rol && fila.dataset.grupo === grupo;
+            fila.classList.toggle("oculto", !coincide);
+        }
+
+        for (const tab of tabs) {
+            const filas = lista.querySelectorAll(`[data-rol="${rol}"][data-grupo="${tab.dataset.grupo}"]`);
+            tab.querySelector(".sol__n").textContent = filas.length;
+        }
+
+        const visibles = lista.querySelectorAll(".sol__fila:not(.oculto)").length;
+        avisar(visibles === 0 ? "No hay solicitudes en esta sección." : "");
     }
-
-    function pintar() {
-        const todas = datos[rol];
-
-        // Contadores de las pestañas (según Recibidas o Enviadas)
-        for (let i = 0; i < botonesTab.length; i++) {
-            const estados = GRUPOS[botonesTab[i].dataset.grupo];
-            let n = 0;
-            for (let j = 0; j < todas.length; j++) {
-                if (estados.includes(todas[j].estado)) {
-                    n++;
-                }
-            }
-            botonesTab[i].querySelector(".sol__n").textContent = n;
-        }
-
-        // Lista de la pestaña activa
-        lista.textContent = "";
-        let visibles = 0;
-        for (let i = 0; i < todas.length; i++) {
-            if (GRUPOS[grupo].includes(todas[i].estado)) {
-                lista.appendChild(crearFila(todas[i]));
-                visibles++;
-            }
-        }
-
-        if (visibles === 0) {
-            mostrarAviso("No hay solicitudes en esta sección.");
-        } else {
-            aviso.hidden = true;
-        }
-    }
-
-    // ===== Datos =====
 
     async function cargar() {
         try {
-            datos = await pedir("/api/misSolicitudes");
-            pintar();
+            const datos = await pedir("/api/misSolicitudes");
+            lista.replaceChildren(
+                ...datos.recibidas.map(s => crearFila(s, "recibidas")),
+                ...datos.enviadas.map(s => crearFila(s, "enviadas"))
+            );
+            filtrar();
         } catch (error) {
             console.error(error);
-            mostrarAviso("No se pudieron cargar las solicitudes. Inténtalo de nuevo.");
+            avisar("No se pudieron cargar las solicitudes. Inténtalo de nuevo.");
         }
     }
 
-    async function cambiarEstado(id, accion, boton) {
-        boton.disabled = true;
+    async function cambiarEstado(id, accion) {
         const formulario = new FormData();
         formulario.append("id", id);
         formulario.append("accion", accion);
 
-        try {
-            const json = await pedir("/api/solicitud/estado", { method: "POST", body: formulario });
-            if (json.ok) {
-                await cargar();   // se vuelve a pedir la lista y se repinta
-            } else {
-                for (let campo in json.errores) {
-                    mostrarAviso(json.errores[campo] + " ");
-                }
-                boton.disabled = false;
-            }
-        } catch (error) {
-            console.error(error);
-            mostrarAviso("No se pudo completar la acción. Inténtalo de nuevo.");
-            boton.disabled = false;
+        const json = await pedir("/api/solicitud/estado", { method: "POST", body: formulario });
+        if (json.ok) {
+            cargar();
+        } else {
+            avisar(Object.values(json.errores).join(" "));
         }
     }
 
     // ===== Eventos =====
 
-    for (let i = 0; i < botonesRol.length; i++) {
-        botonesRol[i].addEventListener("click", function () {
-            rol = this.dataset.rol;
-            marcarActivo(botonesRol, this);
-            pintar();
+    for (const boton of botonesRol) {
+        boton.addEventListener("click", () => {
+            rol = boton.dataset.rol;
+            botonesRol.forEach(b => b.classList.toggle("activo", b === boton));
+            filtrar();
         });
     }
 
-    for (let i = 0; i < botonesTab.length; i++) {
-        botonesTab[i].addEventListener("click", function () {
-            grupo = this.dataset.grupo;
-            marcarActivo(botonesTab, this);
-            pintar();
+    for (const tab of tabs) {
+        tab.addEventListener("click", () => {
+            grupo = tab.dataset.grupo;
+            tabs.forEach(t => t.classList.toggle("activo", t === tab));
+            filtrar();
         });
     }
+
+    // Un solo listener en la lista vale para los botones de todas las filas
+    lista.addEventListener("click", e => {
+        const boton = e.target.closest("[data-accion]");
+        if (boton !== null) {
+            cambiarEstado(boton.closest(".sol__fila").dataset.id, boton.dataset.accion);
+        }
+    });
 
     cargar();
 }

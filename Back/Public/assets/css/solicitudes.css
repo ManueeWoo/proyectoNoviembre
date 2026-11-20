@@ -52,8 +52,21 @@
 .sol__etq--rechazado { background: #fee2e2; color: #991b1b; }
 .sol__etq--cancelado { background: #f3f4f6; color: #4b5563; }
 
-@media (max-width: 700px) {
-  .sol__fila { grid-template-columns: 56px 1fr; }
-  .sol__puntos, .sol__acciones { grid-column: 1 / -1; }
-  .sol__puntos { border: none; padding: 0; text-align: left; }
-}
+/* Ocultar: el JS pone y quita la clase "oculto" */
+.sol__fila.oculto,
+.sol__aviso.oculto { display: none; }
+
+/* Los botones empiezan ocultos y cada situación muestra los suyos */
+.sol__ped-rec, .sol__ped-env, .sol__otro { display: none; }
+
+.sol__fila[data-estado="solicitado"][data-rol="recibidas"] .sol__ped-rec { display: inline-block; }
+.sol__fila[data-estado="solicitado"][data-rol="enviadas"] .sol__ped-env { display: inline-block; }
+.sol__fila:not([data-estado="solicitado"]) .sol__otro { display: inline-block; }
+
+/* Color de la etiqueta según el estado */
+.sol__fila[data-estado="solicitado"] .sol__etq { background: #fef3c7; color: #92400e; }
+.sol__fila[data-estado="aceptado"] .sol__etq,
+.sol__fila[data-estado="ejecucion"] .sol__etq { background: #dbeafe; color: #1e40af; }
+.sol__fila[data-estado="completado"] .sol__etq { background: #dcfce7; color: #166534; }
+.sol__fila[data-estado="rechazado"] .sol__etq { background: #fee2e2; color: #991b1b; }
+.sol__fila[data-estado="cancelado"] .sol__etq { background: #f3f4f6; color: #4b5563; }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Modelo\Solicitud;
 use App\Modelo\Usuario;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -140,4 +141,37 @@ class MailService
             return false;
         }
     }
+
+     public function sendTaskAcceptanceEmail(Solicitud $solicitud, Usuario $cliente, Usuario $profesional): bool
+    {
+        try {
+
+            // Renderizar cuerpo del email
+            $body = $this->renderTemplate(__DIR__ . '/../Plantillas/emails/ofertasolicitud.php', [
+                'solicitante' => $cliente,
+                'profesional' => $profesional,
+                'solicitud'   => $solicitud,
+                'actionUrl'   => $this->baseUrl . '/solicitudes/' . $solicitud->getId()
+            ]);
+
+            $mail = $this->createMailer();
+            $mail->addAddress($cliente->getEmail(), $profesional->getNombre());
+            $mail->Subject = '¡Un cliente ha solicitado tu oferta de trueque!';
+            
+            // Adjuntar imagen local embebida inline
+            $mail->addEmbeddedImage(
+                __DIR__ . '/../../assets/img/logo.png',
+                'logo_cid',
+                'logo.png'
+            );
+
+            $mail->Body = $body;
+
+            return $mail->send();
+        } catch (Exception $e) {
+            error_log("Error al enviar email de aceptación: " . $e->getMessage());
+            return false;
+        }
+    }
+
 }

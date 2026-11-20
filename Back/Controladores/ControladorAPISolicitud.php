@@ -6,6 +6,9 @@ use App\DAO\SolicitudDAO;
 use App\Modelo\Solicitud;
 use App\Helpers\Sesion;
 use App\Helpers\Respondedor;
+use App\Services\PdfService;
+use App\Services\MailService;
+use App\Services\ConfigMail;
 use DateTime;
 use PDO;
 USE App\DAO\ConexionDB;
@@ -48,6 +51,9 @@ class ControladorAPISolicitud{
                 );
                 if (!$dao->insertarSolicitud($solicitud)) {
                     $errores['general'] = 'No se pudo guardar la solicitud.';
+                }else{
+                    $mailService = new MailService(new PdfService(), (new ConfigMail())->getConfig());
+                    $mailService->sendTaskAcceptanceEmail($solicitud, $solicitante, ((new OfertaDAO())->findByUser($oferta->getUsuario()->getId())));
                 }
             }
         }

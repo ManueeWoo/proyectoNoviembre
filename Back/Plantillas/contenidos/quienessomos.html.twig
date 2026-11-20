@@ -1,6 +1,51 @@
 {% extends 'layout.html.twig' %}
-{% block content %}
-<h2>QUIENES SOMOS</h2>
-<p>Somos una empresa de trueques llamada trueque o trato</p>
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/quienessomos.css">
 {% endblock %}
 
+{% block content %}
+<section class="quienes">
+
+  <header class="quienes__cabecera">
+    <h1>¿Quiénes somos?</h1>
+    <p>Una comunidad donde las habilidades de cada persona valen más que el dinero.</p>
+  </header>
+
+  <div class="quienes__texto">
+    <h2>Nuestra historia</h2>
+    <p>
+      Trueque o Trato nació con una idea sencilla: todos sabemos hacer algo que
+      a otra persona le hace falta. Reparar un ordenador, dar clases, pintar una
+      habitación o cuidar un jardín son cosas que se pueden intercambiar sin
+      necesidad de pagar con dinero.
+    </p>
+    <p>
+      Cada servicio se valora en puntos. Ofreces lo que sabes hacer, ganas
+      puntos y los usas para pedir lo que necesitas a otros miembros.
+    </p>
+  </div>
+
+  <div class="quienes__valores">
+    <article class="valor">
+      <h3>Confianza</h3>
+      <p>Revisamos cada registro antes de activarlo para que sepas con quién intercambias.</p>
+    </article>
+    <article class="valor">
+      <h3>Igualdad</h3>
+      <p>Una hora de trabajo vale lo mismo, sea cual sea el oficio.</p>
+    </article>
+    <article class="valor">
+      <h3>Comunidad</h3>
+      <p>Cuanto más participa la gente, más útil es la plataforma para todos.</p>
+    </article>
+  </div>
+
+  <div class="quienes__cierre">
+    <p>¿Quieres ver qué ofrece la comunidad?</p>
+    <a class="quienes__boton" href="/servicios">Ver servicios</a>
+  </div>
+
+</section>
+{% endblock %}

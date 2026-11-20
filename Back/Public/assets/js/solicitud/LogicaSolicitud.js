@@ -15,7 +15,7 @@ window.addEventListener("load", function () {
             });
 
             if (respuesta.status === 401) {
-                //preguntar como redirigir                            
+                document.location.href="http://localhost/login"                           
             }
 
             const json = await respuesta.json();

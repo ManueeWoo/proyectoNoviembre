@@ -2,6 +2,7 @@
 namespace App\DAO;
 use App\DAO\ConexionDB;
 use App\Modelo\Oferta;
+use App\Modelo\Usuario;
 use PDO;
 
 class OfertaDAO{
@@ -74,6 +75,29 @@ class OfertaDAO{
             return null;
         }
         return $this->filaToOferta($valores);
+    }
+
+    public function findByUser(int $id): ?Usuario{
+        $resultado = $this->pdo->prepare("SELECT u.* from oferta as o join usuario as u on o.id_user = u.id where o.id_user=:id");
+        $resultado->execute([":id" => $id]);
+        $valores = $resultado->fetch(PDO::FETCH_ASSOC);
+        if($valores === false){
+            return null;
+        }
+        return new Usuario(
+            nombre: $valores['nombre'],
+            ap1: $valores['ap1'],
+            ap2: $valores['ap2'],
+            alta: $valores['alta'],
+            telefono: $valores['tel'],
+            saldo: $valores['saldo'],
+            rol: $valores['rol'],
+            email: $valores['email'],
+            contrasenia: $valores['contrasenia'],
+            pdf: $valores['pdf'] ?? null,
+            foto: $valores['foto'] ?? null,
+            id: (int)$valores['id']
+        );
     }
 
     public function findByCountServicio(int $id): int{

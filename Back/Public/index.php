@@ -27,7 +27,7 @@ $twig->addGlobal('rol', $usuarioRol);
 
 $router= new Router($twig);
 $router->get("/",Controlador::class."@sacarInicio");
-$router->get("/quienessomos",Controlador::class."@sacarQuienes");
+$router->get("/quienessomos",Controlador::class."@sacarQuienesSomos");
 $router->get("/login",ControladorLogin::class."@sacarLogin");
 $router->post("/login", ControladorLogin::class."@sacarLogin");
 $router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");

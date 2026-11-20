@@ -10,7 +10,8 @@
 
     <div class="servicios__lista">
         <p class="servicios__total"><span id="total">0</span> servicios</p>
-        <p class="servicios__vacio" id="estado">Cargando servicios...</p>
+        <div class="spinner" id="spinner" role="status" aria-label="Cargando"></div>
+        <p class="servicios__vacio oculto" id="estado"></p>
         <div class="servicios__grid" id="grid"></div>
         <p class="servicios__vacio oculto" id="sinResultados">
             No hay servicios en las categorías seleccionadas.
