@@ -1,42 +1,42 @@
 <link rel="stylesheet" href="/assets/css/solicitudes.css">
 
-<section class="sol">
-    <h1 class="sol__titulo">Mis solicitudes</h1>
-    <p class="sol__sub">Gestiona las solicitudes que has recibido y las que has enviado.</p>
+<section class="solicitud">
+    <h1 class="sTitulo">Mis solicitudes</h1>
+    <p class="sSubTitulo">Gestiona las solicitudes que has recibido y las que has enviado.</p>
 
-    <div class="sol__rol">
-        <button type="button" class="sol__op activo" data-rol="recibidas">Recibidas</button>
-        <button type="button" class="sol__op" data-rol="enviadas">Enviadas</button>
+    <div class="sEnviadasRecibidas">
+        <button type="button" class="sOpcion activo" data-rol="recibidas">Recibidas</button>
+        <button type="button" class="sOpcion" data-rol="enviadas">Enviadas</button>
     </div>
 
-    <div class="sol__tabs">
-        <button type="button" class="sol__tab activo" data-grupo="pendientes">Pendientes <span class="sol__n">0</span></button>
-        <button type="button" class="sol__tab" data-grupo="curso">En curso <span class="sol__n">0</span></button>
-        <button type="button" class="sol__tab" data-grupo="cerradas">Finalizadas <span class="sol__n">0</span></button>
+    <div class="sPestañas">
+        <button type="button" class="sPestaña activo" data-estado="pendientes">Pendientes</button>
+        <button type="button" class="sPestaña" data-estado="curso">En curso</button>
+        <button type="button" class="sPestaña" data-estado="cerradas">Finalizadas</button>
     </div>
 
-    <p class="sol__aviso" id="aviso">Cargando solicitudes...</p>
-    <div class="sol__lista" id="lista"></div>
+    <p class="sAviso" id="aviso">Cargando solicitudes...</p>
+    <div class="sLista" id="lista"></div>
 </section>
 
 <div hidden>
-    <article class="sol__fila" id="molde">
-        <img class="sol__foto" alt="">
-        <div class="sol__info">
-            <h2 class="sol__nombre"></h2>
-            <p class="sol__texto sol__quien"></p>
-            <p class="sol__texto sol__desc"></p>
-            <span class="sol__etq"></span>
+    <article class="sFila" id="molde">
+        <img class="sFoto" alt="">
+        <div class="sInfo">
+            <h2 class="sNombre"></h2>
+            <p class="sTexto sPersona"></p>
+            <p class="sTexto sDesc"></p>
+            <span class="sEstado"></span>
         </div>
-        <div class="sol__puntos">
-            <strong class="sol__num"></strong>
+        <div class="sPuntos">
+            <strong class="sNumero"></strong>
             <span>puntos</span>
         </div>
-        <div class="sol__acciones">
-            <button type="button" class="sol__btn sol__btn--ok sol__ped-rec" data-accion="aceptar">Aceptar</button>
-            <button type="button" class="sol__btn sol__btn--no sol__ped-rec" data-accion="rechazar">Rechazar</button>
-            <button type="button" class="sol__btn sol__btn--no sol__ped-env" data-accion="cancelar">Cancelar</button>
-            <a class="sol__btn sol__otro sol__ver">Ver oferta</a>
+        <div class="sAcciones">
+            <button type="button" class="sBtn sBtnok sol__ped-rec" data-accion="aceptar">Aceptar</button>
+            <button type="button" class="sBtn sBtnNo sol__ped-rec" data-accion="rechazar">Rechazar</button>
+            <button type="button" class="sBtn sBtnNo sol__ped-env" data-accion="cancelar">Cancelar</button>
+            <a class="sBtn sOtro sVer">Ver oferta</a>
         </div>
     </article>
 </div>

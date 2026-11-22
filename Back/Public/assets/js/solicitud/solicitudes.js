@@ -2,22 +2,23 @@ function iniciarSolicitudes() {
     const lista = document.getElementById("lista");
     const aviso = document.getElementById("aviso");
     const molde = document.getElementById("molde");
-    const botonesRol = document.querySelectorAll(".sol__op");
-    const tabs = document.querySelectorAll(".sol__tab");
+    const botonesRol = document.querySelectorAll(".sOpcion");
+    const pestañas = document.querySelectorAll(".sPestaña");
 
-    // Cada estado de la BD pertenece a una pestaña
-    const GRUPOS = {
+    // pa no hacer to el rato ifs pa comprobar segun el estado de la solicitus
+    // lo meto en un obj y cuando pregunte por uno me da en q pestaña lo meto
+    const ESTADOS = {
         solicitado: "pendientes",
         aceptado: "curso", ejecucion: "curso",
         completado: "cerradas", rechazado: "cerradas", cancelado: "cerradas"
     };
-    const ETIQUETAS = {
+    const TXTESTADOS = {
         solicitado: "Pendiente de respuesta", aceptado: "Aceptada", ejecucion: "En ejecución",
         completado: "Completada", rechazado: "Rechazada", cancelado: "Cancelada"
     };
 
     let rol = "recibidas";
-    let grupo = "pendientes";
+    let estado = "pendientes";
 
     function avisar(texto) {
         aviso.textContent = texto;
@@ -32,55 +33,58 @@ function iniciarSolicitudes() {
         return await respuesta.json();
     }
 
-    // Copia el molde y le rellena los datos de una solicitud
-    function crearFila(s, rolFila) {
-        const fila = molde.cloneNode(true);
-        fila.removeAttribute("id");
+    function crearFilaSolicitud(s, rolFila) {
+        const fila = molde.cloneNode(true); //copia exacta
+        fila.removeAttribute("id"); //le quito el id pq no se pueden 2 en html
         fila.dataset.id = s.id;
         fila.dataset.rol = rolFila;
         fila.dataset.estado = s.estado;
-        fila.dataset.grupo = GRUPOS[s.estado];
+        fila.dataset.grupo = ESTADOS[s.estado];
+        fila.dataset.estado = s.estado;
 
-        fila.querySelector(".sol__foto").src = "/upload/" + (s.persona.foto ? s.persona.foto : "logo.png");
-        fila.querySelector(".sol__nombre").textContent = s.oferta.titulo;
-        fila.querySelector(".sol__quien").textContent =
-            (rolFila === "recibidas" ? "Solicitada por " : "Oferta de ") + s.persona.nombre + " · " + s.fecha;
-        fila.querySelector(".sol__desc").textContent = s.oferta.descripcion;
-        fila.querySelector(".sol__num").textContent = s.puntos;
-        fila.querySelector(".sol__etq").textContent = ETIQUETAS[s.estado];
-        fila.querySelector(".sol__ver").href = "/oferta/" + s.oferta.id;
+        fila.querySelector(".sFoto").src = "/upload/" + (s.persona.foto ? s.persona.foto : "logo.png");
+        fila.querySelector(".sNombre").innerHTML= s.oferta.titulo;
+        fila.querySelector(".sPersona").innerHTML = (rolFila === "recibidas" ? "Solicitada por " : "Oferta de ") + s.persona.nombre + " · " + s.fecha;
+        fila.querySelector(".sDesc").innerHTML = s.oferta.descripcion;
+        fila.querySelector(".sNumero").innerHTML = s.puntos;
+        fila.querySelector(".sEstado").innerHTML = TXTESTADOS[s.estado];
+        const botones = fila.querySelectorAll("[data-accion]");
+        for (const boton of botones) {
+            boton.addEventListener("click", function () {
+                cambiarEstado(s.id, boton.dataset.accion);
+            });
+        }
         return fila;
     }
 
-    // Muestra solo las filas del rol y la pestaña elegidos
-    function filtrar() {
+    function filtrarPorEnviadasRecibidas() {
         for (const fila of lista.children) {
-            const coincide = fila.dataset.rol === rol && fila.dataset.grupo === grupo;
+            const coincide = fila.dataset.rol === rol && fila.dataset.grupo === estado;
             fila.classList.toggle("oculto", !coincide);
         }
-
-        for (const tab of tabs) {
-            const filas = lista.querySelectorAll(`[data-rol="${rol}"][data-grupo="${tab.dataset.grupo}"]`);
-            tab.querySelector(".sol__n").textContent = filas.length;
-        }
-
-        const visibles = lista.querySelectorAll(".sol__fila:not(.oculto)").length;
+        const visibles = lista.querySelectorAll(".sFila:not(.oculto)").length;
         avisar(visibles === 0 ? "No hay solicitudes en esta sección." : "");
     }
 
     async function cargar() {
         try {
             const datos = await pedir("/api/misSolicitudes");
-            lista.replaceChildren(
-                ...datos.recibidas.map(s => crearFila(s, "recibidas")),
-                ...datos.enviadas.map(s => crearFila(s, "enviadas"))
-            );
-            filtrar();
+
+            lista.innerHTML = ""; 
+
+            for (const s of datos.recibidas) {
+                lista.appendChild(crearFilaSolicitud(s, "recibidas"));
+            }
+            for (const s of datos.enviadas) {
+                lista.appendChild(crearFilaSolicitud(s, "enviadas"));
+            }
+
+            filtrarPorEnviadasRecibidas();
         } catch (error) {
-            console.error(error);
             avisar("No se pudieron cargar las solicitudes. Inténtalo de nuevo.");
         }
     }
+
 
     async function cambiarEstado(id, accion) {
         const formulario = new FormData();
@@ -91,35 +95,32 @@ function iniciarSolicitudes() {
         if (json.ok) {
             cargar();
         } else {
-            avisar(Object.values(json.errores).join(" "));
+            let mensajes = "";
+            for (let campo in json.errores) {
+                mensajes += json.errores[campo] + " ";
+            }
+            avisar(mensajes);
         }
     }
-
-    // ===== Eventos =====
 
     for (const boton of botonesRol) {
-        boton.addEventListener("click", () => {
+        boton.addEventListener("click", function() {
             rol = boton.dataset.rol;
-            botonesRol.forEach(b => b.classList.toggle("activo", b === boton));
-            filtrar();
+            for(btn of botonesRol){
+                btn.classList.toggle("activo",btn === boton)
+            }
+            filtrarPorEnviadasRecibidas();
         });
     }
 
-    for (const tab of tabs) {
-        tab.addEventListener("click", () => {
-            grupo = tab.dataset.grupo;
-            tabs.forEach(t => t.classList.toggle("activo", t === tab));
-            filtrar();
+    for (const pestaña of pestañas) {
+        pestaña.addEventListener("click", function() {
+            estado = pestaña.dataset.estado;
+            for(p of pestañas){
+                p.classList.toggle("activo",p === pestaña)
+            }
+            filtrarPorEnviadasRecibidas();
         });
     }
-
-    // Un solo listener en la lista vale para los botones de todas las filas
-    lista.addEventListener("click", e => {
-        const boton = e.target.closest("[data-accion]");
-        if (boton !== null) {
-            cambiarEstado(boton.closest(".sol__fila").dataset.id, boton.dataset.accion);
-        }
-    });
-
     cargar();
 }
