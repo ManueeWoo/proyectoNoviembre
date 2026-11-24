@@ -56,6 +56,12 @@ class OfertaDAO{
         return $pStatment->execute([":id" => $id]);
     }
 
+    public function cambiarEstado(int $id, bool $activo):bool{
+        $sentencia = "UPDATE oferta SET activo = :activo WHERE id = :id";
+        $pStatment = $this->pdo->prepare($sentencia);
+        return $pStatment->execute([":activo" => (int)$activo, ":id"=> $id]);
+    }
+
     //QUERY
 
     public function findAll(): array{

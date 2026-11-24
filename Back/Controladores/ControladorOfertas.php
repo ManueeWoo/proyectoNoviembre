@@ -29,11 +29,6 @@ class ControladorOfertas{
         echo $this->twig->render("contenidos/misOfertas.html.twig", ["servicios"=>$servicios, "ofertas"=>$ofertas]);
     }
 
-    public function borrarOferta(int $id){
-        ((new OfertaDAO())->eliminarOfertaId($id));
-        header("Location: /misofertas");
-    }
-
     public function crearOferta(){
         $u = Sesion::dameLaSesion("user");
         if($u !== null){
@@ -47,6 +42,28 @@ class ControladorOfertas{
                 header("Location: /ofertas");
             }
         
+        }
+    }
+
+    public function borrarOferta(int $id){
+        $u = Sesion::dameLaSesion("user");
+        if($u !== null){
+            if(((new OfertaDAO())->eliminarOfertaId($id))){
+                header("Location: /ofertas");
+            }
+        }
+    }
+
+    public function cambiarEstado(int $id){
+        $u = Sesion::dameLaSesion("user");
+        if($u !== null){
+            $o = (new OfertaDAO())->findById($id);
+            if($o->getActivo() !== false){
+                ((new OfertaDAO())->cambiarEstado($id, false));
+            }else{
+                ((new OfertaDAO())->cambiarEstado($id, true));
+            }
+            header("Location: /ofertas");
         }
     }
 }
