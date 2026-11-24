@@ -8,7 +8,7 @@
         <p>Hola <strong><?= htmlspecialchars($solicitante->getNombre()) ?></strong>,</p>
         <p>El cliente <strong><?= htmlspecialchars($profesional->getNombre()) ?></strong> ha solicitado la realización de la tarea:</p>
         <blockquote style="background: #f9f9f9; padding: 10px; border-left: 4px solid #3498db;">
-            <strong><?= htmlspecialchars($solicitud->getTitulo()) ?></strong><br>
+            <strong><?= htmlspecialchars($solicitud->getOferta()->getServicio()->getTitulo()) ?></strong><br>
             <?= htmlspecialchars($solicitud->getDescripcion()) ?>
         </blockquote>
     </div>

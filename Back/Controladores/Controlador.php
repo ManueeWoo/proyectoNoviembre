@@ -15,7 +15,7 @@ class Controlador{
     }
 
     public function sacarQuienesSomos() {
-    echo $this->twig->render("contenidos/quienessomos.html.twig");
-}
+        echo $this->twig->render("contenidos/quienessomos.html.twig");
+    }
 
 }

@@ -52,6 +52,33 @@ class ServicioDAO{
         return $servicios;
     }
 
+     public function findServiciosUser(int $id): array{
+        $resultado = $this->pdo->prepare("SELECT s.*
+FROM usuario u
+JOIN accesoServicio us ON us.id_user = u.id
+JOIN servicios s       ON s.id = us.id_servicio
+JOIN categoria c       ON c.id = s.id_cat
+WHERE u.id = :id
+  AND NOT EXISTS (
+        SELECT 1
+          FROM oferta o
+         WHERE o.id_user = u.id
+           AND o.id_servicio = s.id
+      )
+ORDER BY c.titulo, s.titulo");
+$resultado->execute([":id"=>$id]);
+        $servicios = [];
+        foreach($resultado->fetchAll(PDO::FETCH_ASSOC) as $fila){
+            $servicio = $this->filaToServicio($fila);
+            array_push($servicios, $servicio);
+        }
+        
+        return $servicios;
+    }
+
+
+    
+
     public function findByIdCat(int $id): array{
         $resultado = $this->pdo->prepare("SELECT id_cat, titulo, descripcion, id FROM servicios WHERE id_cat=:id_cat");
         $resultado->execute([":id_cat"=>$id]);

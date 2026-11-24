@@ -4,6 +4,7 @@ namespace App\Controladores;
 use App\DAO\OfertaDAO;
 use App\DAO\ServicioDAO;
 use App\Helpers\Sesion;
+use App\Modelo\Oferta;
 use Twig\Environment;
 class ControladorOfertas{
     private Environment $twig;
@@ -23,7 +24,7 @@ class ControladorOfertas{
 
     public function misOfertas(){
         $u = Sesion::dameLaSesion("user");
-        $servicios=((new ServicioDAO())->findAll());
+        $servicios=((new ServicioDAO())->findServiciosUser($u->getId()));
         $ofertas = ((new OfertaDAO())->findByIdUsuario($u->getId()));
         echo $this->twig->render("contenidos/misOfertas.html.twig", ["servicios"=>$servicios, "ofertas"=>$ofertas]);
     }
@@ -31,5 +32,21 @@ class ControladorOfertas{
     public function borrarOferta(int $id){
         ((new OfertaDAO())->eliminarOfertaId($id));
         header("Location: /misofertas");
+    }
+
+    public function crearOferta(){
+        $u = Sesion::dameLaSesion("user");
+        if($u !== null){
+            $servicio = ((new ServicioDAO())->findById($_POST['servicio']));
+            $puntos = $_POST['puntos'];
+            $tiempo = $_POST['tiempo'];
+            $descripcion = $_POST['descripcion'];
+            $activo = isset($_POST['activo']) ? 1 : 0;
+            $o = new Oferta($servicio, $u,$puntos, $descripcion, $tiempo, $activo);
+            if(((new OfertaDAO())->insertarOferta($o))){
+                header("Location: /ofertas");
+            }
+        
+        }
     }
 }
