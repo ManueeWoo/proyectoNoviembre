@@ -41,6 +41,7 @@ function iniciarSolicitudes() {
         fila.dataset.estado = s.estado;
         fila.dataset.grupo = ESTADOS[s.estado];
         fila.dataset.estado = s.estado;
+        fila.dataset.yo = s.yoFinalice ? "si" : "no";
 
         fila.querySelector(".sFoto").src = "/upload/" + (s.persona.foto ? s.persona.foto : "logo.png");
         fila.querySelector(".sNombre").innerHTML= s.oferta.titulo;
@@ -85,15 +86,18 @@ function iniciarSolicitudes() {
         }
     }
 
-
     async function cambiarEstado(id, accion) {
+    try {
+        const url = accion === "finalizar" ? "/api/solicitud/finalizar" : "/api/solicitud/estado";
+
         const formulario = new FormData();
         formulario.append("id", id);
         formulario.append("accion", accion);
 
-        const json = await pedir("/api/solicitud/estado", { method: "POST", body: formulario });
+        const json = await pedir(url, { method: "POST", body: formulario });
+
         if (json.ok) {
-            cargar();
+            await cargar();
         } else {
             let mensajes = "";
             for (let campo in json.errores) {
@@ -101,7 +105,10 @@ function iniciarSolicitudes() {
             }
             avisar(mensajes);
         }
+    } catch (error) {
+        avisar("No se pudo completar la acción. Inténtalo de nuevo.");
     }
+}
 
     for (const boton of botonesRol) {
         boton.addEventListener("click", function() {

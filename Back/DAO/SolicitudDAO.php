@@ -83,7 +83,7 @@ private PDO $pdo;
             "SELECT s.id, s.estado, s.fecha, s.puntos,
                     o.id AS oferta_id, o.descripcion,
                     sv.titulo AS servicio,
-                    u.id AS persona_id, u.nombre AS persona_nombre, u.foto AS persona_foto
+                    u.id AS persona_id, u.nombre AS persona_nombre, u.foto AS persona_foto, s.fin_cliente, s.fin_profesional
             FROM solicitud s
             JOIN oferta o    ON o.id  = s.id_oferta
             JOIN servicios sv ON sv.id = o.id_servicio
@@ -119,6 +119,57 @@ private PDO $pdo;
         $stmt->execute([":nuevo" => $nuevo, ":id" => $id]);
         return $stmt->rowCount() === 1;
     }
+
+
+    public function finalizar(int $idSolicitud, int $idUser): bool {
+    $hecho = false;
+
+    try {
+        $stmt = $this->pdo->prepare(
+            "SELECT s.id_user AS id_cliente, s.puntos, s.estado, s.fin_cliente, s.fin_profesional,
+                    o.id_user AS id_prof, c.saldo
+               FROM solicitud s
+               JOIN oferta o  ON o.id = s.id_oferta
+               JOIN usuario c ON c.id = s.id_user
+              WHERE s.id = :id"
+        );
+        $stmt->execute([":id" => $idSolicitud]);
+        $s = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($s !== false && $s['estado'] === 'aceptado') {
+            $soyCliente = (int)$s['id_cliente'] === $idUser;
+
+            // pa saber si yo le dao falta el profesional y al reves
+            $completa = $soyCliente ? $s['fin_profesional'] == 1 : $s['fin_cliente'] == 1;
+
+            if (!$completa || $s['saldo'] >= $s['puntos']) {
+                $this->pdo->beginTransaction();
+
+                $columna = $soyCliente ? "fin_cliente" : "fin_profesional";
+                $stmt2 = $this->pdo->prepare("UPDATE solicitud SET $columna = 1 WHERE id = :id");
+                $stmt2->execute([":id" => $idSolicitud]);
+
+                if ($completa) {
+                    $stmt3 = $this->pdo->prepare("UPDATE usuario SET saldo = saldo - :p WHERE id = :u");
+                    $stmt3->execute([":p" => $s['puntos'], ":u" => $s['id_cliente']]);
+                    $stmt4=$this->pdo->prepare("UPDATE usuario SET saldo = saldo + :p WHERE id = :u");
+                    $stmt4->execute([":p" => $s['puntos'], ":u" => $s['id_prof']]);
+                    $stmt5=$this->pdo->prepare("UPDATE solicitud SET estado = 'completado' WHERE id = :id");
+                    $stmt5->execute([":id" => $idSolicitud]);
+                }
+
+                $this->pdo->commit();
+                $hecho = true;
+            }
+        }
+    } catch (\Throwable $e) {
+        if ($this->pdo->inTransaction()) {
+            $this->pdo->rollBack();
+        }
+    }
+
+    return $hecho;
+}
 
     public function filaToSolicitud(array $datos): Solicitud{
     $userDAO = new UsuarioDAO();

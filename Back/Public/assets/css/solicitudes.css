@@ -59,3 +59,8 @@
 
 /* El JS pone y quita la clase "oculto" */
 .sFila.oculto, .sAviso.oculto { display: none; }
+.sFinalizar, .sEsperando { display: none; }
+.sEsperando { font-size: 13px; color: var(--suave); }
+
+.sFila[data-estado="aceptado"][data-yo="no"] .sFinalizar,
+.sFila[data-estado="aceptado"][data-yo="si"] .sEsperando { display: inline-block; }

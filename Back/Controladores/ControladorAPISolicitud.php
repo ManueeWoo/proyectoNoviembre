@@ -73,14 +73,14 @@ class ControladorAPISolicitud{
             $statusCode = 401;
         } else {
             $dao = new SolicitudDAO();
-            $datos['recibidas'] = $this->formatear($dao->findSolicitudUser($sesion->getId(), true));
-            $datos['enviadas']  = $this->formatear($dao->findSolicitudUser($sesion->getId(), false));
+            $datos['recibidas'] = $this->formatear($dao->findSolicitudUser($sesion->getId(), true), true);//recibidas
+            $datos['enviadas']  = $this->formatear($dao->findSolicitudUser($sesion->getId(), false), false);//enviadas
         }
         Respondedor::jsonResponse($datos, $statusCode);
     }
 
 // tng q foramtear para q no salgan campos como el email, contraseña solo loq quiero
-private function formatear(array $filas): array {
+private function formatear(array $filas, bool $recibidas): array {
     $resultado = [];
     foreach ($filas as $f) {
         $resultado[] = [
@@ -98,6 +98,7 @@ private function formatear(array $filas): array {
                 'nombre' => $f['persona_nombre'],
                 'foto'   => $f['persona_foto'],
             ],
+             'yoFinalice' => (bool)($recibidas ? $f['fin_profesional'] : $f['fin_cliente']),
         ];
     }
     return $resultado;
@@ -142,6 +143,21 @@ public function cambiarEstadoSolicitud() {
     if (!empty($errores) && $statusCode === 200) {
         $statusCode = 400;
     }
+    Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
+}
+
+public function finalizarSolicitud() {
+    $statusCode = 200;
+    $errores = [];
+    $sesion = Sesion::dameLaSesion("user");
+
+    if ($sesion === null) {
+        $statusCode = 401;
+    } elseif (!(new SolicitudDAO())->finalizar((int)($_POST['id']), $sesion->getId())) {
+        $statusCode = 400;
+        $errores['finalizar'] = 'No se pudo finalizar la solicitud.';
+    }
+
     Respondedor::jsonResponse(['ok' => empty($errores), 'errores' => $errores], $statusCode);
 }
  

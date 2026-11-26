@@ -36,6 +36,8 @@
             <button type="button" class="sBtn sBtnok sol__ped-rec" data-accion="aceptar">Aceptar</button>
             <button type="button" class="sBtn sBtnNo sol__ped-rec" data-accion="rechazar">Rechazar</button>
             <button type="button" class="sBtn sBtnNo sol__ped-env" data-accion="cancelar">Cancelar</button>
+            <button type="button" class="sBtn sBtnok sFinalizar" data-accion="finalizar">Marcar como finalizado</button>
+            <span class="sEsperando">Esperando a la otra parte</span>
             <a class="sBtn sOtro sVer">Ver oferta</a>
         </div>
     </article>
