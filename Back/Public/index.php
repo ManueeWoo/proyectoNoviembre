@@ -32,7 +32,7 @@ $router->get("/login",ControladorLogin::class."@sacarLogin");
 $router->post("/login", ControladorLogin::class."@sacarLogin");
 $router->get("/cerrarsesion",ControladorLogin::class."@cerrarSesion");
 $router->get("/verperfil",ControladorLogin::class."@verPerfil");
-$router->post("/verperfil", ControladorLogin::class."@guardarFoto");
+$router->post("/verperfil", ControladorLogin::class."@guardarPerfil");
 $router->get("/api/categorias", ControladorAPIUsuario::class."@darCategorias");
 $router->get("/api/servicios/{id}",ControladorAPIUsuario::class."@darServicios");
 $router->post("/api/registrar",ControladorAPIUsuario::class."@registrar");

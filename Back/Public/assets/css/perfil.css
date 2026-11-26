@@ -69,3 +69,85 @@
   font-weight: bold;
   color: #1e293b;
 }
+
+.perfil {
+    max-width: 450px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.perfilFoto {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.perfilFoto img {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #ddd;
+}
+
+#vistaPerfil {
+    text-align: center;
+}
+
+#vistaPerfil h2 {
+    margin-bottom: 25px;
+}
+
+.perfilDatos {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+}
+
+.perfilDatos li {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 5px;
+    border-bottom: 1px solid #ddd;
+}
+
+.perfilDatos span {
+    font-weight: bold;
+}
+
+.perfilCampos {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.perfilCampos input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.perfilBotones {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.perfilBotones button,
+#editarPerfil {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #f45b0b;
+    color: white;
+    cursor: pointer;
+}
+
+.error {
+    color: red;
+}
+
+

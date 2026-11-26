@@ -37,38 +37,112 @@ class ControladorLogin{
     }
 
     public function verPerfil(){
-        $usuario = Sesion::dameLaSesion("user");
-        echo $this->twig->render("contenidos/verPerfil.html.twig", ["usuario" => $usuario]);
+    $usuario = Sesion::dameLaSesion("user");
+
+    echo $this->twig->render("contenidos/verPerfil.html.twig", [
+        "usuario" => $usuario,
+        "editar" => false,
+        "errores" => [],
+        "valores" => []
+    ]);
+}
+
+   public function guardarPerfil(){
+
+    $u = Sesion::dameLaSesion("user");
+
+    $repo = new UsuarioDAO();
+    $errores = [];
+
+    $valores = [
+        "nombre" => trim($_POST['nombre'] ?? ''),
+        "ap1" => trim($_POST['ap1'] ?? ''),
+        "ap2" => trim($_POST['ap2'] ?? ''),
+        "telefono" => trim($_POST['telefono'] ?? '')
+    ];
+
+    // Validaciones
+    if ($valores["nombre"] === '') {
+        $errores[] = 'El nombre es obligatorio.';
     }
 
-    public function guardarFoto():array{
-        $u = Sesion::dameLaSesion("user");
-        $errores=[];
+    if ($valores["ap1"] === '') {
+        $errores[] = 'El primer apellido es obligatorio.';
+    }
 
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    if (!preg_match('/^[0-9+ ]{9,15}$/', $valores["telefono"])) {
+        $errores[] = 'El teléfono no es válido.';
+    }
 
-            $formatos = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'];
-            $tipo = mime_content_type($_FILES['foto']['tmp_name']);
-            if (!isset($formatos[$tipo])) {
-                $errores["formato"] = "Formato no permitido";
-            }
+    if (isset($_FILES['foto']) &&
+        $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+
+        $formatos = [
+            'image/jpeg' => 'jpg',
+            'image/png' => 'png',
+            'image/webp' => 'webp'
+        ];
+
+        $tipo = mime_content_type($_FILES['foto']['tmp_name']);
+
+        if (!isset($formatos[$tipo])) {
+
+            $errores[] = "Formato de imagen no permitido.";
+
+        } else {
+
             $nombreFoto = 'usuario_' . $u->getId() . '.' . $formatos[$tipo];
+
             $destino = __DIR__ . '/../Public/upload/' . $nombreFoto;
-            //muevo la foto a la carpeta de upload
+
             if (move_uploaded_file($_FILES['foto']['tmp_name'], $destino)) {
-                $repo = new UsuarioDAO();
-                $u->setFoto($nombreFoto);  
-                
-            } else{
-                $errores["cargarCarpeta"] = "Fallo en la subida";
+
+                $u->setFoto($nombreFoto);
+
+                if (!$repo->actualizarFoto($u->getId(), $nombreFoto)) {
+                    $errores[] = "No se pudo actualizar la foto en la base de datos.";
+                }
+
+            } else {
+                $errores[] = "Error al subir la fotografía.";
             }
         }
-        if($repo->actualizarFoto($u->getId(), $nombreFoto)){
-            header("Location: /verperfil");
-            exit;
-        }else{
-            $errores["cargarBD"] = "Fallo en la subida";
-        }
-        return $errores;
     }
+
+    if (!empty($errores)) {
+
+        echo $this->twig->render("contenidos/verPerfil.html.twig", [
+            "usuario" => $u,
+            "editar" => true,
+            "errores" => $errores,
+            "valores" => $valores
+        ]);
+
+        return;
+    }
+
+    if ($repo->actualizarPerfil(
+        $u->getId(),
+        $valores["nombre"],
+        $valores["ap1"],
+        $valores["ap2"],
+        $valores["telefono"]
+    )) {
+ $u->setNombre($valores["nombre"]);
+    $u->setAp1($valores["ap1"]);
+    $u->setAp2($valores["ap2"]);
+    $u->setTelefono($valores["telefono"]);
+        header("Location: /verperfil");
+        exit;
+
+    } else {
+
+        echo $this->twig->render("contenidos/verPerfil.html.twig", [
+            "usuario" => $u,
+            "editar" => true,
+            "errores" => ["No se pudieron actualizar los datos."],
+            "valores" => $valores
+        ]);
+    }
+}
 }

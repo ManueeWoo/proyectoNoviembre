@@ -52,6 +52,17 @@ private PDO $pdo;
         return $pStatment->execute([":pdf" => $pdf, ":id" => $id]);
     }
 
+    public function actualizarPerfil(int $id, string $nombre, string $ap1, string $ap2, string $tel): bool {
+    $stmt = $this->pdo->prepare(
+        "UPDATE usuario SET nombre = :nombre, ap1 = :ap1, ap2 = :ap2, tel = :tel
+          WHERE id = :id"
+    );
+    return $stmt->execute([
+        ":nombre" => $nombre, ":ap1" => $ap1, ":ap2" => $ap2,
+        ":tel" => $tel, ":id" => $id,
+    ]);
+}
+
 
     //QUERY
 
