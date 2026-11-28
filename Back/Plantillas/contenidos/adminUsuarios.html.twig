@@ -43,7 +43,7 @@
                 <td>{{ u.rol }}</td>
                 <td>{{ u.alta|date('d/m/Y') }}</td>
                 <td class="admin__acciones">
-                  <a class="btn" href="/admin/usuarios/{{ u.id }}/editar">Editar</a>
+                  <a class="btn" href="/adminUsers/editar/{{ u.id }}">Editar</a>
 
                   {% if u.id != yo.id %}
                     <form action="/adminUsers/borrar/{{ u.id }}" method="POST">

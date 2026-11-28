@@ -1,0 +1,50 @@
+{% extends 'layout.html.twig' %}
+
+{% block estilo %}
+  {{ parent() }}
+  <link rel="stylesheet" href="/assets/css/admin.css">
+{% endblock %}
+
+{% block content %}
+<section class="admin">
+  <a href="/adminUsers">← Volver al panel</a>
+  <h1 class="admin__titulo">Editar usuario #{{ editado.id }}</h1>
+
+  {% if errores %}
+    <ul class="admin__errores">
+      {% for error in errores %}
+        <li>{{ error }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  <form class="admin__form" action="/adminUsers/editar/{{ editado.id }}" method="POST">
+    <label>Nombre
+      <input type="text" name="nombre" value="{{ valores.nombre }}" required>
+    </label>
+    <label>Primer apellido
+      <input type="text" name="ap1" value="{{ valores.ap1 }}" required>
+    </label>
+    <label>Segundo apellido
+      <input type="text" name="ap2" value="{{ valores.ap2 }}">
+    </label>
+    <label>Teléfono
+      <input type="tel" name="telefono" value="{{ valores.telefono }}" required>
+    </label>
+    <label>Email
+      <input type="email" name="email" value="{{ valores.email }}" required>
+    </label>
+    <label>Rol
+      <select name="rol" {{ editado.id == yo.id ? 'disabled' : '' }}>
+        <option value="usuario" {{ valores.rol == 'usuario' ? 'selected' : '' }}>usuario</option>
+        <option value="admin" {{ valores.rol == 'admin' ? 'selected' : '' }}>admin</option>
+      </select>
+    </label>
+    <label>Saldo (puntos)
+      <input type="number" name="saldo" min="0" value="{{ valores.saldo }}" required>
+    </label>
+
+    <button type="submit" class="btn btn--ok">Guardar cambios</button>
+  </form>
+</section>
+{% endblock %}

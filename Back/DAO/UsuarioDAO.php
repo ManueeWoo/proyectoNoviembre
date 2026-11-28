@@ -63,6 +63,19 @@ private PDO $pdo;
     ]);
 }
 
+public function actualizarUserDesdeAdmin(int $id, string $nombre, string $ap1, string $ap2,
+                                     string $tel, string $email, string $rol, int $saldo): bool {
+    $stmt = $this->pdo->prepare(
+        "UPDATE usuario
+            SET nombre = :nombre, ap1 = :ap1, ap2 = :ap2, tel = :tel,
+                email = :email, rol = :rol, saldo = :saldo
+          WHERE id = :id"
+    );
+    return $stmt->execute([
+        ":nombre" => $nombre, ":ap1" => $ap1, ":ap2" => $ap2, ":tel" => $tel,
+        ":email" => $email, ":rol" => $rol, ":saldo" => $saldo, ":id" => $id,
+    ]);
+}
 
     //QUERY
 

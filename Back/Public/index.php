@@ -52,6 +52,8 @@ $router->post("/misOfertas/crear", ControladorOfertas::class."@crearOferta");
 $router->post("/misOfertas/borrar/{id}", ControladorOfertas::class."@borrarOferta");
 $router->post("/misOfertas/estado/{id}", ControladorOfertas::class."@cambiarEstado");
 $router->post("/api/solicitud/finalizar", ControladorAPISolicitud::class."@finalizarSolicitud");
+$router->get("/adminUsers/editar/{id}",  ControladorAdmin::class."@formEditarUsuario");
+$router->post("/adminUsers/editar/{id}", ControladorAdmin::class."@guardarEdicionUsuario");
 $router->dispatch($_SERVER['REQUEST_METHOD'],$_SERVER['REQUEST_URI']);
 
 

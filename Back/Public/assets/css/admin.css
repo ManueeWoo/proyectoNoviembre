@@ -165,3 +165,9 @@
   background: #fcd2cf;
   border-color: #f7aea8;
 }
+
+.admin__form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 700px; }
+.admin__form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: #6b7280; }
+.admin__form input, .admin__form select { padding: 8px; border: 1px solid #ccc; border-radius: 8px; font: inherit; }
+.admin__form .btn { grid-column: 1 / -1; justify-self: start; }
+.admin__errores { color: #b42318; }
