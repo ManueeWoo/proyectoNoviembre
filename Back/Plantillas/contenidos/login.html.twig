@@ -4,12 +4,6 @@
 <script src="/assets/js/registro/LogicaRegistro.js" defer></script>
 <script src="/assets/js/registro/modal.js" defer></script>
 {% endblock %}
-{% block estilo %}
-{{parent()}}
-<link rel="stylesheet" href="/assets/css/login.css">
-<link rel="stylesheet" href="/assets/css/modal.css">
-<link rel="stylesheet" href="/assets/css/registro.css">
-{% endblock %}
 {% block content %}
 {% if errores is not empty %}
 <div class="errores">

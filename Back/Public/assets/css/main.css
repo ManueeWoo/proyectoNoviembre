@@ -1,0 +1,367 @@
+/* ==========================================================
+   VARIABLES
+   ========================================================== */
+:root {
+  /* Marca */
+  --naranja: #ff5100;
+  --naranja-osc: #d94400;
+  --crema: #fff4ee;
+  --crema-borde: #f0e2d9;
+  --rosa: #d6004c;
+  --azul: #3b82f6;
+  --azul-osc: #2563eb;
+  --azul-claro: #dde8ff;
+  --oscuro: #1f2937;
+
+  /* Texto y neutros */
+  --texto: var(--oscuro);
+  --suave: #6b7280;
+  --borde: #e5e7eb;
+  --borde-fuerte: #ccc;
+  --borde-hover: #999;
+  --gris-fondo: #f3f4f6;
+  --gris-claro: #f9fafb;
+
+  /* Estados */
+  --ok: #15803d;
+  --ok-bg: #dcfce7;
+  --ok-borde: #bbf0cc;
+  --peligro: #b42318;
+  --peligro-bg: #fee4e2;
+  --peligro-borde: #fbc9c5;
+
+  /* Forma */
+  --pildora: 999px;
+  --ancho: 1100px;
+  --sombra: 0 4px 15px rgba(0, 0, 0, 0.1);
+  --fuente: system-ui, "Segoe UI", sans-serif;
+}
+
+/* ==========================================================
+   BASE Y CONTENEDORES
+   ========================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; }
+
+/* Contenedores de página: ocupan todo el ancho hasta su máximo y se centran */
+.servicios, .ofertas, .detalle, .mis, .quienes, .solicitud, .admin { width: 100%; margin: 0 auto; }
+.servicios, .ofertas { max-width: 1200px; padding: 20px; }
+.detalle { max-width: 1000px; padding: 20px; }
+.solicitud { max-width: 1000px; padding: 24px 20px; }
+.mis { max-width: var(--ancho); padding: 20px; }
+.quienes { max-width: 900px; padding: 40px 20px; color: var(--texto); }
+.admin { max-width: var(--ancho); padding: 32px 20px 56px; color: var(--texto); }
+
+/* ==========================================================
+   CABECERA, MENÚ Y PIE
+   ========================================================== */
+.cabecera { display: flex; justify-content: space-between; align-items: center; width: 100%; height: 70px; padding: 0 30px; background: var(--naranja); position: sticky; top: 0; z-index: 100; }
+.truequeOtrato { display: flex; align-items: center; gap: 12px; }
+.truequeOtrato h2 { margin: 0; font-size: 22px; color: #fff; }
+.logo { height: 45px; width: auto; }
+
+.navbar { display: flex; align-items: center; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.itemnav a { display: block; padding: 10px 16px; text-decoration: none; color: #e5e7eb; font-weight: 600; border-radius: 6px; }
+.itemnav a:hover { background: var(--azul); color: #fff; }
+
+.itemnav.despegable-padre .despegable-hijo { display: none; position: absolute; top: 100%; right: 0; min-width: 150px; margin: 0; padding: 0; background: var(--naranja); list-style: none; border-radius: 4px; z-index: 100; }
+.itemnav.despegable-padre.abierto .despegable-hijo { display: block; }
+.itemnav.despegable-padre .despegable-hijo li { padding: 10px 15px; list-style: none; color: #fff; font-family: var(--fuente); font-size: 14px; white-space: nowrap; cursor: pointer; }
+.despegable-hijo li:hover { background: var(--azul); }
+
+.footer { margin-top: auto; padding: 15px 0; background: var(--naranja); color: #fff; text-align: center; font-family: var(--fuente); font-size: 14px; }
+.footer p { margin: 0; }
+
+/* ==========================================================
+   COMPONENTES COMPARTIDOS
+   ========================================================== */
+/* Botones (admin y mis ofertas) */
+.btn { display: inline-block; padding: 7px 14px; background: #fff; border: 1px solid var(--borde); border-radius: 8px; color: var(--texto); font: inherit; font-size: 13px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.btn:hover { background: var(--gris-fondo); border-color: #cfd3da; }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--rosa); outline-offset: 2px; }
+.btn--ok { background: var(--ok-bg); border-color: var(--ok-borde); color: var(--ok); }
+.btn--ok:hover { background: #c5f2d4; border-color: #9fe5b6; }
+.btn--peligro { background: var(--peligro-bg); border-color: var(--peligro-borde); color: var(--peligro); }
+.btn--peligro:hover { background: #fcd2cf; border-color: #f7aea8; }
+
+/* Errores */
+.errores { margin-bottom: 12px; padding: 10px 14px; background: #fdecea; border: 1px solid #f5c2c0; border-radius: 6px; color: var(--peligro); }
+.errores ul { margin: 0; padding-left: 18px; }
+.error, .admin__errores, .mis__errores { color: var(--peligro); }
+
+/* Mensajes de lista vacía */
+.servicios__vacio, .admin__vacio { padding: 20px 0; color: var(--suave); font-size: 14px; }
+.admin__vacio { margin: 0; text-align: center; }
+
+/* Filas de acciones (botones en línea) */
+.admin__acciones, .oferta__acciones, .sAcciones { display: flex; gap: 8px; }
+.admin__acciones form, .oferta__acciones form { margin: 0; }
+
+/* Spinner */
+.spinner { width: 40px; height: 40px; margin: 40px auto; border: 4px solid var(--crema-borde); border-top-color: var(--naranja); border-radius: 50%; animation: girar 0.8s linear infinite; }
+@keyframes girar { to { transform: rotate(360deg); } }
+
+/* El JS pone y quita la clase "oculto" */
+.tarjeta.oculto, .servicios__vacio.oculto, .spinner.oculto, .sFila.oculto, .sAviso.oculto { display: none; }
+
+/* ==========================================================
+   MODAL
+   ========================================================== */
+#velo { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(150, 150, 150, 0.6); z-index: 999; }
+#modal { position: fixed; top: 25%; left: 25%; width: 50%; height: 50%; background: #fff; overflow: auto; z-index: 1000; }
+
+/* ==========================================================
+   LOGIN Y REGISTRO
+   ========================================================== */
+.login, .registroForm { width: 100%; margin: 0 auto; padding: 20px; background: #fff; border-radius: 12px; box-shadow: var(--sombra); }
+.login { max-width: 360px; }
+.registroForm { max-width: 640px; }
+.loginForm h2, .registroForm h2 { margin-bottom: 15px; text-align: center; color: var(--texto); font-size: 1.5rem; }
+
+.grupo { display: flex; flex-direction: column; margin-bottom: 15px; }
+.grupo label, .registroForm .tablaServicios th { font-weight: 600; color: #4b5563; }
+.grupo label { margin-bottom: 5px; }
+.grupo input, .registroForm select { border: 1px solid #d1d5db; border-radius: 6px; outline: none; }
+.grupo input { width: 100%; padding: 10px; }
+.grupo input:focus, .registroForm select:focus { border-color: var(--azul); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+
+.registroForm .tablaServicios { width: 100%; margin-bottom: 15px; border-collapse: separate; border-spacing: 8px 0; table-layout: fixed; }
+.registroForm .tablaServicios th { padding-bottom: 5px; font-size: 0.9rem; text-align: left; }
+.registroForm .tablaServicios td { vertical-align: top; }
+.registroForm select { width: 100%; padding: 6px; background: #fff; color: var(--texto); }
+.registroForm select option { padding: 4px 6px; cursor: pointer; }
+.registroForm select option:checked { background: var(--azul); color: #fff; }
+
+.btnSubmit { width: 100%; padding: 10px; background: var(--azul); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+.btnSubmit:hover { background: var(--azul-osc); }
+
+/* ==========================================================
+   INICIO
+   ========================================================== */
+.inicio { width: 100%; color: var(--texto); font-family: var(--fuente); }
+.contenedor { max-width: var(--ancho); margin: 0 auto; padding: 0 20px; }
+
+/* Botones de la portada (el mismo nombre ".boton" se usa en detalle de oferta, por eso van acotados) */
+.inicio .boton { display: inline-block; padding: 12px 24px; border: 2px solid var(--naranja); border-radius: var(--pildora); color: var(--naranja); font-weight: 600; text-decoration: none; }
+.inicio .boton:hover { background: var(--naranja); color: #fff; }
+.inicio .boton--claro { background: #fff; border-color: #fff; color: var(--naranja); }
+.inicio .boton--claro:hover { background: var(--crema); border-color: var(--crema); color: var(--naranja-osc); }
+/* Botón naranja (también lo usa quiénes somos) */
+.inicio .boton--principal, .quienes__boton { background: var(--naranja); color: #fff; }
+.inicio .boton--principal:hover, .quienes__boton:hover { background: var(--naranja-osc); border-color: var(--naranja-osc); }
+
+.hero { padding: 72px 0 80px; background: var(--crema); text-align: center; }
+.hero__etiqueta { display: inline-block; margin: 0 0 16px; padding: 4px 14px; background: #fff; border: 1px solid var(--crema-borde); border-radius: var(--pildora); font-size: 13px; font-weight: 600; color: var(--naranja-osc); }
+.hero__titulo { margin: 0 0 16px; font-size: clamp(30px, 5vw, 48px); line-height: 1.15; }
+.hero__titulo span { color: var(--naranja); }
+.hero__texto { max-width: 560px; margin: 0 auto 28px; color: var(--suave); font-size: 18px; line-height: 1.6; }
+.hero__botones { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+
+.seccion { padding: 64px 0; }
+.seccion--suave { background: var(--gris-claro); }
+.seccion__titulo { margin: 0 0 8px; text-align: center; font-size: 30px; }
+.seccion__sub { margin: 0 0 40px; text-align: center; color: var(--suave); }
+.seccion--suave .seccion__titulo { margin-bottom: 40px; }
+
+.pasos, .ventajas { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+.paso, .ventaja { padding: 24px; background: #fff; border: 1px solid var(--crema-borde); border-radius: 14px; }
+.ventaja { border-top: 4px solid var(--naranja); }
+.paso__num { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; margin-bottom: 14px; background: var(--naranja); border-radius: 50%; color: #fff; font-weight: 700; }
+
+.cta { padding: 48px 24px; background: var(--naranja); border-radius: 18px; color: #fff; text-align: center; }
+.cta h2 { margin: 0 0 8px; font-size: 28px; }
+.cta p { margin: 0 0 24px; opacity: 0.9; }
+
+/* ==========================================================
+   QUIÉNES SOMOS
+   ========================================================== */
+.quienes__cabecera { margin-bottom: 36px; text-align: center; }
+.quienes__cabecera h1 { margin: 0 0 8px; font-size: 36px; }
+.quienes__cabecera p { margin: 0; color: var(--suave); font-size: 18px; }
+.quienes__texto { margin-bottom: 36px; }
+.quienes__texto h2 { margin: 0 0 12px; font-size: 24px; }
+.quienes__texto p { margin: 0 0 12px; line-height: 1.7; }
+.quienes__valores { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 36px; }
+.valor { padding: 20px; border: 1px solid var(--crema-borde); border-top: 4px solid var(--naranja); border-radius: 12px; }
+.quienes__cierre { padding: 28px 20px; background: var(--crema); border-radius: 12px; text-align: center; }
+.quienes__cierre p { margin: 0 0 14px; font-size: 18px; }
+.quienes__boton { display: inline-block; padding: 10px 22px; border-radius: var(--pildora); font-weight: 600; text-decoration: none; }
+
+/* Títulos y textos de las tarjetas de inicio y quiénes somos */
+.paso h3, .ventaja h3, .valor h3 { margin: 0 0 8px; font-size: 18px; }
+.paso p, .ventaja p, .valor p { margin: 0; color: var(--suave); line-height: 1.6; }
+
+/* ==========================================================
+   SERVICIOS (listado con filtros)
+   ========================================================== */
+.servicios__layout { display: grid; grid-template-columns: 240px 1fr; gap: 24px; align-items: start; }
+.servicios__total { margin: 0 0 12px; font-size: 14px; color: var(--suave); }
+.servicios__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+
+.tarjeta { display: block; border: 1px solid var(--borde); border-radius: 10px; text-decoration: none; color: inherit; overflow: hidden; }
+.tarjeta:hover { border-color: var(--borde-hover); }
+.tarjeta__img { height: 120px; background: var(--gris-fondo); }
+.tarjeta__cat { display: inline-block; margin: 8px; padding: 2px 8px; background: var(--azul-claro); border-radius: 10px; font-size: 12px; }
+.tarjeta__cuerpo { padding: 10px; }
+.tarjeta__titulo { margin: 0 0 6px; font-size: 16px; }
+.tarjeta__desc { margin: 0 0 10px; font-size: 14px; color: var(--suave); }
+.tarjeta__pie { display: flex; justify-content: space-between; font-size: 13px; color: var(--suave); }
+.tarjeta__ver { color: var(--rosa); font-weight: bold; }
+
+.filtros { order: -1; position: sticky; top: 16px; padding: 16px; border: 1px solid var(--borde); border-radius: 10px; }
+.filtros__titulo { margin: 0 0 12px; font-size: 16px; }
+.filtros__opcion { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 14px; cursor: pointer; }
+.filtros__limpiar { width: 100%; margin-top: 12px; padding: 8px; background: #fff; border: 1px solid var(--borde); border-radius: 8px; cursor: pointer; }
+.filtros__limpiar:hover { border-color: var(--borde-hover); }
+
+/* ==========================================================
+   OFERTAS: de un servicio (/servicio/id) y mis ofertas
+   ========================================================== */
+.ofertas__volver { font-size: 14px; color: var(--suave); text-decoration: none; }
+.ofertas__grid, .mis__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.ofertas__grid { margin-top: 16px; }
+
+.oferta { display: flex; flex-direction: column; gap: 10px; padding: 14px; border: 1px solid var(--borde); border-radius: 10px; }
+.oferta--inactiva { opacity: 0.6; }
+.oferta__cab { display: flex; justify-content: space-between; gap: 8px; }
+.oferta__usuario { display: flex; align-items: center; gap: 8px; }
+.oferta__avatar { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: var(--azul-claro); border-radius: 50%; font-weight: bold; object-fit: cover; }
+.oferta__estado { margin-left: auto; padding: 2px 8px; background: var(--gris-fondo); border-radius: 10px; font-size: 12px; }
+.oferta__desc { margin: 0; font-size: 14px; color: var(--suave); }
+.oferta__datos { display: flex; justify-content: space-between; gap: 20px; padding-top: 10px; border-top: 1px solid var(--borde); }
+.oferta__etiqueta, .mis .oferta__datos span { display: block; font-size: 12px; color: var(--suave); }
+.oferta__valor { font-weight: bold; }
+.oferta__acciones { flex-wrap: wrap; }
+.oferta__boton { padding: 8px; border: 1px solid var(--borde); border-radius: 8px; text-align: center; text-decoration: none; color: inherit; }
+.oferta__boton:hover { border-color: var(--borde-hover); }
+
+/* Mis ofertas */
+.nueva { margin-bottom: 20px; }
+.nueva__boton { cursor: pointer; font-weight: bold; }
+.nueva__form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; padding: 16px; border: 1px solid var(--borde); border-radius: 10px; }
+.campo--ancho, .nueva__form .mis__errores, .nueva__form .btn { grid-column: 1 / -1; }
+.campo input[type="number"], .campo select, .campo textarea { width: 100%; }
+.mis__aviso { color: var(--ok); }
+
+/* ==========================================================
+   DETALLE DE UNA OFERTA
+   ========================================================== */
+.detalle__migas { margin-bottom: 16px; font-size: 14px; color: var(--suave); }
+.detalle__migas a { color: inherit; text-decoration: none; }
+.detalle__cols { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
+.detalle__principal, .usuario { padding: 18px; border: 1px solid var(--borde); border-radius: 10px; }
+.detalle__titulo { margin: 0 0 8px; font-size: 26px; }
+.detalle__estado { display: inline-block; margin: 0 0 16px; padding: 2px 10px; border-radius: 10px; font-size: 13px; }
+.detalle__estado--ok { background: var(--ok-bg); }
+.detalle__estado--no { background: var(--gris-fondo); }
+.detalle__datos { display: flex; gap: 12px; margin-bottom: 18px; }
+.detalle__datos div { flex: 1; padding: 10px 12px; background: var(--gris-fondo); border-radius: 8px; }
+.detalle__datos span { display: block; font-size: 12px; color: var(--suave); }
+.detalle__datos strong { font-size: 20px; }
+.detalle__subtitulo { margin: 0 0 6px; font-size: 16px; }
+.detalle__desc { margin: 0; color: var(--suave); line-height: 1.6; }
+
+.usuario__cabecera { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.usuario__foto { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.usuario__nombre { margin: 0; font-weight: bold; }
+.usuario__alta { margin: 0; font-size: 13px; color: var(--suave); }
+/* Botones del detalle (acotados: el nombre ".boton" también lo usa inicio) */
+.usuario .boton { display: block; margin-bottom: 8px; padding: 9px; border: 1px solid var(--borde-fuerte); border-radius: var(--pildora); text-align: center; text-decoration: none; color: inherit; cursor: pointer; }
+.usuario .boton--principal { width: 100%; background: var(--oscuro); border-color: var(--oscuro); color: #fff; }
+
+/* ==========================================================
+   SOLICITUDES
+   ========================================================== */
+.sTitulo { margin: 0 0 4px; font-size: 28px; }
+.sSubTitulo { margin: 0 0 20px; color: var(--suave); }
+
+.sEnviadasRecibidas { display: inline-flex; margin-bottom: 16px; border: 1px solid var(--borde); border-radius: var(--pildora); overflow: hidden; }
+.sOpcion { padding: 8px 18px; border: 0; background: #fff; font: inherit; cursor: pointer; }
+.sOpcion.activo { background: var(--naranja); color: #fff; font-weight: 600; }
+
+.sPestañas { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--borde); }
+.sPestaña { padding: 10px 14px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--suave); font: inherit; cursor: pointer; }
+.sPestaña.activo { color: var(--naranja); border-bottom-color: var(--naranja); font-weight: 600; }
+
+.sAviso { padding: 24px 0; text-align: center; color: var(--suave); }
+
+.sLista { display: flex; flex-direction: column; gap: 12px; }
+.sFila { display: grid; grid-template-columns: 56px 1fr auto auto; gap: 16px; align-items: center; padding: 14px; background: #fff; border: 1px solid var(--borde); border-radius: 12px; }
+.sFila:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+.sFoto { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+.sNombre { margin: 0 0 2px; font-size: 17px; }
+.sTexto { margin: 0 0 4px; font-size: 13px; color: var(--suave); }
+.sDesc { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.sPuntos { padding: 0 18px; border-left: 1px solid var(--borde); border-right: 1px solid var(--borde); text-align: center; }
+.sNumero { display: block; font-size: 22px; }
+.sPuntos span { font-size: 12px; color: var(--suave); }
+
+.sBtn { padding: 8px 16px; border: 1px solid var(--borde-fuerte); border-radius: 8px; background: #fff; color: inherit; font: inherit; font-size: 14px; text-decoration: none; cursor: pointer; }
+.sBtn:hover { opacity: 0.85; }
+.sBtn:disabled { opacity: 0.5; cursor: default; }
+.sBtnok { background: #16a34a; border-color: #16a34a; color: #fff; }
+.sBtnNo { background: #dc2626; border-color: #dc2626; color: #fff; }
+
+/* Etiqueta de estado: el color lo decide data-estado de la fila */
+.sEstado { display: inline-block; padding: 2px 10px; border-radius: var(--pildora); font-size: 12px; font-weight: 600; }
+.sFila[data-estado="solicitado"] .sEstado { background: #fef3c7; color: #92400e; }
+.sFila:is([data-estado="aceptado"], [data-estado="ejecucion"]) .sEstado { background: #dbeafe; color: #1e40af; }
+.sFila[data-estado="completado"] .sEstado { background: #dcfce7; color: #166534; }
+.sFila:is([data-estado="rechazado"], [data-estado="cancelado"]) .sEstado { background: #fee2e2; color: #991b1b; }
+
+/* Los botones condicionales empiezan ocultos y cada situación muestra los suyos */
+.sol__ped-rec, .sol__ped-env, .sOtro, .sFinalizar, .sEsperando { display: none; }
+.sFila[data-estado="solicitado"][data-rol="recibidas"] .sol__ped-rec,
+.sFila[data-estado="solicitado"][data-rol="enviadas"] .sol__ped-env,
+.sFila:not([data-estado="solicitado"]) .sOtro,
+.sFila[data-estado="aceptado"][data-yo="no"] .sFinalizar,
+.sFila[data-estado="aceptado"][data-yo="si"] .sEsperando { display: inline-block; }
+.sEsperando { font-size: 13px; color: var(--suave); }
+
+/* ==========================================================
+   PERFIL
+   ========================================================== */
+.perfil { max-width: 450px; margin: 40px auto; padding: 30px; background: #fff; border-radius: 15px; box-shadow: var(--sombra); font-family: var(--fuente); text-align: center; }
+.perfilFoto { display: flex; justify-content: center; margin-bottom: 25px; }
+.perfilFoto img { width: 140px; height: 140px; margin-bottom: 15px; border: 3px solid var(--borde); border-radius: 50%; object-fit: cover; }
+.perfilFoto form { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 25px; }
+.perfilFoto input[type="file"] { max-width: 100%; font-size: 13px; }
+.perfilFoto button { padding: 8px 20px; background: var(--oscuro); color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+.perfilFoto button:hover { background: #334155; }
+
+.perfilDatos { list-style: none; margin: 0; padding: 0; text-align: left; }
+.perfilDatos li { display: flex; justify-content: space-between; padding: 12px 5px; border-bottom: 1px solid var(--borde); color: var(--texto); }
+.perfilDatos li:last-child { border-bottom: none; }
+.perfilDatos span { display: inline-block; width: 90px; font-weight: bold; color: var(--oscuro); }
+
+#vistaPerfil { text-align: center; }
+#vistaPerfil h2 { margin-bottom: 25px; }
+.perfilCampos { display: flex; flex-direction: column; gap: 10px; }
+.perfilCampos input { padding: 10px; border: 1px solid var(--borde-fuerte); border-radius: 6px; }
+.perfilBotones { display: flex; gap: 10px; margin-top: 15px; }
+.perfilBotones button, #editarPerfil { padding: 10px 18px; background: var(--naranja); color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+
+/* ==========================================================
+   PANEL DE ADMINISTRACIÓN
+   ========================================================== */
+.admin__titulo { margin: 0 0 24px; font-size: 28px; font-weight: 700; }
+.admin__aviso { margin: 0 0 20px; padding: 12px 16px; background: var(--ok-bg); border-left: 4px solid var(--ok); border-radius: 8px; color: var(--ok); font-size: 14px; }
+.admin__bloque { margin-bottom: 28px; padding: 20px; background: #fff; border: 1px solid var(--borde); border-radius: 14px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05); }
+.admin__bloque h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 16px; font-size: 18px; }
+.admin__contador { padding: 2px 10px; background: var(--oscuro); color: #fff; border-radius: var(--pildora); font-size: 12px; font-weight: 600; }
+
+.admin__tabla-wrap { overflow-x: auto; border: 1px solid var(--borde); border-radius: 10px; }
+.admin__tabla { width: 100%; border-collapse: collapse; font-size: 14px; }
+.admin__tabla th { padding: 12px 14px; background: var(--gris-claro); border-bottom: 1px solid var(--borde); color: var(--suave); font-size: 12px; font-weight: 600; letter-spacing: 0.04em; text-align: left; text-transform: uppercase; white-space: nowrap; }
+.admin__tabla td { padding: 12px 14px; border-bottom: 1px solid #f0f1f4; vertical-align: middle; }
+.admin__tabla tbody tr:last-child td { border-bottom: none; }
+.admin__tabla tbody tr:hover { background: #fafbff; }
+.admin__acciones { align-items: center; white-space: nowrap; }
+
+.admin__form { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 700px; }
+.admin__form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--suave); }
+.admin__form input, .admin__form select { padding: 8px; border: 1px solid var(--borde-fuerte); border-radius: 8px; font: inherit; }
+.admin__form .btn { grid-column: 1 / -1; justify-self: start; }
